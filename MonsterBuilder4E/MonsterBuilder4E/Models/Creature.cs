@@ -4,13 +4,17 @@ namespace MonsterBuilder4E.Models
     {
         public string Name { get; set; } = string.Empty;
         public int Level { get; set; }
+        public int LevelBonus => Level / 2;
+
         public Role Role { get; set; }
         public RoleModifier RoleModifier { get; set; }
+
+        public int XP { get; set; }
+
+        public Size Size { get; set; } = Size.Medium;
         public CreatureType Type { get; set; }
         public Origin Origin { get; set; }
         public string Keywords { get; set; } = string.Empty;
-        public string Size { get; set; } = "Medium";
-        public int XP { get; set; }
 
         public int Initiative { get; set; }
         public string Senses { get; set; } = string.Empty;
@@ -38,19 +42,14 @@ namespace MonsterBuilder4E.Models
         public List<string> Resistances { get; set; } = new();
         public List<string> Vulnerabilities { get; set; } = new();
 
-        public List<CreaturePower> Powers { get; set; } = new();
         public List<CreatureTrait> Traits { get; set; } = new();
+        public List<CreaturePower> Powers { get; set; } = new();
+
         public List<string> Skills { get; set; } = new();
 
         public string Equipment { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
-        public int LevelBonus => Level / 2;
-
-        public int GetAbilityModifier(int abilityScore)
-        {
-            return (abilityScore - 10) / 2;
-        }
     }
 
     public class CreaturePower

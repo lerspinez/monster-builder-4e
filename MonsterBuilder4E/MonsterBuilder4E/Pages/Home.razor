@@ -72,12 +72,10 @@
                 <div class="form-group">
                     <label>Size:</label>
                     <select @bind="creature.Size" class="form-control">
-                        <option value="Tiny">Tiny</option>
-                        <option value="Small">Small</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Large">Large</option>
-                        <option value="Huge">Huge</option>
-                        <option value="Gargantuan">Gargantuan</option>
+                        @foreach (var size in Enum.GetValues<Size>())
+                        {
+                            <option value="@size">@size</option>
+                        }
                     </select>
                 </div>
                 <div class="form-group">
