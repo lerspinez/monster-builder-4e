@@ -5,25 +5,25 @@ namespace MonsterBuilder4E.Utility
     public static class MonsterStats
     {
         // Maps each skill to its corresponding ability
-        public static readonly Dictionary<Skill, string> SkillAbilities = new()
+        public static readonly Dictionary<Skill, AbilityScore> SkillAbilities = new()
         {
-            { Skill.Acrobatics, "Dexterity" },
-            { Skill.Arcana, "Intelligence" },
-            { Skill.Athletics, "Strength" },
-            { Skill.Bluff, "Charisma" },
-            { Skill.Diplomacy, "Charisma" },
-            { Skill.Dungeoneering, "Wisdom" },
-            { Skill.Endurance, "Constitution" },
-            { Skill.Heal, "Wisdom" },
-            { Skill.History, "Intelligence" },
-            { Skill.Insight, "Wisdom" },
-            { Skill.Intimidate, "Charisma" },
-            { Skill.Nature, "Wisdom" },
-            { Skill.Perception, "Wisdom" },
-            { Skill.Religion, "Intelligence" },
-            { Skill.Stealth, "Dexterity" },
-            { Skill.Streetwise, "Charisma" },
-            { Skill.Thievery, "Dexterity" }
+            { Skill.Acrobatics, AbilityScore.Dexterity },
+            { Skill.Arcana, AbilityScore.Intelligence },
+            { Skill.Athletics, AbilityScore.Strength },
+            { Skill.Bluff, AbilityScore.Charisma },
+            { Skill.Diplomacy, AbilityScore.Charisma },
+            { Skill.Dungeoneering, AbilityScore.Wisdom },
+            { Skill.Endurance, AbilityScore.Constitution },
+            { Skill.Heal, AbilityScore.Wisdom },
+            { Skill.History, AbilityScore.Intelligence },
+            { Skill.Insight, AbilityScore.Wisdom },
+            { Skill.Intimidate, AbilityScore.Charisma },
+            { Skill.Nature, AbilityScore.Wisdom },
+            { Skill.Perception, AbilityScore.Wisdom },
+            { Skill.Religion, AbilityScore.Intelligence },
+            { Skill.Stealth, AbilityScore.Dexterity },
+            { Skill.Streetwise, AbilityScore.Charisma },
+            { Skill.Thievery, AbilityScore.Dexterity }
         };
 
         public static int CalculateInitiative(Creature creature)
@@ -138,17 +138,17 @@ namespace MonsterBuilder4E.Utility
 
         private static int GetAbilityModifierForSkill(Creature creature, Skill skill)
         {
-            if (!SkillAbilities.TryGetValue(skill, out string? abilityName))
+            if (!SkillAbilities.TryGetValue(skill, out AbilityScore abilityScore))
                 return 0;
 
-            return abilityName switch
+            return abilityScore switch
             {
-                "Strength" => creature.Strength.Modifier,
-                "Constitution" => creature.Constitution.Modifier,
-                "Dexterity" => creature.Dexterity.Modifier,
-                "Intelligence" => creature.Intelligence.Modifier,
-                "Wisdom" => creature.Wisdom.Modifier,
-                "Charisma" => creature.Charisma.Modifier,
+                AbilityScore.Strength => creature.Strength.Modifier,
+                AbilityScore.Constitution => creature.Constitution.Modifier,
+                AbilityScore.Dexterity => creature.Dexterity.Modifier,
+                AbilityScore.Intelligence => creature.Intelligence.Modifier,
+                AbilityScore.Wisdom => creature.Wisdom.Modifier,
+                AbilityScore.Charisma => creature.Charisma.Modifier,
                 _ => 0
             };
         }
