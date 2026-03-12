@@ -1,10 +1,9 @@
-namespace MonsterBuilder4E.Models
+namespace MonsterBuilder4E.Enums;
+
+public enum RoleModifier
 {
-    public enum RoleModifier
-    {
-        Standard,
-        Minion,
-        Elite,
-        Solo
-    }
+    None,
+    Minion,
+    Elite,
+    Solo
 }

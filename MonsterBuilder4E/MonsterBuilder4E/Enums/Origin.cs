@@ -1,13 +1,11 @@
-namespace MonsterBuilder4E.Models
+namespace MonsterBuilder4E.Enums;
+
+public enum Origin
 {
-    public enum Origin
-    {
-        None,
-        Natural,
-        Elemental,
-        Fey,
-        Shadow,
-        Immortal,
-        Aberrant
-    }
+    Natural,
+    Elemental,
+    Fey,
+    Shadow,
+    Immortal,
+    Aberrant
 }

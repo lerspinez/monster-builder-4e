@@ -1,3 +1,4 @@
+using MonsterBuilder4E.Enums;
 using MonsterBuilder4E.Models;
 
 namespace MonsterBuilder4E.Utility

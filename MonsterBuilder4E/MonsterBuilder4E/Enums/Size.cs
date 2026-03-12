@@ -1,12 +1,11 @@
-namespace MonsterBuilder4E.Models
+namespace MonsterBuilder4E.Enums;
+
+public enum Size
 {
-    public enum Size
-    {
-        Tiny,
-        Small,
-        Medium,
-        Large,
-        Huge,
-        Gargantuan
-    }
+    Tiny,
+    Small,
+    Medium,
+    Large,
+    Huge,
+    Gargantuan
 }

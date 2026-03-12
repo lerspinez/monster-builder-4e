@@ -1,13 +1,10 @@
-namespace MonsterBuilder4E.Models
+namespace MonsterBuilder4E.Enums;
+
+public enum Alignment
 {
-    public enum Alignment
-    {
-        Unaligned,
-        LawfulGood,
-        Good,
-        ChaoticGood,
-        LawfulEvil,
-        Evil,
-        ChaoticEvil
-    }
+    Unaligned,
+    Good,
+    LawfulGood,
+    Evil,
+    ChaoticEvil
 }

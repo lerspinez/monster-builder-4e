@@ -1,12 +1,11 @@
-namespace MonsterBuilder4E.Models
+namespace MonsterBuilder4E.Enums;
+
+public enum AbilityScore
 {
-    public enum AbilityScore
-    {
-        Strength,
-        Constitution,
-        Dexterity,
-        Intelligence,
-        Wisdom,
-        Charisma
-    }
+    Strength,
+    Constitution,
+    Dexterity,
+    Intelligence,
+    Wisdom,
+    Charisma
 }

@@ -1,13 +1,12 @@
-namespace MonsterBuilder4E.Models
+namespace MonsterBuilder4E.Enums;
+
+public enum Role
 {
-    public enum Role
-    {
-        None,
-        Artillery,
-        Brute,
-        Controller,
-        Lurker,
-        Skirmisher,
-        Soldier
-    }
+    None,
+    Artillery,
+    Brute,
+    Controller,
+    Lurker,
+    Skirmisher,
+    Soldier
 }

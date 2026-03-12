@@ -1,24 +1,22 @@
-namespace MonsterBuilder4E.Models
+namespace MonsterBuilder4E.Enums;
+
+public enum Skill
 {
-    public enum Skill
-    {
-        None,
-        Acrobatics,
-        Arcana,
-        Athletics,
-        Bluff,
-        Diplomacy,
-        Dungeoneering,
-        Endurance,
-        Heal,
-        History,
-        Insight,
-        Intimidate,
-        Nature,
-        Perception,
-        Religion,
-        Stealth,
-        Streetwise,
-        Thievery
-    }
+    Acrobatics,
+    Arcana,
+    Athletics,
+    Bluff,
+    Diplomacy,
+    Dungeoneering,
+    Endurance,
+    Heal,
+    History,
+    Insight,
+    Intimidate,
+    Nature,
+    Perception,
+    Religion,
+    Stealth,
+    Streetwise,
+    Thievery
 }

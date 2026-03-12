@@ -1,15 +1,13 @@
-namespace MonsterBuilder4E.Models
+namespace MonsterBuilder4E.Enums;
+
+public enum ActionType
 {
-    public enum ActionType
-    {
-        None,
-        Standard,
-        Move,
-        Minor,
-        Free,
-        ImmediateInterrupt,
-        ImmediateReaction,
-        OpportunityAction,
-        NoAction
-    }
+    NoAction,
+    Free,
+    Minor,
+    Move,
+    Standard,
+    ImmediateInterrupt,
+    ImmediateReaction,
+    OpportunityAction
 }

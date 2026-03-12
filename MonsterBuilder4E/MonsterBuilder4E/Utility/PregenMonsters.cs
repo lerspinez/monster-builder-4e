@@ -1,3 +1,4 @@
+using MonsterBuilder4E.Enums;
 using MonsterBuilder4E.Models;
 
 namespace MonsterBuilder4E.Utility
@@ -27,7 +28,7 @@ namespace MonsterBuilder4E.Utility
                 Name = "Goblin Warrior",
                 Level = 1,
                 Role = Role.Skirmisher,
-                RoleModifier = RoleModifier.Standard,
+                RoleModifier = RoleModifier.None,
                 Origin = Origin.Natural,
                 Type = CreatureType.Humanoid,
                 Keywords = "goblin",
@@ -90,7 +91,7 @@ namespace MonsterBuilder4E.Utility
                 Name = "Orc Raider",
                 Level = 2,
                 Role = Role.Brute,
-                RoleModifier = RoleModifier.Standard,
+                RoleModifier = RoleModifier.None,
                 Origin = Origin.Natural,
                 Type = CreatureType.Humanoid,
                 Keywords = "orc",
@@ -153,7 +154,7 @@ namespace MonsterBuilder4E.Utility
                 Name = "Ogre Savage",
                 Level = 3,
                 Role = Role.Brute,
-                RoleModifier = RoleModifier.Standard,
+                RoleModifier = RoleModifier.None,
                 Origin = Origin.Natural,
                 Type = CreatureType.Humanoid,
                 Keywords = "giant",
@@ -208,7 +209,7 @@ namespace MonsterBuilder4E.Utility
                 Name = "Guard Drake",
                 Level = 4,
                 Role = Role.Soldier,
-                RoleModifier = RoleModifier.Standard,
+                RoleModifier = RoleModifier.None,
                 Origin = Origin.Natural,
                 Type = CreatureType.Beast,
                 Keywords = "reptile",
@@ -271,7 +272,7 @@ namespace MonsterBuilder4E.Utility
                 Name = "Cave Troll",
                 Level = 5,
                 Role = Role.Brute,
-                RoleModifier = RoleModifier.Standard,
+                RoleModifier = RoleModifier.None,
                 Origin = Origin.Natural,
                 Type = CreatureType.Humanoid,
                 Keywords = "giant",
