@@ -1,15 +1,18 @@
+using MonsterBuilder4E.Utility;
+
 namespace MonsterBuilder4E.Models
 {
     public class Creature
     {
         public string Name { get; set; } = string.Empty;
+
         public int Level { get; set; }
-        public int LevelBonus => Level / 2;
+        public int LevelBonus => (int)Math.Floor(Level / 2.0);
 
         public Role Role { get; set; }
         public RoleModifier RoleModifier { get; set; }
 
-        public int XP { get; set; }
+        public int XP => MonsterStats.CalculateXP(this);
 
         public Size Size { get; set; } = Size.Medium;
         public CreatureType Type { get; set; }
@@ -19,11 +22,11 @@ namespace MonsterBuilder4E.Models
         public int Initiative { get; set; }
         public string Senses { get; set; } = string.Empty;
 
-        public int HitPoints { get; set; }
-        public int ArmorClass { get; set; }
-        public int Fortitude { get; set; }
-        public int Reflex { get; set; }
-        public int Will { get; set; }
+        public int HitPoints => MonsterStats.CalculateHitPoints(this);
+        public int ArmorClass => MonsterStats.CalculateDefense(this, "AC");
+        public int Fortitude => MonsterStats.CalculateDefense(this, "Fortitude");
+        public int Reflex => MonsterStats.CalculateDefense(this, "Reflex");
+        public int Will => MonsterStats.CalculateDefense(this, "Will");
 
         public int Speed { get; set; }
         public string SpecialMovement { get; set; } = string.Empty;
@@ -45,7 +48,8 @@ namespace MonsterBuilder4E.Models
         public List<CreatureTrait> Traits { get; set; } = new();
         public List<CreaturePower> Powers { get; set; } = new();
 
-        public List<string> Skills { get; set; } = new();
+        public List<Skill> TrainedSkills { get; set; } = new();
+        public List<string> Skills => MonsterStats.CalculateSkills(this);
 
         public string Equipment { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
@@ -79,7 +83,7 @@ namespace MonsterBuilder4E.Models
     public class Ability
     {
         public int Score { get; set; } = 10;
-        public int Modifier => (Score - 10) / 2;
+        public int Modifier => (int)Math.Floor((Score - 10) / 2.0);
         public int CheckModifier { get; set; }
     }
 }

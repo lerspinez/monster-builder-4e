@@ -45,14 +45,8 @@ namespace MonsterBuilder4E.Utility
             };
 
             goblin.Initiative = MonsterStats.CalculateInitiative(goblin);
-            goblin.HitPoints = MonsterStats.CalculateHitPoints(goblin);
-            goblin.ArmorClass = MonsterStats.CalculateDefense(goblin, "AC");
-            goblin.Fortitude = MonsterStats.CalculateDefense(goblin, "Fortitude");
-            goblin.Reflex = MonsterStats.CalculateDefense(goblin, "Reflex");
-            goblin.Will = MonsterStats.CalculateDefense(goblin, "Will");
-            goblin.XP = MonsterStats.CalculateXP(goblin);
 
-            goblin.Skills.Add("Stealth +8");
+            goblin.TrainedSkills.Add(Skill.Stealth);
             goblin.Equipment = "short sword, leather armor";
 
             goblin.Traits.Add(new CreatureTrait
@@ -114,14 +108,8 @@ namespace MonsterBuilder4E.Utility
             };
 
             orc.Initiative = MonsterStats.CalculateInitiative(orc);
-            orc.HitPoints = MonsterStats.CalculateHitPoints(orc);
-            orc.ArmorClass = MonsterStats.CalculateDefense(orc, "AC");
-            orc.Fortitude = MonsterStats.CalculateDefense(orc, "Fortitude");
-            orc.Reflex = MonsterStats.CalculateDefense(orc, "Reflex");
-            orc.Will = MonsterStats.CalculateDefense(orc, "Will");
-            orc.XP = MonsterStats.CalculateXP(orc);
 
-            orc.Skills.Add("Intimidate +6");
+            orc.TrainedSkills.Add(Skill.Intimidate);
             orc.Equipment = "greataxe, hide armor";
 
             orc.Traits.Add(new CreatureTrait
@@ -183,12 +171,6 @@ namespace MonsterBuilder4E.Utility
             };
 
             ogre.Initiative = MonsterStats.CalculateInitiative(ogre);
-            ogre.HitPoints = MonsterStats.CalculateHitPoints(ogre);
-            ogre.ArmorClass = MonsterStats.CalculateDefense(ogre, "AC");
-            ogre.Fortitude = MonsterStats.CalculateDefense(ogre, "Fortitude");
-            ogre.Reflex = MonsterStats.CalculateDefense(ogre, "Reflex");
-            ogre.Will = MonsterStats.CalculateDefense(ogre, "Will");
-            ogre.XP = MonsterStats.CalculateXP(ogre);
 
             ogre.Equipment = "greatclub, hide armor";
 
@@ -244,14 +226,8 @@ namespace MonsterBuilder4E.Utility
             };
 
             drake.Initiative = MonsterStats.CalculateInitiative(drake);
-            drake.HitPoints = MonsterStats.CalculateHitPoints(drake);
-            drake.ArmorClass = MonsterStats.CalculateDefense(drake, "AC");
-            drake.Fortitude = MonsterStats.CalculateDefense(drake, "Fortitude");
-            drake.Reflex = MonsterStats.CalculateDefense(drake, "Reflex");
-            drake.Will = MonsterStats.CalculateDefense(drake, "Will");
-            drake.XP = MonsterStats.CalculateXP(drake);
 
-            drake.Skills.Add("Athletics +11");
+            drake.TrainedSkills.Add(Skill.Athletics);
             drake.Resistances.Add("fire 5");
 
             drake.Traits.Add(new CreatureTrait
@@ -313,12 +289,6 @@ namespace MonsterBuilder4E.Utility
             };
 
             troll.Initiative = MonsterStats.CalculateInitiative(troll);
-            troll.HitPoints = MonsterStats.CalculateHitPoints(troll);
-            troll.ArmorClass = MonsterStats.CalculateDefense(troll, "AC");
-            troll.Fortitude = MonsterStats.CalculateDefense(troll, "Fortitude");
-            troll.Reflex = MonsterStats.CalculateDefense(troll, "Reflex");
-            troll.Will = MonsterStats.CalculateDefense(troll, "Will");
-            troll.XP = MonsterStats.CalculateXP(troll);
 
             troll.Vulnerabilities.Add("fire 5");
             troll.Vulnerabilities.Add("acid 5");

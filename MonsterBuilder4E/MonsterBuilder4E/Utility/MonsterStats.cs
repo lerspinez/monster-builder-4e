@@ -4,6 +4,28 @@ namespace MonsterBuilder4E.Utility
 {
     public static class MonsterStats
     {
+        // Maps each skill to its corresponding ability
+        public static readonly Dictionary<Skill, string> SkillAbilities = new()
+        {
+            { Skill.Acrobatics, "Dexterity" },
+            { Skill.Arcana, "Intelligence" },
+            { Skill.Athletics, "Strength" },
+            { Skill.Bluff, "Charisma" },
+            { Skill.Diplomacy, "Charisma" },
+            { Skill.Dungeoneering, "Wisdom" },
+            { Skill.Endurance, "Constitution" },
+            { Skill.Heal, "Wisdom" },
+            { Skill.History, "Intelligence" },
+            { Skill.Insight, "Wisdom" },
+            { Skill.Intimidate, "Charisma" },
+            { Skill.Nature, "Wisdom" },
+            { Skill.Perception, "Wisdom" },
+            { Skill.Religion, "Intelligence" },
+            { Skill.Stealth, "Dexterity" },
+            { Skill.Streetwise, "Charisma" },
+            { Skill.Thievery, "Dexterity" }
+        };
+
         public static int CalculateInitiative(Creature creature)
         {
             return creature.LevelBonus + creature.Dexterity.Modifier;
@@ -94,6 +116,40 @@ namespace MonsterBuilder4E.Utility
                 RoleModifier.Elite => baseXP * 2,
                 RoleModifier.Solo => baseXP * 5,
                 _ => baseXP
+            };
+        }
+
+        public static List<string> CalculateSkills(Creature creature)
+        {
+            var skills = new List<string>();
+
+            foreach (var skill in creature.TrainedSkills)
+            {
+                if (skill == Skill.None) continue;
+
+                int abilityModifier = GetAbilityModifierForSkill(creature, skill);
+                int skillBonus = creature.LevelBonus + abilityModifier + 5; // +5 training bonus in 4E
+
+                skills.Add($"{skill} +{skillBonus}");
+            }
+
+            return skills;
+        }
+
+        private static int GetAbilityModifierForSkill(Creature creature, Skill skill)
+        {
+            if (!SkillAbilities.TryGetValue(skill, out string? abilityName))
+                return 0;
+
+            return abilityName switch
+            {
+                "Strength" => creature.Strength.Modifier,
+                "Constitution" => creature.Constitution.Modifier,
+                "Dexterity" => creature.Dexterity.Modifier,
+                "Intelligence" => creature.Intelligence.Modifier,
+                "Wisdom" => creature.Wisdom.Modifier,
+                "Charisma" => creature.Charisma.Modifier,
+                _ => 0
             };
         }
     }

@@ -307,8 +307,43 @@ textarea.form-control {
     .monster-builder-container {
         grid-template-columns: 1fr;
     }
-    
+
     .preview-panel {
         position: relative;
     }
+}
+
+/* Skill tags styling */
+.selected-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.skill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background-color: #e8f5e0;
+    border: 1px solid #5a7f3a;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #2d5016;
+}
+
+.btn-remove {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 0.25rem;
+}
+
+.btn-remove:hover {
+    color: #c82333;
 }

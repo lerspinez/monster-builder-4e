@@ -22,7 +22,7 @@
                 </div>
                 <div class="form-group">
                     <label>XP:</label>
-                    <input type="number" @bind="creature.XP" class="form-control" />
+                    <input type="number" value="@creature.XP" class="form-control" readonly />
                 </div>
             </div>
 
@@ -125,7 +125,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>HP:</label>
-                    <input type="number" @bind="creature.HitPoints" class="form-control" />
+                    <input type="number" value="@creature.HitPoints" class="form-control" readonly />
                 </div>
                 <div class="form-group">
                     <label>Initiative:</label>
@@ -136,19 +136,19 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>AC:</label>
-                    <input type="number" @bind="creature.ArmorClass" class="form-control" />
+                    <input type="number" value="@creature.ArmorClass" class="form-control" readonly />
                 </div>
                 <div class="form-group">
                     <label>Fortitude:</label>
-                    <input type="number" @bind="creature.Fortitude" class="form-control" />
+                    <input type="number" value="@creature.Fortitude" class="form-control" readonly />
                 </div>
                 <div class="form-group">
                     <label>Reflex:</label>
-                    <input type="number" @bind="creature.Reflex" class="form-control" />
+                    <input type="number" value="@creature.Reflex" class="form-control" readonly />
                 </div>
                 <div class="form-group">
                     <label>Will:</label>
-                    <input type="number" @bind="creature.Will" class="form-control" />
+                    <input type="number" value="@creature.Will" class="form-control" readonly />
                 </div>
             </div>
 
@@ -172,8 +172,28 @@
             </div>
 
             <div class="form-group">
-                <label>Skills:</label>
-                <input type="text" @bind="skillsText" class="form-control" placeholder="e.g., Athletics +10, Stealth +8" />
+                <label>Trained Skills:</label>
+                <select @bind="selectedSkill" class="form-control">
+                    <option value="">-- Select a skill to add --</option>
+                    @foreach (var skill in Enum.GetValues<Skill>())
+                    {
+                        if (skill != Skill.None && !creature.TrainedSkills.Contains(skill))
+                        {
+                            <option value="@skill">@skill</option>
+                        }
+                    }
+                </select>
+                <button @onclick="AddSkill" class="btn btn-secondary btn-sm">Add Skill</button>
+                <div class="selected-skills">
+                    @foreach (var skill in creature.TrainedSkills)
+                    {
+                        <span class="skill-tag">
+                            @skill
+                            <button @onclick="() => RemoveSkill(skill)" class="btn-remove">×</button>
+                        </span>
+                    }
+                </div>
+                <small class="form-text text-muted">Calculated Skills: @string.Join(", ", creature.Skills)</small>
             </div>
 
             <div class="form-row">
@@ -428,7 +448,7 @@
 @code {
     private Creature creature = new Creature();
 
-    private string skillsText = string.Empty;
+    private Skill selectedSkill = Skill.None;
     private string resistancesText = string.Empty;
     private string immunitiesText = string.Empty;
     private string vulnerabilitiesText = string.Empty;
@@ -441,7 +461,6 @@
 
     private void PopulateFormFields()
     {
-        skillsText = string.Join(", ", creature.Skills);
         resistancesText = string.Join(", ", creature.Resistances);
         immunitiesText = string.Join(", ", creature.ImmuneConditions);
         vulnerabilitiesText = string.Join(", ", creature.Vulnerabilities);
@@ -450,19 +469,12 @@
     private void RecalculateStats()
     {
         creature.Initiative = MonsterStats.CalculateInitiative(creature);
-        creature.HitPoints = MonsterStats.CalculateHitPoints(creature);
-        creature.ArmorClass = MonsterStats.CalculateDefense(creature, "AC");
-        creature.Fortitude = MonsterStats.CalculateDefense(creature, "Fortitude");
-        creature.Reflex = MonsterStats.CalculateDefense(creature, "Reflex");
-        creature.Will = MonsterStats.CalculateDefense(creature, "Will");
-        creature.XP = MonsterStats.CalculateXP(creature);
 
         ParseLists();
     }
 
     private void ParseLists()
     {
-        creature.Skills = ParseCommaDelimitedList(skillsText);
         creature.Resistances = ParseCommaDelimitedList(resistancesText);
         creature.ImmuneConditions = ParseCommaDelimitedList(immunitiesText);
         creature.Vulnerabilities = ParseCommaDelimitedList(vulnerabilitiesText);
@@ -477,6 +489,20 @@
             .Select(s => s.Trim())
             .Where(s => !string.IsNullOrEmpty(s))
             .ToList();
+    }
+
+    private void AddSkill()
+    {
+        if (selectedSkill != Skill.None && !creature.TrainedSkills.Contains(selectedSkill))
+        {
+            creature.TrainedSkills.Add(selectedSkill);
+            selectedSkill = Skill.None;
+        }
+    }
+
+    private void RemoveSkill(Skill skill)
+    {
+        creature.TrainedSkills.Remove(skill);
     }
 
     private void AddTrait()
