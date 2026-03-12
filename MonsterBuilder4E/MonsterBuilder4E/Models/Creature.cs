@@ -1,0 +1,86 @@
+namespace MonsterBuilder4E.Models
+{
+    public class Creature
+    {
+        public string Name { get; set; } = string.Empty;
+        public int Level { get; set; }
+        public Role Role { get; set; }
+        public RoleModifier RoleModifier { get; set; }
+        public CreatureType Type { get; set; }
+        public Origin Origin { get; set; }
+        public string Keywords { get; set; } = string.Empty;
+        public string Size { get; set; } = "Medium";
+        public int XP { get; set; }
+
+        public int Initiative { get; set; }
+        public string Senses { get; set; } = string.Empty;
+
+        public int HitPoints { get; set; }
+        public int ArmorClass { get; set; }
+        public int Fortitude { get; set; }
+        public int Reflex { get; set; }
+        public int Will { get; set; }
+
+        public int Speed { get; set; }
+        public string SpecialMovement { get; set; } = string.Empty;
+
+        public Ability Strength { get; set; } = new();
+        public Ability Constitution { get; set; } = new();
+        public Ability Dexterity { get; set; } = new();
+        public Ability Intelligence { get; set; } = new();
+        public Ability Wisdom { get; set; } = new();
+        public Ability Charisma { get; set; } = new();
+
+        public Alignment Alignment { get; set; } = Alignment.Unaligned;
+        public string Languages { get; set; } = string.Empty;
+
+        public List<string> ImmuneConditions { get; set; } = new();
+        public List<string> Resistances { get; set; } = new();
+        public List<string> Vulnerabilities { get; set; } = new();
+
+        public List<CreaturePower> Powers { get; set; } = new();
+        public List<CreatureTrait> Traits { get; set; } = new();
+        public List<string> Skills { get; set; } = new();
+
+        public string Equipment { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+
+        public int LevelBonus => Level / 2;
+
+        public int GetAbilityModifier(int abilityScore)
+        {
+            return (abilityScore - 10) / 2;
+        }
+    }
+
+    public class CreaturePower
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public string Usage { get; set; } = string.Empty;
+        public ActionType ActionType { get; set; }
+        public string Range { get; set; } = string.Empty;
+        public string Attack { get; set; } = string.Empty;
+        public string Target { get; set; } = string.Empty;
+        public string Hit { get; set; } = string.Empty;
+        public string Miss { get; set; } = string.Empty;
+        public string Effect { get; set; } = string.Empty;
+        public string Trigger { get; set; } = string.Empty;
+        public string Keywords { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+    }
+
+    public class CreatureTrait
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+    }
+
+    public class Ability
+    {
+        public int Score { get; set; } = 10;
+        public int Modifier => (Score - 10) / 2;
+        public int CheckModifier { get; set; }
+    }
+}

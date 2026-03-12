@@ -1,7 +1,524 @@
 ﻿@page "/"
+@using MonsterBuilder4E.Models
+@using MonsterBuilder4E.Utility
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Monster Builder 4E</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="monster-builder-container">
+    <div class="form-panel">
+        <h2>Monster Builder</h2>
 
-Welcome to your new app.
+        <div class="form-section">
+            <h3>Basic Information</h3>
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" @bind="creature.Name" class="form-control" />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Level:</label>
+                    <input type="number" @bind="creature.Level" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
+                </div>
+                <div class="form-group">
+                    <label>XP:</label>
+                    <input type="number" @bind="creature.XP" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Role:</label>
+                    <select @bind="creature.Role" class="form-control" @bind:event="oninput" @onchange="RecalculateStats">
+                        @foreach (var role in Enum.GetValues<Role>())
+                        {
+                            <option value="@role">@role</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Role Modifier:</label>
+                    <select @bind="creature.RoleModifier" class="form-control" @bind:event="oninput" @onchange="RecalculateStats">
+                        @foreach (var modifier in Enum.GetValues<RoleModifier>())
+                        {
+                            <option value="@modifier">@modifier</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Origin:</label>
+                    <select @bind="creature.Origin" class="form-control">
+                        @foreach (var origin in Enum.GetValues<Origin>())
+                        {
+                            <option value="@origin">@origin</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Type:</label>
+                    <select @bind="creature.Type" class="form-control">
+                        @foreach (var type in Enum.GetValues<CreatureType>())
+                        {
+                            <option value="@type">@type</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Size:</label>
+                    <select @bind="creature.Size" class="form-control">
+                        <option value="Tiny">Tiny</option>
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                        <option value="Huge">Huge</option>
+                        <option value="Gargantuan">Gargantuan</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Keywords:</label>
+                    <input type="text" @bind="creature.Keywords" class="form-control" placeholder="e.g., aquatic, mount" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Ability Scores</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Strength:</label>
+                    <input type="number" @bind="creature.Strength.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
+                </div>
+                <div class="form-group">
+                    <label>Constitution:</label>
+                    <input type="number" @bind="creature.Constitution.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
+                </div>
+                <div class="form-group">
+                    <label>Dexterity:</label>
+                    <input type="number" @bind="creature.Dexterity.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Intelligence:</label>
+                    <input type="number" @bind="creature.Intelligence.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
+                </div>
+                <div class="form-group">
+                    <label>Wisdom:</label>
+                    <input type="number" @bind="creature.Wisdom.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
+                </div>
+                <div class="form-group">
+                    <label>Charisma:</label>
+                    <input type="number" @bind="creature.Charisma.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
+                </div>
+            </div>
+
+            <button @onclick="RecalculateStats" class="btn btn-primary">Calculate Stats</button>
+        </div>
+
+        <div class="form-section">
+            <h3>Combat Stats</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>HP:</label>
+                    <input type="number" @bind="creature.HitPoints" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Initiative:</label>
+                    <input type="number" @bind="creature.Initiative" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>AC:</label>
+                    <input type="number" @bind="creature.ArmorClass" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Fortitude:</label>
+                    <input type="number" @bind="creature.Fortitude" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Reflex:</label>
+                    <input type="number" @bind="creature.Reflex" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Will:</label>
+                    <input type="number" @bind="creature.Will" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Speed:</label>
+                    <input type="number" @bind="creature.Speed" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Special Movement:</label>
+                    <input type="text" @bind="creature.SpecialMovement" class="form-control" placeholder="e.g., fly 6, swim 8" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Additional Info</h3>
+            <div class="form-group">
+                <label>Senses:</label>
+                <input type="text" @bind="creature.Senses" class="form-control" placeholder="e.g., Perception +5; darkvision" />
+            </div>
+
+            <div class="form-group">
+                <label>Skills:</label>
+                <input type="text" @bind="skillsText" class="form-control" placeholder="e.g., Athletics +10, Stealth +8" />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Alignment:</label>
+                    <select @bind="creature.Alignment" class="form-control">
+                        @foreach (var alignment in Enum.GetValues<Alignment>())
+                        {
+                            <option value="@alignment">@FormatEnumName(alignment.ToString())</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Languages:</label>
+                    <input type="text" @bind="creature.Languages" class="form-control" placeholder="e.g., Common, Draconic" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Resistances:</label>
+                <input type="text" @bind="resistancesText" class="form-control" placeholder="e.g., fire 10, cold 5" />
+            </div>
+
+            <div class="form-group">
+                <label>Immunities:</label>
+                <input type="text" @bind="immunitiesText" class="form-control" placeholder="e.g., poison, disease" />
+            </div>
+
+            <div class="form-group">
+                <label>Vulnerabilities:</label>
+                <input type="text" @bind="vulnerabilitiesText" class="form-control" placeholder="e.g., fire 5" />
+            </div>
+
+            <div class="form-group">
+                <label>Equipment:</label>
+                <input type="text" @bind="creature.Equipment" class="form-control" placeholder="e.g., longsword, chainmail" />
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Traits & Powers</h3>
+            <button @onclick="AddTrait" class="btn btn-secondary">Add Trait</button>
+            @foreach (var trait in creature.Traits)
+            {
+                <div class="trait-editor">
+                    <input type="text" @bind="trait.Name" class="form-control" placeholder="Trait Name" />
+                    <textarea @bind="trait.Description" class="form-control" placeholder="Trait Description"></textarea>
+                    <button @onclick="() => RemoveTrait(trait)" class="btn btn-danger btn-sm">Remove</button>
+                </div>
+            }
+
+            <button @onclick="AddPower" class="btn btn-secondary">Add Power</button>
+            @foreach (var power in creature.Powers)
+            {
+                <div class="power-editor">
+                    <input type="text" @bind="power.Name" class="form-control" placeholder="Power Name" />
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Usage:</label>
+                            <select @bind="power.Usage" class="form-control">
+                                <option value="">Select Usage</option>
+                                <option value="At-Will">At-Will</option>
+                                <option value="Encounter">Encounter</option>
+                                <option value="Daily">Daily</option>
+                                <option value="Recharge">Recharge 5-6</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Action Type:</label>
+                            <select @bind="power.ActionType" class="form-control">
+                                @foreach (var actionType in Enum.GetValues<ActionType>())
+                                {
+                                    <option value="@actionType">@actionType</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <input type="text" @bind="power.Keywords" class="form-control" placeholder="Keywords (e.g., Fire, Weapon)" />
+                    <input type="text" @bind="power.Range" class="form-control" placeholder="Range (e.g., Melee 1, Ranged 10)" />
+                    <input type="text" @bind="power.Attack" class="form-control" placeholder="Attack (e.g., +15 vs. AC)" />
+                    <input type="text" @bind="power.Target" class="form-control" placeholder="Target (e.g., One creature)" />
+                    <textarea @bind="power.Hit" class="form-control" placeholder="Hit effect"></textarea>
+                    <textarea @bind="power.Effect" class="form-control" placeholder="Effect"></textarea>
+                    <button @onclick="() => RemovePower(power)" class="btn btn-danger btn-sm">Remove</button>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="preview-panel">
+        <h2>Stat Block Preview</h2>
+        <div class="stat-block">
+            <div class="stat-block-header">
+                <h3 class="creature-name">@creature.Name</h3>
+                <div class="creature-subtitle">
+                    Level @creature.Level @(creature.RoleModifier != RoleModifier.Standard ? FormatEnumName(creature.RoleModifier.ToString()) : "") @FormatEnumName(creature.Role.ToString())
+                    @if (creature.XP > 0)
+                    {
+                        <span>XP @creature.XP</span>
+                    }
+                </div>
+                <div class="creature-type">
+                    @creature.Size @FormatEnumName(creature.Origin.ToString()) @FormatEnumName(creature.Type.ToString()) @if (!string.IsNullOrEmpty(creature.Keywords)) { <span>(@creature.Keywords)</span> }
+                </div>
+            </div>
+
+            <div class="stat-block-body">
+                <div class="stat-line">
+                    <strong>HP</strong> @creature.HitPoints; <strong>Bloodied</strong> @(creature.HitPoints / 2)
+                </div>
+                <div class="stat-line">
+                    <strong>AC</strong> @creature.ArmorClass; <strong>Fortitude</strong> @creature.Fortitude, <strong>Reflex</strong> @creature.Reflex, <strong>Will</strong> @creature.Will
+                </div>
+                <div class="stat-line">
+                    <strong>Speed</strong> @creature.Speed@(string.IsNullOrEmpty(creature.SpecialMovement) ? "" : ", " + creature.SpecialMovement)
+                </div>
+                @if (creature.Resistances.Any())
+                {
+                    <div class="stat-line">
+                        <strong>Resist</strong> @string.Join(", ", creature.Resistances)
+                    </div>
+                }
+                @if (creature.ImmuneConditions.Any())
+                {
+                    <div class="stat-line">
+                        <strong>Immune</strong> @string.Join(", ", creature.ImmuneConditions)
+                    </div>
+                }
+                @if (creature.Vulnerabilities.Any())
+                {
+                    <div class="stat-line">
+                        <strong>Vulnerable</strong> @string.Join(", ", creature.Vulnerabilities)
+                    </div>
+                }
+                <div class="stat-line">
+                    <strong>Initiative</strong> @FormatModifier(creature.Initiative)
+                </div>
+                @if (!string.IsNullOrEmpty(creature.Senses))
+                {
+                    <div class="stat-line">@creature.Senses</div>
+                }
+
+                @if (creature.Traits.Any())
+                {
+                    <div class="stat-block-section">
+                        @foreach (var trait in creature.Traits)
+                        {
+                            <div class="trait">
+                                <strong>@trait.Name</strong> @trait.Description
+                            </div>
+                        }
+                    </div>
+                }
+
+                @if (creature.Powers.Any())
+                {
+                    <div class="stat-block-section">
+                        @foreach (var power in creature.Powers)
+                        {
+                            <div class="power">
+                                <div class="power-header">
+                                    <span class="power-icon">@GetPowerIcon(power.Usage)</span>
+                                    <strong>@power.Name</strong>
+                                    @if (!string.IsNullOrEmpty(power.Usage))
+                                    {
+                                        <span class="power-usage">(@power.Usage)</span>
+                                    }
+                                    <span class="power-action">• @power.ActionType</span>
+                                </div>
+                                @if (!string.IsNullOrEmpty(power.Keywords))
+                                {
+                                    <div class="power-keywords">@power.Keywords</div>
+                                }
+                                @if (!string.IsNullOrEmpty(power.Range))
+                                {
+                                    <div><strong>Range:</strong> @power.Range</div>
+                                }
+                                @if (!string.IsNullOrEmpty(power.Target))
+                                {
+                                    <div><strong>Target:</strong> @power.Target</div>
+                                }
+                                @if (!string.IsNullOrEmpty(power.Attack))
+                                {
+                                    <div><strong>Attack:</strong> @power.Attack</div>
+                                }
+                                @if (!string.IsNullOrEmpty(power.Hit))
+                                {
+                                    <div><strong>Hit:</strong> @power.Hit</div>
+                                }
+                                @if (!string.IsNullOrEmpty(power.Effect))
+                                {
+                                    <div><strong>Effect:</strong> @power.Effect</div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+
+                <div class="stat-block-abilities">
+                    <div class="ability-scores">
+                        <div class="ability">
+                            <div class="ability-name">Str</div>
+                            <div class="ability-value">@creature.Strength.Score (@FormatModifier(creature.Strength.Modifier))</div>
+                        </div>
+                        <div class="ability">
+                            <div class="ability-name">Con</div>
+                            <div class="ability-value">@creature.Constitution.Score (@FormatModifier(creature.Constitution.Modifier))</div>
+                        </div>
+                        <div class="ability">
+                            <div class="ability-name">Dex</div>
+                            <div class="ability-value">@creature.Dexterity.Score (@FormatModifier(creature.Dexterity.Modifier))</div>
+                        </div>
+                        <div class="ability">
+                            <div class="ability-name">Int</div>
+                            <div class="ability-value">@creature.Intelligence.Score (@FormatModifier(creature.Intelligence.Modifier))</div>
+                        </div>
+                        <div class="ability">
+                            <div class="ability-name">Wis</div>
+                            <div class="ability-value">@creature.Wisdom.Score (@FormatModifier(creature.Wisdom.Modifier))</div>
+                        </div>
+                        <div class="ability">
+                            <div class="ability-name">Cha</div>
+                            <div class="ability-value">@creature.Charisma.Score (@FormatModifier(creature.Charisma.Modifier))</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-line">
+                    <strong>Alignment</strong> @FormatEnumName(creature.Alignment.ToString())
+                    @if (!string.IsNullOrEmpty(creature.Languages))
+                    {
+                        <span><strong>Languages</strong> @creature.Languages</span>
+                    }
+                </div>
+                @if (creature.Skills.Any())
+                {
+                    <div class="stat-line">
+                        <strong>Skills</strong> @string.Join(", ", creature.Skills)
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(creature.Equipment))
+                {
+                    <div class="stat-line">
+                        <strong>Equipment</strong> @creature.Equipment
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private Creature creature = new Creature();
+
+    private string skillsText = string.Empty;
+    private string resistancesText = string.Empty;
+    private string immunitiesText = string.Empty;
+    private string vulnerabilitiesText = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        creature = PregenMonsters.GetRandomMonster();
+        PopulateFormFields();
+    }
+
+    private void PopulateFormFields()
+    {
+        skillsText = string.Join(", ", creature.Skills);
+        resistancesText = string.Join(", ", creature.Resistances);
+        immunitiesText = string.Join(", ", creature.ImmuneConditions);
+        vulnerabilitiesText = string.Join(", ", creature.Vulnerabilities);
+    }
+
+    private void RecalculateStats()
+    {
+        creature.Initiative = MonsterStats.CalculateInitiative(creature);
+        creature.HitPoints = MonsterStats.CalculateHitPoints(creature);
+        creature.ArmorClass = MonsterStats.CalculateDefense(creature, "AC");
+        creature.Fortitude = MonsterStats.CalculateDefense(creature, "Fortitude");
+        creature.Reflex = MonsterStats.CalculateDefense(creature, "Reflex");
+        creature.Will = MonsterStats.CalculateDefense(creature, "Will");
+        creature.XP = MonsterStats.CalculateXP(creature);
+
+        ParseLists();
+    }
+
+    private void ParseLists()
+    {
+        creature.Skills = ParseCommaDelimitedList(skillsText);
+        creature.Resistances = ParseCommaDelimitedList(resistancesText);
+        creature.ImmuneConditions = ParseCommaDelimitedList(immunitiesText);
+        creature.Vulnerabilities = ParseCommaDelimitedList(vulnerabilitiesText);
+    }
+
+    private List<string> ParseCommaDelimitedList(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return new List<string>();
+
+        return text.Split(',')
+            .Select(s => s.Trim())
+            .Where(s => !string.IsNullOrEmpty(s))
+            .ToList();
+    }
+
+    private void AddTrait()
+    {
+        creature.Traits.Add(new CreatureTrait());
+    }
+
+    private void RemoveTrait(CreatureTrait trait)
+    {
+        creature.Traits.Remove(trait);
+    }
+
+    private void AddPower()
+    {
+        creature.Powers.Add(new CreaturePower());
+    }
+
+    private void RemovePower(CreaturePower power)
+    {
+        creature.Powers.Remove(power);
+    }
+
+    private string FormatModifier(int value)
+    {
+        return value >= 0 ? $"+{value}" : value.ToString();
+    }
+
+    private string GetPowerIcon(string usage)
+    {
+        return usage switch
+        {
+            "At-Will" => "⚔",
+            "Encounter" => "⬢",
+            "Daily" => "◉",
+            _ => "○"
+        };
+    }
+
+    private string FormatEnumName(string enumName)
+    {
+        return System.Text.RegularExpressions.Regex.Replace(enumName, "([a-z])([A-Z])", "$1 $2");
+    }
+}
