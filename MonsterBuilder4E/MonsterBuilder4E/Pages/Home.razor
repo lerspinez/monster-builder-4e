@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using MonsterBuilder4E.Models
 @using MonsterBuilder4E.Utility
+@using MonsterBuilder4E.Enums
 
 <PageTitle>Monster Builder 4E</PageTitle>
 
@@ -80,7 +81,7 @@
                 </div>
                 <div class="form-group">
                     <label>Keywords:</label>
-                    <input type="text" @bind="creature.Keywords" class="form-control" placeholder="e.g., aquatic, mount" />
+                    <input type="text" @bind="creature.CreatureKeywords" class="form-control" placeholder="e.g., aquatic, mount" />
                 </div>
             </div>
         </div>
@@ -90,30 +91,30 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Strength:</label>
-                    <input type="number" @bind="creature.Strength.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
+                    <input type="number" @bind="creature.Abilities.Strength.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
                 </div>
                 <div class="form-group">
                     <label>Constitution:</label>
-                    <input type="number" @bind="creature.Constitution.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
+                    <input type="number" @bind="creature.Abilities.Constitution.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
                 </div>
                 <div class="form-group">
                     <label>Dexterity:</label>
-                    <input type="number" @bind="creature.Dexterity.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
+                    <input type="number" @bind="creature.Abilities.Dexterity.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label>Intelligence:</label>
-                    <input type="number" @bind="creature.Intelligence.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
+                    <input type="number" @bind="creature.Abilities.Intelligence.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
                 </div>
                 <div class="form-group">
                     <label>Wisdom:</label>
-                    <input type="number" @bind="creature.Wisdom.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
+                    <input type="number" @bind="creature.Abilities.Wisdom.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
                 </div>
                 <div class="form-group">
                     <label>Charisma:</label>
-                    <input type="number" @bind="creature.Charisma.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
+                    <input type="number" @bind="creature.Abilities.Charisma.Score" class="form-control" @bind:event="oninput" @onchange="RecalculateStats" />
                 </div>
             </div>
 
@@ -177,7 +178,7 @@
                     <option value="">-- Select a skill to add --</option>
                     @foreach (var skill in Enum.GetValues<Skill>())
                     {
-                        if (skill != Skill.None && !creature.TrainedSkills.Contains(skill))
+                        if (!creature.TrainedSkills.Contains(skill))
                         {
                             <option value="@skill">@skill</option>
                         }
@@ -289,14 +290,14 @@
             <div class="stat-block-header">
                 <h3 class="creature-name">@creature.Name</h3>
                 <div class="creature-subtitle">
-                    Level @creature.Level @(creature.RoleModifier != RoleModifier.Standard ? FormatEnumName(creature.RoleModifier.ToString()) : "") @FormatEnumName(creature.Role.ToString())
+                    Level @creature.Level @(creature.RoleModifier != RoleModifier.None ? FormatEnumName(creature.RoleModifier.ToString()) : "") @FormatEnumName(creature.Role.ToString())
                     @if (creature.XP > 0)
                     {
                         <span>XP @creature.XP</span>
                     }
                 </div>
                 <div class="creature-type">
-                    @creature.Size @FormatEnumName(creature.Origin.ToString()) @FormatEnumName(creature.Type.ToString()) @if (!string.IsNullOrEmpty(creature.Keywords)) { <span>(@creature.Keywords)</span> }
+                    @creature.Size @FormatEnumName(creature.Origin.ToString()) @FormatEnumName(creature.Type.ToString()) @if (!string.IsNullOrEmpty(creature.CreatureKeywords)) { <span>(@creature.CreatureKeywords)</span> }
                 </div>
             </div>
 
@@ -396,27 +397,27 @@
                     <div class="ability-scores">
                         <div class="ability">
                             <div class="ability-name">Str</div>
-                            <div class="ability-value">@creature.Strength.Score (@FormatModifier(creature.Strength.Modifier))</div>
+                            <div class="ability-value">@creature.Abilities.Strength.Score (@FormatModifier(creature.AbilityCheckModifiers.Strength))</div>
                         </div>
                         <div class="ability">
                             <div class="ability-name">Con</div>
-                            <div class="ability-value">@creature.Constitution.Score (@FormatModifier(creature.Constitution.Modifier))</div>
+                            <div class="ability-value">@creature.Abilities.Constitution.Score (@FormatModifier(creature.AbilityCheckModifiers.Constitution))</div>
                         </div>
                         <div class="ability">
                             <div class="ability-name">Dex</div>
-                            <div class="ability-value">@creature.Dexterity.Score (@FormatModifier(creature.Dexterity.Modifier))</div>
+                            <div class="ability-value">@creature.Abilities.Dexterity.Score (@FormatModifier(creature.AbilityCheckModifiers.Dexterity))</div>
                         </div>
                         <div class="ability">
                             <div class="ability-name">Int</div>
-                            <div class="ability-value">@creature.Intelligence.Score (@FormatModifier(creature.Intelligence.Modifier))</div>
+                            <div class="ability-value">@creature.Abilities.Intelligence.Score (@FormatModifier(creature.AbilityCheckModifiers.Intelligence))</div>
                         </div>
                         <div class="ability">
                             <div class="ability-name">Wis</div>
-                            <div class="ability-value">@creature.Wisdom.Score (@FormatModifier(creature.Wisdom.Modifier))</div>
+                            <div class="ability-value">@creature.Abilities.Wisdom.Score (@FormatModifier(creature.AbilityCheckModifiers.Wisdom))</div>
                         </div>
                         <div class="ability">
                             <div class="ability-name">Cha</div>
-                            <div class="ability-value">@creature.Charisma.Score (@FormatModifier(creature.Charisma.Modifier))</div>
+                            <div class="ability-value">@creature.Abilities.Charisma.Score (@FormatModifier(creature.AbilityCheckModifiers.Charisma))</div>
                         </div>
                     </div>
                 </div>
@@ -448,7 +449,7 @@
 @code {
     private Creature creature = new Creature();
 
-    private Skill selectedSkill = Skill.None;
+    private Skill? selectedSkill = null;
     private string resistancesText = string.Empty;
     private string immunitiesText = string.Empty;
     private string vulnerabilitiesText = string.Empty;
@@ -493,10 +494,10 @@
 
     private void AddSkill()
     {
-        if (selectedSkill != Skill.None && !creature.TrainedSkills.Contains(selectedSkill))
+        if (selectedSkill.HasValue && !creature.TrainedSkills.Contains(selectedSkill.Value))
         {
-            creature.TrainedSkills.Add(selectedSkill);
-            selectedSkill = Skill.None;
+            creature.TrainedSkills.Add(selectedSkill.Value);
+            selectedSkill = null;
         }
     }
 

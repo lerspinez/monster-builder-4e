@@ -6,46 +6,46 @@ namespace MonsterBuilder4E.Utility
     public static class MonsterStats
     {
         // Maps each skill to its corresponding ability
-        public static readonly Dictionary<Skill, AbilityScore> SkillAbilities = new()
+        public static readonly Dictionary<Skill, Ability> SkillAbilities = new()
         {
-            { Skill.Acrobatics, AbilityScore.Dexterity },
-            { Skill.Arcana, AbilityScore.Intelligence },
-            { Skill.Athletics, AbilityScore.Strength },
-            { Skill.Bluff, AbilityScore.Charisma },
-            { Skill.Diplomacy, AbilityScore.Charisma },
-            { Skill.Dungeoneering, AbilityScore.Wisdom },
-            { Skill.Endurance, AbilityScore.Constitution },
-            { Skill.Heal, AbilityScore.Wisdom },
-            { Skill.History, AbilityScore.Intelligence },
-            { Skill.Insight, AbilityScore.Wisdom },
-            { Skill.Intimidate, AbilityScore.Charisma },
-            { Skill.Nature, AbilityScore.Wisdom },
-            { Skill.Perception, AbilityScore.Wisdom },
-            { Skill.Religion, AbilityScore.Intelligence },
-            { Skill.Stealth, AbilityScore.Dexterity },
-            { Skill.Streetwise, AbilityScore.Charisma },
-            { Skill.Thievery, AbilityScore.Dexterity }
+            { Skill.Acrobatics, Ability.Dexterity },
+            { Skill.Arcana, Ability.Intelligence },
+            { Skill.Athletics, Ability.Strength },
+            { Skill.Bluff, Ability.Charisma },
+            { Skill.Diplomacy, Ability.Charisma },
+            { Skill.Dungeoneering, Ability.Wisdom },
+            { Skill.Endurance, Ability.Constitution },
+            { Skill.Heal, Ability.Wisdom },
+            { Skill.History, Ability.Intelligence },
+            { Skill.Insight, Ability.Wisdom },
+            { Skill.Intimidate, Ability.Charisma },
+            { Skill.Nature, Ability.Wisdom },
+            { Skill.Perception, Ability.Wisdom },
+            { Skill.Religion, Ability.Intelligence },
+            { Skill.Stealth, Ability.Dexterity },
+            { Skill.Streetwise, Ability.Charisma },
+            { Skill.Thievery, Ability.Dexterity }
         };
 
         public static int CalculateInitiative(Creature creature)
         {
-            return creature.LevelBonus + creature.Dexterity.Modifier;
+            return creature.LevelBonus + creature.Abilities.Dexterity.Modifier;
         }
 
-        public static int CalculateDefense(Creature creature, string defenseType)
+        public static int CalculateDefense(Creature creature, Defense defense)
         {
-            int baseDefense = 10 + creature.Level;
+            int baseDefense = 10 + creature.LevelBonus + creature.EnhancementBonus;
 
-            switch (defenseType.ToLower())
+            switch (defense)
             {
-                case "ac":
-                    return baseDefense + Math.Max(creature.Dexterity.Modifier, creature.Intelligence.Modifier);
-                case "fortitude":
-                    return baseDefense + Math.Max(creature.Strength.Modifier, creature.Constitution.Modifier);
-                case "reflex":
-                    return baseDefense + Math.Max(creature.Dexterity.Modifier, creature.Intelligence.Modifier);
-                case "will":
-                    return baseDefense + Math.Max(creature.Wisdom.Modifier, creature.Charisma.Modifier);
+                case Defense.ArmorClass:
+                    return baseDefense + Math.Max(creature.Abilities.Dexterity.Modifier, creature.Abilities.Intelligence.Modifier);
+                case Defense.Fortitude:
+                    return baseDefense + Math.Max(creature.Abilities.Strength.Modifier, creature.Abilities.Constitution.Modifier);
+                case Defense.Reflex:
+                    return baseDefense + Math.Max(creature.Abilities.Dexterity.Modifier, creature.Abilities.Intelligence.Modifier);
+                case Defense.Will:
+                    return baseDefense + Math.Max(creature.Abilities.Wisdom.Modifier, creature.Abilities.Charisma.Modifier);
                 default:
                     return baseDefense;
             }
@@ -54,8 +54,8 @@ namespace MonsterBuilder4E.Utility
         public static int CalculateHitPoints(Creature creature)
         {
             int baseHP = GetBaseHitPointsByRole(creature);
-            int constitutionBonus = creature.Constitution.Modifier * creature.Level;
-            return baseHP + constitutionBonus;
+            int constitutionScore = creature.Abilities.Constitution.Score;
+            return baseHP + constitutionScore;
         }
 
         private static int GetBaseHitPointsByRole(Creature creature)
@@ -126,32 +126,42 @@ namespace MonsterBuilder4E.Utility
 
             foreach (var skill in creature.TrainedSkills)
             {
-                if (skill == Skill.None) continue;
+                int abilityCheckModifier = GetAbilityCheckModifier(creature, GetSkillAbility(skill));
+                int skillModifier = abilityCheckModifier + 5;
 
-                int abilityModifier = GetAbilityModifierForSkill(creature, skill);
-                int skillBonus = creature.LevelBonus + abilityModifier + 5; // +5 training bonus in 4E
-
-                skills.Add($"{skill} +{skillBonus}");
+                skills.Add($"{skill} +{skillModifier}");
             }
 
             return skills;
         }
 
-        private static int GetAbilityModifierForSkill(Creature creature, Skill skill)
+        private static Ability GetSkillAbility(Skill skill)
         {
-            if (!SkillAbilities.TryGetValue(skill, out AbilityScore abilityScore))
-                return 0;
+            SkillAbilities.TryGetValue(skill, out Ability ability);
+            return ability;
+        }
 
-            return abilityScore switch
+        public static int GetAbilityCheckModifier(Creature creature, Ability ability)
+        {
+            return creature.LevelBonus + creature.Abilities.GetModifier(ability);
+        }
+
+        public static AbilityCheckModifiers GetAbilityCheckModifiers(Creature creature)
+        {
+            return new AbilityCheckModifiers
             {
-                AbilityScore.Strength => creature.Strength.Modifier,
-                AbilityScore.Constitution => creature.Constitution.Modifier,
-                AbilityScore.Dexterity => creature.Dexterity.Modifier,
-                AbilityScore.Intelligence => creature.Intelligence.Modifier,
-                AbilityScore.Wisdom => creature.Wisdom.Modifier,
-                AbilityScore.Charisma => creature.Charisma.Modifier,
-                _ => 0
+                Strength = GetAbilityCheckModifier(creature, Ability.Strength),
+                Constitution = GetAbilityCheckModifier(creature, Ability.Constitution),
+                Dexterity = GetAbilityCheckModifier(creature, Ability.Dexterity),
+                Intelligence = GetAbilityCheckModifier(creature, Ability.Intelligence),
+                Wisdom = GetAbilityCheckModifier(creature, Ability.Wisdom),
+                Charisma = GetAbilityCheckModifier(creature, Ability.Charisma)
             };
+        }
+
+        public static int GetAttackBonus(Creature creature, Ability ability, int externalModifier = 0)
+        {
+            return GetAbilityCheckModifier(creature, ability) + creature.EnhancementBonus + externalModifier;
         }
     }
 }

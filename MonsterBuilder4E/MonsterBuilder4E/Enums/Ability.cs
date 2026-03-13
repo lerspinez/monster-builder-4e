@@ -1,6 +1,6 @@
 namespace MonsterBuilder4E.Enums;
 
-public enum AbilityScore
+public enum Ability
 {
     Strength,
     Constitution,
