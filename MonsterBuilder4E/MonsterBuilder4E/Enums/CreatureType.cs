@@ -10,7 +10,7 @@ public enum CreatureType
     Fey,
     Giant,
     Aberration,
-    Undead,
+    Animate,
     Construct,
     Demon,
     Devil,
