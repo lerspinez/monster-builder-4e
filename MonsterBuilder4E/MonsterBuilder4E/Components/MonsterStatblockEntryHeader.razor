@@ -1,0 +1,10 @@
+﻿<MudCard Class="stat-block-card" Style="box-shadow: none; border-radius: 0px">
+    <MudCardContent Style="width: 100%; padding: 4px 6px; background-color: lightseagreen;">
+        @ChildContent
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

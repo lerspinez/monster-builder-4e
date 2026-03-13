@@ -199,9 +199,9 @@
 
                     <div class="stat-line">
                         <strong>Alignment</strong> @FormatEnumName(creature.Alignment.ToString())
-                        @if (!string.IsNullOrEmpty(creature.Languages))
+                        @if (creature.Languages.Any())
                         {
-                            <span><strong>Languages</strong> @creature.Languages</span>
+                            <span><strong>Languages</strong> @string.Join(", ", creature.Languages)</span>
                         }
                     </div>
                     @if (creature.Skills.Any())
@@ -210,10 +210,10 @@
                             <strong>Skills</strong> @string.Join(", ", creature.Skills)
                         </div>
                     }
-                    @if (!string.IsNullOrEmpty(creature.Equipment))
+                    @if (creature.Equipment.Any())
                     {
                         <div class="stat-line">
-                            <strong>Equipment</strong> @creature.Equipment
+                            <strong>Equipment</strong> @string.Join(", ", creature.Equipment)
                         </div>
                     }
                 </div>
@@ -227,6 +227,7 @@
         <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Class="mud-width-full mud-height-full">
             <div class="monster-builder-container">
                 <div class="form-panel">
+                    <button @onclick="LoadRandomMonster" class="btn btn-primary" style="margin-bottom: 1rem;">Load Random Monster</button>
                     <div class="form-section">
                         <h3>Basic Information</h3>
                         <div class="form-group">
@@ -427,7 +428,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Languages:</label>
-                                <input type="text" @bind="creature.Languages" class="form-control" placeholder="e.g., Common, Draconic" />
+                                <input type="text" @bind="languagesText" class="form-control" placeholder="e.g., Common, Draconic" />
                             </div>
                         </div>
 
@@ -448,7 +449,7 @@
 
                         <div class="form-group">
                             <label>Equipment:</label>
-                            <input type="text" @bind="creature.Equipment" class="form-control" placeholder="e.g., longsword, chainmail" />
+                            <input type="text" @bind="equipmentText" class="form-control" placeholder="e.g., longsword, chainmail" />
                         </div>
                     </div>
 
@@ -644,9 +645,9 @@
 
                         <div class="stat-line">
                             <strong>Alignment</strong> @FormatEnumName(creature.Alignment.ToString())
-                            @if (!string.IsNullOrEmpty(creature.Languages))
+                            @if (creature.Languages.Any())
                             {
-                                <span><strong>Languages</strong> @creature.Languages</span>
+                                <span><strong>Languages</strong> @string.Join(", ", creature.Languages)</span>
                             }
                         </div>
                         @if (creature.Skills.Any())
@@ -655,10 +656,10 @@
                                 <strong>Skills</strong> @string.Join(", ", creature.Skills)
                             </div>
                         }
-                        @if (!string.IsNullOrEmpty(creature.Equipment))
+                        @if (creature.Equipment.Any())
                         {
                             <div class="stat-line">
-                                <strong>Equipment</strong> @creature.Equipment
+                                <strong>Equipment</strong> @string.Join(", ", creature.Equipment)
                             </div>
                         }
                     </div>
@@ -679,8 +680,15 @@
     private string resistancesText = string.Empty;
     private string immunitiesText = string.Empty;
     private string vulnerabilitiesText = string.Empty;
+    private string languagesText = string.Empty;
+    private string equipmentText = string.Empty;
 
     protected override void OnInitialized()
+    {
+        // Start with empty form
+    }
+
+    private void LoadRandomMonster()
     {
         creature = PregenMonsters.GetRandomMonster();
         PopulateFormFields();
@@ -691,6 +699,8 @@
         resistancesText = string.Join(", ", creature.Resistances);
         immunitiesText = string.Join(", ", creature.ImmuneConditions);
         vulnerabilitiesText = string.Join(", ", creature.Vulnerabilities);
+        languagesText = string.Join(", ", creature.Languages);
+        equipmentText = string.Join(", ", creature.Equipment);
     }
 
     private void RecalculateStats()
@@ -705,6 +715,8 @@
         creature.Resistances = ParseCommaDelimitedList(resistancesText);
         creature.ImmuneConditions = ParseCommaDelimitedList(immunitiesText);
         creature.Vulnerabilities = ParseCommaDelimitedList(vulnerabilitiesText);
+        creature.Languages = ParseCommaDelimitedList(languagesText);
+        creature.Equipment = ParseCommaDelimitedList(equipmentText);
     }
 
     private List<string> ParseCommaDelimitedList(string text)

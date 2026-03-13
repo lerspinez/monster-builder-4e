@@ -44,14 +44,14 @@ namespace MonsterBuilder4E.Utility
                 },
                 Speed = 6,
                 Alignment = Alignment.Evil,
-                Languages = "Common, Goblin",
+                Languages = new List<string> { "Common", "Goblin" },
                 Senses = "Perception +0; low-light vision"
             };
 
             goblin.Initiative = MonsterStats.CalculateInitiative(goblin);
 
             goblin.TrainedSkills.Add(Skill.Stealth);
-            goblin.Equipment = "short sword, leather armor";
+            goblin.Equipment = new List<string> { "short sword", "leather armor" };
 
             goblin.Traits.Add(new CreatureTrait
             {
@@ -110,14 +110,14 @@ namespace MonsterBuilder4E.Utility
                 },
                 Speed = 6,
                 Alignment = Alignment.ChaoticEvil,
-                Languages = "Common, Giant",
+                Languages = new List<string> { "Common", "Giant" },
                 Senses = "Perception +1; low-light vision"
             };
 
             orc.Initiative = MonsterStats.CalculateInitiative(orc);
 
             orc.TrainedSkills.Add(Skill.Intimidate);
-            orc.Equipment = "greataxe, hide armor";
+            orc.Equipment = new List<string> { "greataxe", "hide armor" };
 
             orc.Traits.Add(new CreatureTrait
             {
@@ -176,13 +176,13 @@ namespace MonsterBuilder4E.Utility
                 },
                 Speed = 8,
                 Alignment = Alignment.ChaoticEvil,
-                Languages = "Giant",
+                Languages = new List<string> { "Giant" },
                 Senses = "Perception +1"
             };
 
             ogre.Initiative = MonsterStats.CalculateInitiative(ogre);
 
-            ogre.Equipment = "greatclub, hide armor";
+            ogre.Equipment = new List<string> { "greatclub", "hide armor" };
 
             ogre.Powers.Add(new CreaturePower
             {
@@ -234,7 +234,7 @@ namespace MonsterBuilder4E.Utility
                 },
                 Speed = 7,
                 Alignment = Alignment.Unaligned,
-                Languages = "",
+                Languages = new List<string>(),
                 Senses = "Perception +8; low-light vision"
             };
 
@@ -300,7 +300,7 @@ namespace MonsterBuilder4E.Utility
                 },
                 Speed = 8,
                 Alignment = Alignment.ChaoticEvil,
-                Languages = "Giant",
+                Languages = new List<string> { "Giant" },
                 Senses = "Perception +2; darkvision"
             };
 
