@@ -20,8 +20,8 @@ public class Creature
     public int XP => MonsterStats.CalculateXP(this);
 
 
-    public Size Size { get; set; } = Size.Medium;
-    public Origin Origin { get; set; }
+    public CreatureSize Size { get; set; } = CreatureSize.Medium;
+    public CreatureOrigin Origin { get; set; }
     public CreatureType Type { get; set; }
     public string CreatureKeywords { get; set; } = string.Empty;
     public string Race { get; set; } = string.Empty;

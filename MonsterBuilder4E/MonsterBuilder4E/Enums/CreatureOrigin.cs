@@ -1,6 +1,6 @@
 namespace MonsterBuilder4E.Enums;
 
-public enum Origin
+public enum CreatureOrigin
 {
     Natural,
     Elemental,

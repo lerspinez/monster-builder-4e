@@ -29,10 +29,10 @@ namespace MonsterBuilder4E.Utility
                 Level = 1,
                 Role = Role.Skirmisher,
                 RoleModifier = RoleModifier.None,
-                Origin = Origin.Natural,
+                Origin = CreatureOrigin.Natural,
                 Type = CreatureType.Humanoid,
                 CreatureKeywords = "goblin",
-                Size = Size.Small,
+                Size = CreatureSize.Small,
                 Abilities = new AbilityScores
                 {
                     Strength = new AbilityScore { Score = 13 },
@@ -95,10 +95,10 @@ namespace MonsterBuilder4E.Utility
                 Level = 2,
                 Role = Role.Brute,
                 RoleModifier = RoleModifier.None,
-                Origin = Origin.Natural,
+                Origin = CreatureOrigin.Natural,
                 Type = CreatureType.Humanoid,
                 CreatureKeywords = "orc",
-                Size = Size.Medium,
+                Size = CreatureSize.Medium,
                 Abilities = new AbilityScores
                 {
                     Strength = new AbilityScore { Score = 16 },
@@ -161,10 +161,10 @@ namespace MonsterBuilder4E.Utility
                 Level = 3,
                 Role = Role.Brute,
                 RoleModifier = RoleModifier.None,
-                Origin = Origin.Natural,
+                Origin = CreatureOrigin.Natural,
                 Type = CreatureType.Humanoid,
                 CreatureKeywords = "giant",
-                Size = Size.Large,
+                Size = CreatureSize.Large,
                 Abilities = new AbilityScores
                 {
                     Strength = new AbilityScore { Score = 19 },
@@ -219,10 +219,10 @@ namespace MonsterBuilder4E.Utility
                 Level = 4,
                 Role = Role.Soldier,
                 RoleModifier = RoleModifier.None,
-                Origin = Origin.Natural,
+                Origin = CreatureOrigin.Natural,
                 Type = CreatureType.Beast,
                 CreatureKeywords = "reptile",
-                Size = Size.Large,
+                Size = CreatureSize.Large,
                 Abilities = new AbilityScores
                 {
                     Strength = new AbilityScore { Score = 18 },
@@ -285,10 +285,10 @@ namespace MonsterBuilder4E.Utility
                 Level = 5,
                 Role = Role.Brute,
                 RoleModifier = RoleModifier.None,
-                Origin = Origin.Natural,
+                Origin = CreatureOrigin.Natural,
                 Type = CreatureType.Humanoid,
                 CreatureKeywords = "giant",
-                Size = Size.Large,
+                Size = CreatureSize.Large,
                 Abilities = new AbilityScores
                 {
                     Strength = new AbilityScore { Score = 20 },

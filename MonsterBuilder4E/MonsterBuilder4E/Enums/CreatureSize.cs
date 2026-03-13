@@ -1,6 +1,6 @@
 namespace MonsterBuilder4E.Enums;
 
-public enum Size
+public enum CreatureSize
 {
     Tiny,
     Small,
