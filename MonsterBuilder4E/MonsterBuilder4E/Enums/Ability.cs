@@ -7,5 +7,6 @@ public enum Ability
     Dexterity,
     Intelligence,
     Wisdom,
-    Charisma
+    Charisma,
+    None
 }

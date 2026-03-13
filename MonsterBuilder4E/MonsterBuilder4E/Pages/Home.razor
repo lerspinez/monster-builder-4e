@@ -574,10 +574,7 @@
                                             <span class="power-usage">(@power.PowerType)</span>
                                             <span class="power-action">• @power.ActionType</span>
                                         </div>
-                                        @if (power.Keywords.Any())
-                                        {
-                                            <div class="power-keywords">@string.Join(", ", power.Keywords)</div>
-                                        }
+                                        
                                         @if (!string.IsNullOrEmpty(power.Range))
                                         {
                                             <div><strong>Range:</strong> @power.Range</div>

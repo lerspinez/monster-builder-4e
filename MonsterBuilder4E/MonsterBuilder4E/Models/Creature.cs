@@ -251,7 +251,7 @@ public class CreaturePower
     /// Keywords associated with the power, such as "Weapon", "Acid", "Fire", "Healing", etc.
     /// Taken from the D&D 4E Power Keywords list, these keywords can indicate the type of damage, the source of the power, or any special traits it has.
     /// </summary>
-    public List<PowerKeyword> Keywords { get; set; } = new();
+    public string Keywords { get; set; } = string.Empty;
 
     /// <summary>
     /// Defines the type of action required to use the power, such as Standard Action, Move Action, Minor Action, Free Action, etc.
@@ -344,10 +344,17 @@ public class CreaturePower
     public AttackMiss Miss { get; set; } = AttackMiss.NoDamage;
 
     /// <summary>
+    /// Describes any effects the power has when it misses its target or targets.
+    /// </summary>
+    public string? MissEffect { get; set; }
+
+    /// <summary>
     /// Describes the effect of the power, which can include conditions applied to the target, ongoing damage, forced movement, or any other special effects that occur when the power is used.
     /// For attack powers, this effect happens regardless of whether the attack hits or misses.
     /// </summary>
     public string? Effect { get; set; }
+
+    public bool IsExpanded { get; set; } = true;
 }
 
 /// <summary>
@@ -365,7 +372,7 @@ public class AttackHit
     /// Defines the primary ability modifier used for the attack's damage calculation. 
     /// This is typically the same ability used for the attack roll, but it can be different if the power has specific rules that allow for it.
     /// </summary>
-    public Ability? AbilityModifier { get; set; }
+    public Ability AbilityModifier { get; set; } = Ability.None;
 
     /// <summary>
     /// Defines additional ability modifiers that can be added to the attack's damage calculation.
@@ -381,19 +388,19 @@ public class AttackHit
     /// Defines the type of damage dealt by the attack.
     /// Damage types in D&D 4E include Acid, Cold, Fire, Force, Lightning, Necrotic, Poison, Psychic, Radiant, Thunder, and more.
     /// </summary>
-    public DamageType? DamageType { get; set; }
-
-    /// <summary>
-    /// Indicates if the attack has a critical hit effect, and if so, describes what that effect is.
-    /// Critical hit effects are usually additional damage dice like "+1d12 damage", or special effects that occur on a critical hit, such as "target is stunned until the end of its next turn", "target takes ongoing 10 damage", etc.
-    /// </summary>
-    public string? CriticalHit { get; set; }
+    public DamageType DamageType { get; set; } = DamageType.Untyped;
 
     /// <summary>
     /// Defines any other effect that happens on a successful hit, such as conditions applied to the target, ongoing damage, or other special effects.
     /// Effects like this are formatted like "[damage], and [effect]", for example: "2d6 + 3 fire damage, and the target is knocked prone".
     /// </summary>
     public string? HitEffect { get; set; }
+
+    /// <summary>
+    /// Indicates if the attack has a critical hit effect, and if so, describes what that effect is.
+    /// Critical hit effects are usually additional damage dice like "+1d12 damage", or special effects that occur on a critical hit, such as "target is stunned until the end of its next turn", "target takes ongoing 10 damage", etc.
+    /// </summary>
+    public string? CriticalHit { get; set; }
 
     public string ToText()
     {
@@ -403,13 +410,13 @@ public class AttackHit
         {
             damageText = BaseDamage;
 
-            if(AbilityModifier.HasValue)
+            if(AbilityModifier != Ability.None)
                 damageText += " + ";
         }
 
         //Add ability modifier, enhancement bonus and damage modifier.
 
-        if (DamageType.HasValue)
+        if (DamageType != DamageType.Untyped)
             damageText += $" {DamageType.ToString()!.ToLower()}";
 
         damageText += $" damage";

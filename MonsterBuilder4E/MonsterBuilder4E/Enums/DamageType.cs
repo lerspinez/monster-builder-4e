@@ -11,5 +11,6 @@ public enum DamageType
     Poison,
     Psychic,
     Radiant,
-    Thunder
+    Thunder,
+    Untyped
 }
