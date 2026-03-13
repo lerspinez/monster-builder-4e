@@ -22,7 +22,19 @@
                 </MudText>
                 <MudText>XP @creature.XP</MudText>
             </MudStack>
-            <MudStack StretchItems="StretchItems.All" Row="true">
+            <MudText>
+                <MudIcon Icon="@Icons.Material.Filled.FastForward" /> Standard Actions
+            </MudText>
+            <MudText>
+                <MudIcon Icon="@Icons.Material.Filled.PlayArrow" /> Move Actions
+            </MudText>
+            <MudText>
+                <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowRight" /> Minor Actions
+            </MudText>
+            <MudText>
+                <MudIcon Icon="@Icons.Material.Filled.ArrowRight" /> Free Actions
+            </MudText>
+            <MudStack Row="true">
                 <MudText>
                     <strong>Str</strong> @($"{creature.Abilities.Strength.Score} ({@FormatModifier(creature.AbilityCheckModifiers.Strength)})")
                 </MudText>
@@ -33,7 +45,7 @@
                     <strong>Wis</strong> @($"{creature.Abilities.Wisdom.Score} ({@FormatModifier(creature.AbilityCheckModifiers.Wisdom)})")
                 </MudText>
             </MudStack>
-            <MudStack StretchItems="StretchItems.All" Row="true">
+            <MudStack Row="true">
                 <MudText>
                     <strong>Con</strong> @($"{creature.Abilities.Constitution.Score} ({@FormatModifier(creature.AbilityCheckModifiers.Constitution)})")
                 </MudText>

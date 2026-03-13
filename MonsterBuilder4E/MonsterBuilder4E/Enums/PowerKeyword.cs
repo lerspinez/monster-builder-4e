@@ -1,0 +1,35 @@
+namespace MonsterBuilder4E.Enums;
+
+public enum PowerKeyword
+{
+    Acid,
+    Aura,
+    Beast,
+    Charm,
+    Cold,
+    Conjuration,
+    Disease,
+    Fear,
+    Fire,
+    Force,
+    Healing,
+    Implement,
+    Invigorating,
+    Lightning,
+    Mount,
+    Necrotic,
+    Poison,
+    Polymorph,
+    Psychic,
+    Radiant,
+    Rattling,
+    Reliable,
+    Runic,
+    Sleep,
+    Stance,
+    Summoning,
+    Teleportation,
+    Thunder,
+    Weapon,
+    Zone
+}
