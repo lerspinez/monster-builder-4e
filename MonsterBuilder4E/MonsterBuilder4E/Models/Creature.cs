@@ -217,7 +217,7 @@ public class Creature
     public int EnhancementBonus { get; set; } = 0;
 }
 
-public class CreaturePower
+public class CreaturePowerOld
 {
     public string Name { get; set; } = string.Empty;
     public string Type { get; set; } = string.Empty;
@@ -239,16 +239,16 @@ public class CreaturePower
 /// Describes an attack power for a monster in D&D 4E. 
 /// This class includes properties that define the characteristics of the attack, such as its name, keywords, action type, power type, range, target information, and the effects of hitting or missing with the attack.
 /// </summary>
-public class AttackPower
+public class CreaturePower
 {
     /// <summary>
     /// The name of the power available to the monster. 
     /// This is typically a descriptive name that indicates the nature of the attack, such as "Battleaxe", "Dragon Breath", "Magic Missile", etc.
     /// </summary>
-    public string Name { get; set; } = "Attack";
+    public string Name { get; set; } = "Power";
 
     /// <summary>
-    /// Keywords associated with the power, such as "Weapon", "Acid", "Fire", etc.
+    /// Keywords associated with the power, such as "Weapon", "Acid", "Fire", "Healing", etc.
     /// Taken from the D&D 4E Power Keywords list, these keywords can indicate the type of damage, the source of the power, or any special traits it has.
     /// </summary>
     public List<PowerKeyword> Keywords { get; set; } = new();
@@ -270,12 +270,6 @@ public class AttackPower
     public string? UsageInfo { get; set; }
 
     /// <summary>
-    /// Flavor text for the power. A narrative description of the power's effects, how it works, and any special conditions or interactions it may have. 
-    /// This is where you can add thematic details to make the power more interesting and flavorful.
-    /// </summary>
-    public string? Description { get; set; }
-
-    /// <summary>
     /// Indicates if the attack has any specific requirements the monster must meet to use the power, such as having a certain condition, or being in a specific environment.
     /// </summary>
     public string? Requirement { get; set; }
@@ -287,27 +281,32 @@ public class AttackPower
     public string? Trigger { get; set; }
 
     /// <summary>
+    /// Indicates if the power is an attack power, which means it involves making an attack roll against a target's defense.
+    /// </summary>
+    public bool IsAttack { get; set; }
+
+    /// <summary>
     /// Defines the type of attack, as defined in D&D 4E. This can be Melee (close combat), Ranged (attacks from a distance), Area (affects an area rather than a single target), or Close (affects targets within a certain radius).
     /// </summary>
-    public AttackType AttackType { get; set; } = AttackType.Melee;
-
-    /// <summary>
-    /// Range of the attack, defined in squares as per D&D 4E rules.
-    /// For example, a melee attack might have a range of "1" (adjacent squares), while a ranged attack might have a range of "20/40" (20 squares normal range, 40 squares maximum range).
-    /// </summary>
-    public string? Range { get; set; }
-
-    /// <summary>
-    /// Details about the target of the attack, such as "one creature", "all enemies in burst 1", "one creature you can see", etc. 
-    /// This should be a clear and concise description of who or what the attack can affect.
-    /// </summary>
-    public string? TargetInfo { get; set; }
+    public AttackType? AttackType { get; set; }
 
     /// <summary>
     /// Indicates if the power can be used as a basic attack. Only melee and ranged attacks can be basic attacks, and they must not have any special requirements or conditions to be used.
     /// In D&D 4E, basic attacks are standard attacks that a monster can use without any special conditions or requirements.
     /// </summary>
     public bool IsBasicAttack { get; set; }
+
+    /// <summary>
+    /// Range of the power, defined in squares as per D&D 4E rules.
+    /// For example, a melee attack might have a range of "Melee 1" (adjacent squares), while a ranged attack might have a range of "Ranged 20/40" (20 squares normal range, 40 squares maximum range).
+    /// </summary>
+    public string? Range { get; set; }
+
+    /// <summary>
+    /// Details about the target of the power, such as "one creature", "all enemies in burst 1", "one creature you can see", etc. 
+    /// This should be a clear and concise description of who or what the attack can affect.
+    /// </summary>
+    public string? TargetInfo { get; set; }
 
     /// <summary>
     /// If a specific weapon from the monster's equipment is used for the attack, this property can specify the name of that weapon.
@@ -345,14 +344,14 @@ public class AttackPower
     public AttackMiss Miss { get; set; } = AttackMiss.NoDamage;
 
     /// <summary>
-    /// Describes any additional effects the power might have, such as conditions applied to the target, ongoing damage, or other special effects.
-    /// These effects happen regardless of whether the attack hits or misses, and can include things like "The target is knocked prone", "The target takes ongoing 5 fire damage", etc.
+    /// Describes the effect of the power, which can include conditions applied to the target, ongoing damage, forced movement, or any other special effects that occur when the power is used.
+    /// For attack powers, this effect happens regardless of whether the attack hits or misses.
     /// </summary>
     public string? Effect { get; set; }
 }
 
 /// <summary>
-/// Contains the data for the power's "Hit" effect. 
+/// Contains the data for an attack power's "Hit" effect. 
 /// Includes details about the damage dealt on a successful hit, plus additional effects.
 /// </summary>
 public class AttackHit
@@ -428,12 +427,35 @@ public class AttackHit
 }
 
 
-
+/// <summary>
+/// Represents a special ability or characteristic that can be assigned to a creature, such as an aura, regeneration, or camouflage effect.
+/// </summary>
+/// <remarks>
+/// A trait may define effects that influence the creature itself or other creatures within a specified
+/// range. Traits with the IsAura property set to <see langword="true"/> affect all creatures within the specified
+/// AuraRange. The Effect property describes the specific impact or rule associated with the trait.
+/// </remarks>
 public class CreatureTrait
 {
+    /// <summary>
+    /// Name of the trait, such as "Regeneration", "Camouflage", "Aura of Fear", etc.
+    /// </summary>
     public string Name { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string Type { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Indicates if the trait is an aura, which means it affects all creatures within a certain range around the monster.
+    /// </summary>
+    public bool IsAura { get; set; }
+
+    /// <summary>
+    /// Indicates the range of the aura in squares, if the trait is an aura. For example, an "Aura of Fear" might have a range of 2 squares, meaning it affects all creatures within 2 squares of the monster.
+    /// </summary>
+    public int AuraRange { get; set; }
+
+    /// <summary>
+    /// Effect of the trait, which can include things like "The monster regenerates 5 hit points at the start of its turn", "The monster is invisible when in natural terrain", "Enemies that end their turn adjacent to the monster take 5 damage", etc.
+    /// </summary>
+    public string? Effect { get; set; }
 }
 
 

@@ -1,0 +1,474 @@
+﻿@page "/edit"
+
+<PageTitle>Monster Statblock Editor</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-4">
+    <MudText Typo="Typo.h3" Class="mb-4">Monster Statblock Editor</MudText>
+
+    <MudGrid>
+        @* Form Panel *@
+        <MudItem xs="12" md="6">
+            <MudPaper Class="pa-4" Elevation="2">
+
+                @* Monster Name *@
+                <MudTextField @bind-Value="creature.Name" Label="Name" Variant="Variant.Outlined" Typo="Typo.h5" />
+
+                @* Basic Information *@
+                <MudText Typo="Typo.h6" Class="mt-4 mb-2">Basic Information</MudText>
+
+                <MudCollapse Expanded="_basicStatsExpanded">
+                    <MudStack Spacing="4">
+
+                        <MudGrid>
+                            @* Monster Level*@
+                            <MudItem xs="3">
+                                <MudNumericField @bind-Value="creature.Level" Label="Level" Variant="Variant.Text" Typo="Typo.body2"
+                                    Min="1" Max="35" />
+                            </MudItem>
+                            @* Monster Role *@
+                            <MudItem xs="3">
+                                <MudSelect @bind-Value="creature.Role" Label="Role" Variant="Variant.Text" Typo="Typo.body2">
+                                    @foreach (var role in Enum.GetValues<Role>())
+                                    {
+                                        <MudSelectItem Value="@role">@role</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                            @* Role Modifier *@
+                            <MudItem xs="3">
+                                <MudSelect @bind-Value="creature.RoleModifier" Label="Role Modifier" Variant="Variant.Text" Typo="Typo.body2">
+                                    @foreach (var modifier in Enum.GetValues<RoleModifier>())
+                                    {
+                                        <MudSelectItem Value="@modifier">@modifier</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                            @* Leader Role *@
+                            <MudItem xs="3">
+                                <MudCheckBox @bind-Value="creature.IsLeader" Label="Is Leader" LabelPlacement="Placement.Start" />
+                            </MudItem>
+                        </MudGrid>
+
+                        <MudGrid>
+                            <MudItem xs="3">
+                                @* Creature Size *@
+                                <MudSelect @bind-Value="creature.Size" Label="Size" Variant="Variant.Text" Typo="Typo.body2">
+                                    @foreach (var size in Enum.GetValues<CreatureSize>())
+                                    {
+                                        <MudSelectItem Value="@size">@size</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                            <MudItem xs="3">
+                                @* Creature Origin *@
+                                <MudSelect @bind-Value="creature.Origin" Label="Origin" Variant="Variant.Text" Typo="Typo.body2">
+                                    @foreach (var origin in Enum.GetValues<CreatureOrigin>())
+                                    {
+                                        <MudSelectItem Value="@origin">@origin</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                            <MudItem xs="3">
+                                @* Creature Type *@
+                                <MudSelect @bind-Value="creature.Type" Label="Type" Variant="Variant.Text" Typo="Typo.body2">
+                                    @foreach (var type in Enum.GetValues<CreatureType>())
+                                    {
+                                        <MudSelectItem Value="@type">@type</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                        </MudGrid>
+
+                        @* Creature Keywords *@
+                        <MudTextField @bind-Value="creature.CreatureKeywords" Label="Keywords" Variant="Variant.Text" Typo="Typo.body2" />
+                    
+                    </MudStack>
+                </MudCollapse>                
+
+                @* Ability Scores *@
+                <MudText Typo="Typo.h6" Class="mt-4 mb-2">Ability Scores</MudText>
+
+                <MudCollapse Expanded="_abilityScoresExpanded">
+                    <MudStack Spacing="4">
+                        <MudGrid>
+                            @* Strength *@
+                            <MudItem xs="3">
+                                <MudNumericField @bind-Value="creature.Abilities.Strength.Score" Label="Strength" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
+                            </MudItem>
+                            @* Dexterity *@
+                            <MudItem xs="3">
+                                <MudNumericField @bind-Value="creature.Abilities.Dexterity.Score" Label="Dexterity" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
+                            </MudItem>
+                            @* Wisdom *@
+                            <MudItem xs="3">
+                                <MudNumericField @bind-Value="creature.Abilities.Wisdom.Score" Label="Wisdom" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
+                            </MudItem>
+                        </MudGrid>
+                        <MudGrid>
+                            @* Constitution *@
+                            <MudItem xs="3">
+                                <MudNumericField @bind-Value="creature.Abilities.Constitution.Score" Label="Constitution" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
+                            </MudItem>
+                            @* Intelligence *@
+                            <MudItem xs="3">
+                                <MudNumericField @bind-Value="creature.Abilities.Intelligence.Score" Label="Intelligence" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
+                            </MudItem>
+                            @* Charisma *@
+                            <MudItem xs="3">
+                                <MudNumericField @bind-Value="creature.Abilities.Charisma.Score" Label="Charisma" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
+                            </MudItem>
+                        </MudGrid>
+                    </MudStack>
+                </MudCollapse>
+
+                @* Vital Stats *@
+                <MudText Typo="Typo.h6" Class="mt-4 mb-2">Vital Stats</MudText>
+
+                <MudCollapse Expanded="_creatureVitalsExpanded">
+                    <MudStack Spacing="4">
+                        
+                        <MudTextField @bind-Value="creature.Senses" Label="Senses" Variant="Variant.Text" Typo="Typo.body2" Placeholder="e.g., darkvision" />
+
+                        <MudNumericField @bind-Value="creature.Speed" Label="Speed" Variant="Variant.Text" Typo="Typo.body2" Min="0" />
+
+                    </MudStack>
+                </MudCollapse>
+
+                @* Combat Stats *@
+                <MudText Typo="Typo.h6" Class="mt-4 mb-2">Combat Stats</MudText>
+
+                <MudCollapse Expanded="_combatStatsExpanded">
+                    <MudStack Spacing="4">
+                        <MudGrid>
+                            <MudItem xs="6">
+                                <MudTextField Value="@creature.HitPoints.ToString()" Label="Hit Points" Variant="Variant.Text" Typo="Typo.body2" ReadOnly="true" />
+                            </MudItem>
+                        </MudGrid>
+
+                        <MudGrid Class="mt-2">
+                            <MudItem xs="3">
+                                <MudTextField Value="@creature.ArmorClass.ToString()" Label="AC" Variant="Variant.Text" Typo="Typo.body2" ReadOnly="true" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Value="@creature.Fortitude.ToString()" Label="Fortitude" Variant="Variant.Text" Typo="Typo.body2" ReadOnly="true" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Value="@creature.Reflex.ToString()" Label="Reflex" Variant="Variant.Text" Typo="Typo.body2" ReadOnly="true" />
+                            </MudItem>
+                            <MudItem xs="3">
+                                <MudTextField Value="@creature.Will.ToString()" Label="Will" Variant="Variant.Text" Typo="Typo.body2" ReadOnly="true" />
+                            </MudItem>
+                        </MudGrid>
+                    </MudStack>
+                </MudCollapse>
+
+                
+                @* Other Stats *@
+                <MudText Typo="Typo.h6" Class="mt-4 mb-2">Other Stats</MudText>
+
+                @* Skills and Languages *@
+                @* <MudText Typo="Typo.h6" Class="mt-4 mb-2">Skills & Languages</MudText>
+                <MudSelect @bind-SelectedValues="selectedSkills" Label="Trained Skills" MultiSelection="true" Variant="Variant.Outlined">
+                    @foreach (var skill in Enum.GetValues<Skill>())
+                    {
+                        <MudSelectItem Value="@skill">@skill</MudSelectItem>
+                    }
+                </MudSelect> *@
+
+                <MudTextField @bind-Value="languagesText" Label="Languages (comma separated)" Variant="Variant.Outlined" Class="mt-2" Placeholder="Common, Goblin" />
+
+                <MudSelect @bind-Value="creature.Alignment" Label="Alignment" Variant="Variant.Outlined" Class="mt-2">
+                    @foreach (var alignment in Enum.GetValues<Alignment>())
+                    {
+                        <MudSelectItem Value="@alignment">@alignment</MudSelectItem>
+                    }
+                </MudSelect>
+
+                @* Traits *@
+                <MudText Typo="Typo.h6" Class="mt-4 mb-2">Traits</MudText>
+                <MudButton OnClick="AddTrait" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">Add Trait</MudButton>
+                @foreach (var trait in creature.Traits)
+                {
+                    <MudCard Class="mt-2">
+                        <MudCardContent>
+                            <MudTextField @bind-Value="trait.Name" Label="Trait Name" Variant="Variant.Outlined" />
+                            <MudCheckBox @bind-Value="trait.IsAura" Label="Is Aura" Class="mt-2" />
+                            @if (trait.IsAura)
+                            {
+                                <MudNumericField @bind-Value="trait.AuraRange" Label="Aura Range" Variant="Variant.Outlined" Min="0" />
+                            }
+                            <MudTextField @bind-Value="trait.Effect" Label="Effect" Variant="Variant.Outlined" Lines="2" Class="mt-2" />
+                            <MudButton OnClick="() => RemoveTrait(trait)" Color="Color.Error" Size="Size.Small" Class="mt-2">Remove</MudButton>
+                        </MudCardContent>
+                    </MudCard>
+                }
+
+                @* Powers *@
+                <MudText Typo="Typo.h6" Class="mt-4 mb-2">Powers</MudText>
+                <MudButton OnClick="AddPower" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">Add Power</MudButton>
+                @foreach (var power in creature.Powers)
+                {
+                    <MudCard Class="mt-2">
+                        <MudCardContent>
+                            <MudTextField @bind-Value="power.Name" Label="Power Name" Variant="Variant.Outlined" />
+                            <MudGrid Class="mt-2">
+                                <MudItem xs="6">
+                                    <MudSelect @bind-Value="power.ActionType" Label="Action Type" Variant="Variant.Outlined">
+                                        @foreach (var actionType in Enum.GetValues<ActionType>())
+                                        {
+                                            <MudSelectItem Value="@actionType">@actionType</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <MudSelect @bind-Value="power.PowerType" Label="Usage" Variant="Variant.Outlined">
+                                        @foreach (var powerType in Enum.GetValues<PowerType>())
+                                        {
+                                            <MudSelectItem Value="@powerType">@powerType</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudItem>
+                            </MudGrid>
+                            <MudCheckBox @bind-Value="power.IsAttack" Label="Is Attack" Class="mt-2" />
+                            @if (power.IsAttack)
+                            {
+                                <MudTextField @bind-Value="power.Range" Label="Range" Variant="Variant.Outlined" Class="mt-2" Placeholder="Melee 1" />
+                                <MudTextField @bind-Value="power.TargetInfo" Label="Target" Variant="Variant.Outlined" Class="mt-2" Placeholder="One creature" />
+                                <MudSelect @bind-Value="power.Versus" Label="Versus" Variant="Variant.Outlined" Class="mt-2">
+                                    @foreach (var defense in Enum.GetValues<Defense>())
+                                    {
+                                        <MudSelectItem Value="@defense">@defense</MudSelectItem>
+                                    }
+                                </MudSelect>
+                                <MudTextField @bind-Value="power.Hit.BaseDamage" Label="Hit Damage" Variant="Variant.Outlined" Class="mt-2" Placeholder="2d6 + 3" />
+                                <MudTextField @bind-Value="power.Hit.HitEffect" Label="Hit Effect" Variant="Variant.Outlined" Class="mt-2" />
+                            }
+                            <MudTextField @bind-Value="power.Effect" Label="Effect" Variant="Variant.Outlined" Lines="2" Class="mt-2" />
+                            <MudButton OnClick="() => RemovePower(power)" Color="Color.Error" Size="Size.Small" Class="mt-2">Remove</MudButton>
+                        </MudCardContent>
+                    </MudCard>
+                }
+            </MudPaper>
+        </MudItem>
+
+        @* Live Preview Panel *@
+        <MudItem xs="12" md="6">
+            <MudPaper Class="pa-4" Elevation="2" Style="position: sticky; top: 20px;">
+                <MudText Typo="Typo.h5" Class="mb-3">Live Preview</MudText>
+
+                <MudCard Elevation="3" Style="max-width: 600px;">
+                    <MudCardContent>
+                        @* Header *@
+                        <MudStack Spacing="1">
+                            <MudText Typo="Typo.h4" Style="font-weight: bold; margin: 0;">@creature.Name</MudText>
+                            <MudText Typo="Typo.body2" Style="font-style: italic;">
+                                Level @creature.Level @(creature.RoleModifier != RoleModifier.None ? creature.RoleModifier.ToString() : "") @creature.Role @(creature.IsLeader ? "(Leader)" : "")
+                            </MudText>
+                            <MudText Typo="Typo.body2" Style="font-style: italic;">
+                                @creature.Size @creature.Origin @creature.Type @(!string.IsNullOrEmpty(creature.CreatureKeywords) ? $"({creature.CreatureKeywords})" : "")
+                            </MudText>
+                            <MudText Typo="Typo.body2" Style="font-weight: bold;">XP @creature.XP</MudText>
+                        </MudStack>
+
+                        <MudDivider Class="my-3" />
+
+                        @* Initiative and Senses *@
+                        <MudStack Spacing="1">
+                            <MudText Typo="Typo.body2"><strong>Initiative</strong> @FormatModifier(creature.Initiative)</MudText>
+                            @if (!string.IsNullOrEmpty(creature.Senses))
+                            {
+                                <MudText Typo="Typo.body2"><strong>Senses</strong> @creature.Senses</MudText>
+                            }
+                        </MudStack>
+
+                        <MudDivider Class="my-3" />
+
+                        @* HP and Defenses *@
+                        <MudStack Spacing="1">
+                            <MudText Typo="Typo.body2"><strong>HP</strong> @creature.HitPoints; <strong>Bloodied</strong> @creature.Bloodied</MudText>
+                            <MudText Typo="Typo.body2">
+                                <strong>AC</strong> @creature.ArmorClass; <strong>Fortitude</strong> @creature.Fortitude, <strong>Reflex</strong> @creature.Reflex, <strong>Will</strong> @creature.Will
+                            </MudText>
+                            <MudText Typo="Typo.body2"><strong>Speed</strong> @creature.Speed@(!string.IsNullOrEmpty(creature.SpecialMovement) ? ", " + creature.SpecialMovement : "")</MudText>
+                        </MudStack>
+
+                        @if (creature.Traits.Any())
+                        {
+                            <MudDivider Class="my-3" />
+                            <MudStack Spacing="2">
+                                @foreach (var trait in creature.Traits)
+                                {
+                                    <MudText Typo="Typo.body2">
+                                        <strong>@trait.Name</strong>@(trait.IsAura ? $" (aura {trait.AuraRange})" : "")<br />
+                                        @trait.Effect
+                                    </MudText>
+                                }
+                            </MudStack>
+                        }
+
+                        @if (creature.Powers.Any())
+                        {
+                            <MudDivider Class="my-3" />
+                            <MudText Typo="Typo.h6" Style="font-weight: bold;">Standard Actions</MudText>
+                            <MudStack Spacing="2" Class="mt-2">
+                                @foreach (var power in creature.Powers.Where(p => p.ActionType == ActionType.Standard))
+                                {
+                                    <MudText Typo="Typo.body2">
+                                        <span style="font-size: 1.2em;">@GetPowerIcon(power.PowerType)</span> <strong>@power.Name</strong> ✦ <strong>@power.PowerType</strong><br />
+                                        @if (power.IsAttack && !string.IsNullOrEmpty(power.Range))
+                                        {
+                                            <span><strong>Attack:</strong> @power.Range; @FormatAttack(power) vs. @power.Versus<br /></span>
+                                        }
+                                        @if (power.IsAttack && !string.IsNullOrEmpty(power.Hit.BaseDamage))
+                                        {
+                                            <span><strong>Hit:</strong> @power.Hit.BaseDamage damage@(!string.IsNullOrEmpty(power.Hit.HitEffect) ? ", " + power.Hit.HitEffect : "")<br /></span>
+                                        }
+                                        @if (!string.IsNullOrEmpty(power.Effect))
+                                        {
+                                            <span><strong>Effect:</strong> @power.Effect</span>
+                                        }
+                                    </MudText>
+                                }
+                            </MudStack>
+                        }
+
+                        <MudDivider Class="my-3" />
+
+                        @* Ability Scores *@
+                        <MudStack Row="true" Spacing="3" Justify="Justify.SpaceBetween">
+                            <MudText Typo="Typo.body2"><strong>Str</strong> @creature.Abilities.Strength.Score (@FormatModifier(creature.AbilityCheckModifiers.Strength))</MudText>
+                            <MudText Typo="Typo.body2"><strong>Dex</strong> @creature.Abilities.Dexterity.Score (@FormatModifier(creature.AbilityCheckModifiers.Dexterity))</MudText>
+                            <MudText Typo="Typo.body2"><strong>Wis</strong> @creature.Abilities.Wisdom.Score (@FormatModifier(creature.AbilityCheckModifiers.Wisdom))</MudText>
+                        </MudStack>
+                        <MudStack Row="true" Spacing="3" Justify="Justify.SpaceBetween" Class="mt-1">
+                            <MudText Typo="Typo.body2"><strong>Con</strong> @creature.Abilities.Constitution.Score (@FormatModifier(creature.AbilityCheckModifiers.Constitution))</MudText>
+                            <MudText Typo="Typo.body2"><strong>Int</strong> @creature.Abilities.Intelligence.Score (@FormatModifier(creature.AbilityCheckModifiers.Intelligence))</MudText>
+                            <MudText Typo="Typo.body2"><strong>Cha</strong> @creature.Abilities.Charisma.Score (@FormatModifier(creature.AbilityCheckModifiers.Charisma))</MudText>
+                        </MudStack>
+
+                        <MudDivider Class="my-3" />
+
+                        @* Footer *@
+                        <MudStack Spacing="1">
+                            <MudText Typo="Typo.body2"><strong>Alignment</strong> @creature.Alignment</MudText>
+                            @if (creature.Languages.Any())
+                            {
+                                <MudText Typo="Typo.body2"><strong>Languages</strong> @string.Join(", ", creature.Languages)</MudText>
+                            }
+                            @if (creature.Skills.Any())
+                            {
+                                <MudText Typo="Typo.body2"><strong>Skills</strong> @string.Join(", ", creature.Skills)</MudText>
+                            }
+                            @if (creature.Equipment.Any())
+                            {
+                                <MudText Typo="Typo.body2"><strong>Equipment</strong> @string.Join(", ", creature.Equipment)</MudText>
+                            }
+                        </MudStack>
+                    </MudCardContent>
+                </MudCard>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    bool _basicStatsExpanded = true;
+    bool _abilityScoresExpanded = true;
+    bool _creatureVitalsExpanded = true;
+    bool _combatStatsExpanded = false;
+
+
+    private Creature creature = new Creature();
+    private IEnumerable<Skill> selectedSkills = new HashSet<Skill>();
+    private string languagesText = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        // Initialize with default hobgoblin soldier data for demonstration
+        creature.Name = "Hobgoblin Soldier";
+        creature.Level = 4;
+        creature.Role = Role.Soldier;
+        creature.Size = CreatureSize.Medium;
+        creature.Origin = CreatureOrigin.Natural;
+        creature.Type = CreatureType.Humanoid;
+        creature.CreatureKeywords = "goblinoid";
+        creature.Abilities.Strength.Score = 18;
+        creature.Abilities.Dexterity.Score = 14;
+        creature.Abilities.Constitution.Score = 16;
+        creature.Abilities.Intelligence.Score = 10;
+        creature.Abilities.Wisdom.Score = 12;
+        creature.Abilities.Charisma.Score = 11;
+        creature.Speed = 6;
+        creature.Alignment = Alignment.Evil;
+        creature.Languages = new List<string> { "Common", "Goblin" };
+        creature.Senses = "Perception +3; low-light vision";
+
+        creature.TrainedSkills = new List<Skill> { Skill.Athletics, Skill.Intimidate };
+        selectedSkills = creature.TrainedSkills;
+
+        languagesText = string.Join(", ", creature.Languages);
+
+        // Calculate initiative
+        creature.Initiative = MonsterStats.CalculateInitiative(creature);
+    }
+
+    protected override void OnParametersSet()
+    {
+        creature.TrainedSkills = selectedSkills.ToList();
+        creature.Languages = ParseCommaDelimitedList(languagesText);
+        creature.Initiative = MonsterStats.CalculateInitiative(creature);
+    }
+
+    private void AddTrait()
+    {
+        creature.Traits.Add(new CreatureTrait());
+    }
+
+    private void RemoveTrait(CreatureTrait trait)
+    {
+        creature.Traits.Remove(trait);
+    }
+
+    private void AddPower()
+    {
+        creature.Powers.Add(new CreaturePower());
+    }
+
+    private void RemovePower(CreaturePower power)
+    {
+        creature.Powers.Remove(power);
+    }
+
+    private List<string> ParseCommaDelimitedList(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return new List<string>();
+
+        return text.Split(',')
+            .Select(s => s.Trim())
+            .Where(s => !string.IsNullOrEmpty(s))
+            .ToList();
+    }
+
+    private string FormatModifier(int value)
+    {
+        return value >= 0 ? $"+{value}" : value.ToString();
+    }
+
+    private string GetPowerIcon(PowerType powerType)
+    {
+        return powerType switch
+        {
+            PowerType.AtWill => "⚔",
+            PowerType.Encounter => "⬢",
+            PowerType.Daily => "◉",
+            _ => "○"
+        };
+    }
+
+    private string FormatAttack(CreaturePower power)
+    {
+        int attackBonus = creature.LevelBonus + creature.Abilities.GetModifier(power.AttackAbility) + power.AttackModifier;
+        return FormatModifier(attackBonus);
+    }
+}

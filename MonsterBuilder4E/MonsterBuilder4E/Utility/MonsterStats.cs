@@ -159,7 +159,7 @@ namespace MonsterBuilder4E.Utility
             };
         }
 
-        public static int GetAttackBonus(Creature creature, Ability ability, int externalModifier = 0)
+        public static int GetAttackPowerModifier(Creature creature, Ability ability, int externalModifier = 0)
         {
             return GetAbilityCheckModifier(creature, ability) + creature.EnhancementBonus + externalModifier;
         }

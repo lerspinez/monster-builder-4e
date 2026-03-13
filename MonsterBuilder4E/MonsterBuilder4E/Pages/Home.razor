@@ -118,7 +118,7 @@
                             @foreach (var trait in creature.Traits)
                             {
                                 <div class="trait">
-                                    <strong>@trait.Name</strong> @trait.Description
+                                    <strong>@trait.Name</strong> @trait.Effect
                                 </div>
                             }
                         </div>
@@ -131,33 +131,26 @@
                             {
                                 <div class="power">
                                     <div class="power-header">
-                                        <span class="power-icon">@GetPowerIcon(power.Usage)</span>
+                                        <span class="power-icon">@GetPowerIcon(power.PowerType)</span>
                                         <strong>@power.Name</strong>
-                                        @if (!string.IsNullOrEmpty(power.Usage))
-                                        {
-                                            <span class="power-usage">(@power.Usage)</span>
-                                        }
+                                        <span class="power-usage">(@power.PowerType)</span>
                                         <span class="power-action">• @power.ActionType</span>
                                     </div>
-                                    @if (!string.IsNullOrEmpty(power.Keywords))
+                                    @if (power.Keywords.Any())
                                     {
-                                        <div class="power-keywords">@power.Keywords</div>
+                                        <div class="power-keywords">@string.Join(", ", power.Keywords)</div>
                                     }
                                     @if (!string.IsNullOrEmpty(power.Range))
                                     {
                                         <div><strong>Range:</strong> @power.Range</div>
                                     }
-                                    @if (!string.IsNullOrEmpty(power.Target))
+                                    @if (!string.IsNullOrEmpty(power.TargetInfo))
                                     {
-                                        <div><strong>Target:</strong> @power.Target</div>
+                                        <div><strong>Target:</strong> @power.TargetInfo</div>
                                     }
-                                    @if (!string.IsNullOrEmpty(power.Attack))
+                                    @if (power.IsAttack && !string.IsNullOrEmpty(power.Hit.BaseDamage))
                                     {
-                                        <div><strong>Attack:</strong> @power.Attack</div>
-                                    }
-                                    @if (!string.IsNullOrEmpty(power.Hit))
-                                    {
-                                        <div><strong>Hit:</strong> @power.Hit</div>
+                                        <div><strong>Hit:</strong> @power.Hit.ToText()</div>
                                     }
                                     @if (!string.IsNullOrEmpty(power.Effect))
                                     {
@@ -460,7 +453,7 @@
                         {
                             <div class="trait-editor">
                                 <input type="text" @bind="trait.Name" class="form-control" placeholder="Trait Name" />
-                                <textarea @bind="trait.Description" class="form-control" placeholder="Trait Description"></textarea>
+                                <textarea @bind="trait.Effect" class="form-control" placeholder="Trait Effect"></textarea>
                                 <button @onclick="() => RemoveTrait(trait)" class="btn btn-danger btn-sm">Remove</button>
                             </div>
                         }
@@ -473,12 +466,11 @@
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label>Usage:</label>
-                                        <select @bind="power.Usage" class="form-control">
-                                            <option value="">Select Usage</option>
-                                            <option value="At-Will">At-Will</option>
-                                            <option value="Encounter">Encounter</option>
-                                            <option value="Daily">Daily</option>
-                                            <option value="Recharge">Recharge 5-6</option>
+                                        <select @bind="power.PowerType" class="form-control">
+                                            @foreach (var powerType in Enum.GetValues<PowerType>())
+                                            {
+                                                <option value="@powerType">@powerType</option>
+                                            }
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -493,9 +485,9 @@
                                 </div>
                                 <input type="text" @bind="power.Keywords" class="form-control" placeholder="Keywords (e.g., Fire, Weapon)" />
                                 <input type="text" @bind="power.Range" class="form-control" placeholder="Range (e.g., Melee 1, Ranged 10)" />
-                                <input type="text" @bind="power.Attack" class="form-control" placeholder="Attack (e.g., +15 vs. AC)" />
-                                <input type="text" @bind="power.Target" class="form-control" placeholder="Target (e.g., One creature)" />
-                                <textarea @bind="power.Hit" class="form-control" placeholder="Hit effect"></textarea>
+                                <input type="text" @bind="power.TargetInfo" class="form-control" placeholder="Target (e.g., One creature)" />
+                                <textarea @bind="power.Hit.BaseDamage" class="form-control" placeholder="Hit damage (e.g., 2d6 + 3)"></textarea>
+                                <textarea @bind="power.Hit.HitEffect" class="form-control" placeholder="Hit effect"></textarea>
                                 <textarea @bind="power.Effect" class="form-control" placeholder="Effect"></textarea>
                                 <button @onclick="() => RemovePower(power)" class="btn btn-danger btn-sm">Remove</button>
                             </div>
@@ -564,7 +556,7 @@
                                 @foreach (var trait in creature.Traits)
                                 {
                                     <div class="trait">
-                                        <strong>@trait.Name</strong> @trait.Description
+                                        <strong>@trait.Name</strong> @trait.Effect
                                     </div>
                                 }
                             </div>
@@ -577,33 +569,26 @@
                                 {
                                     <div class="power">
                                         <div class="power-header">
-                                            <span class="power-icon">@GetPowerIcon(power.Usage)</span>
+                                            <span class="power-icon">@GetPowerIcon(power.PowerType)</span>
                                             <strong>@power.Name</strong>
-                                            @if (!string.IsNullOrEmpty(power.Usage))
-                                            {
-                                                <span class="power-usage">(@power.Usage)</span>
-                                            }
+                                            <span class="power-usage">(@power.PowerType)</span>
                                             <span class="power-action">• @power.ActionType</span>
                                         </div>
-                                        @if (!string.IsNullOrEmpty(power.Keywords))
+                                        @if (power.Keywords.Any())
                                         {
-                                            <div class="power-keywords">@power.Keywords</div>
+                                            <div class="power-keywords">@string.Join(", ", power.Keywords)</div>
                                         }
                                         @if (!string.IsNullOrEmpty(power.Range))
                                         {
                                             <div><strong>Range:</strong> @power.Range</div>
                                         }
-                                        @if (!string.IsNullOrEmpty(power.Target))
+                                        @if (!string.IsNullOrEmpty(power.TargetInfo))
                                         {
-                                            <div><strong>Target:</strong> @power.Target</div>
+                                            <div><strong>Target:</strong> @power.TargetInfo</div>
                                         }
-                                        @if (!string.IsNullOrEmpty(power.Attack))
+                                        @if (power.IsAttack && !string.IsNullOrEmpty(power.Hit.BaseDamage))
                                         {
-                                            <div><strong>Attack:</strong> @power.Attack</div>
-                                        }
-                                        @if (!string.IsNullOrEmpty(power.Hit))
-                                        {
-                                            <div><strong>Hit:</strong> @power.Hit</div>
+                                            <div><strong>Hit:</strong> @power.Hit.ToText()</div>
                                         }
                                         @if (!string.IsNullOrEmpty(power.Effect))
                                         {
@@ -769,13 +754,13 @@
         return value >= 0 ? $"+{value}" : value.ToString();
     }
 
-    private string GetPowerIcon(string usage)
+    private string GetPowerIcon(PowerType powerType)
     {
-        return usage switch
+        return powerType switch
         {
-            "At-Will" => "⚔",
-            "Encounter" => "⬢",
-            "Daily" => "◉",
+            PowerType.AtWill => "⚔",
+            PowerType.Encounter => "⬢",
+            PowerType.Daily => "◉",
             _ => "○"
         };
     }

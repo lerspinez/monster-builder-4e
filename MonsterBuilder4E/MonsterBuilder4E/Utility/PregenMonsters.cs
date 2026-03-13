@@ -56,32 +56,35 @@ namespace MonsterBuilder4E.Utility
             goblin.Traits.Add(new CreatureTrait
             {
                 Name = "Goblin Tactics",
-                Description = "The goblin gains a +2 bonus to AC while at least two allies are within 5 squares of it.",
-                Type = "Passive"
+                Effect = "The goblin gains a +2 bonus to AC while at least two allies are within 5 squares of it."
             });
 
             goblin.Powers.Add(new CreaturePower
             {
                 Name = "Short Sword",
-                Usage = "At-Will",
+                PowerType = PowerType.AtWill,
                 ActionType = ActionType.Standard,
-                Keywords = "Weapon",
+                Keywords = new List<PowerKeyword> { PowerKeyword.Weapon },
+                IsAttack = true,
                 Range = "Melee 1",
-                Target = "One creature",
-                Attack = "+6 vs. AC",
-                Hit = "1d6 + 3 damage"
+                TargetInfo = "One creature",
+                Versus = Defense.ArmorClass,
+                AttackAbility = Ability.Strength,
+                Hit = new AttackHit { BaseDamage = "1d6 + 3" }
             });
 
             goblin.Powers.Add(new CreaturePower
             {
                 Name = "Javelin",
-                Usage = "At-Will",
+                PowerType = PowerType.AtWill,
                 ActionType = ActionType.Standard,
-                Keywords = "Weapon",
+                Keywords = new List<PowerKeyword> { PowerKeyword.Weapon },
+                IsAttack = true,
                 Range = "Ranged 10/20",
-                Target = "One creature",
-                Attack = "+6 vs. AC",
-                Hit = "1d6 + 3 damage"
+                TargetInfo = "One creature",
+                Versus = Defense.ArmorClass,
+                AttackAbility = Ability.Dexterity,
+                Hit = new AttackHit { BaseDamage = "1d6 + 3" }
             });
 
             return goblin;
@@ -122,32 +125,35 @@ namespace MonsterBuilder4E.Utility
             orc.Traits.Add(new CreatureTrait
             {
                 Name = "Warrior's Surge",
-                Description = "While bloodied, the orc gains a +2 bonus to attack rolls.",
-                Type = "Passive"
+                Effect = "While bloodied, the orc gains a +2 bonus to attack rolls."
             });
 
             orc.Powers.Add(new CreaturePower
             {
                 Name = "Greataxe",
-                Usage = "At-Will",
+                PowerType = PowerType.AtWill,
                 ActionType = ActionType.Standard,
-                Keywords = "Weapon",
+                Keywords = new List<PowerKeyword> { PowerKeyword.Weapon },
+                IsAttack = true,
                 Range = "Melee 1",
-                Target = "One creature",
-                Attack = "+7 vs. AC",
-                Hit = "1d12 + 3 damage"
+                TargetInfo = "One creature",
+                Versus = Defense.ArmorClass,
+                AttackAbility = Ability.Strength,
+                Hit = new AttackHit { BaseDamage = "1d12 + 3" }
             });
 
             orc.Powers.Add(new CreaturePower
             {
                 Name = "Handaxe",
-                Usage = "At-Will",
+                PowerType = PowerType.AtWill,
                 ActionType = ActionType.Standard,
-                Keywords = "Weapon",
+                Keywords = new List<PowerKeyword> { PowerKeyword.Weapon },
+                IsAttack = true,
                 Range = "Melee 1 or Ranged 5/10",
-                Target = "One creature",
-                Attack = "+7 vs. AC",
-                Hit = "1d6 + 3 damage"
+                TargetInfo = "One creature",
+                Versus = Defense.ArmorClass,
+                AttackAbility = Ability.Strength,
+                Hit = new AttackHit { BaseDamage = "1d6 + 3" }
             });
 
             return orc;
@@ -187,25 +193,30 @@ namespace MonsterBuilder4E.Utility
             ogre.Powers.Add(new CreaturePower
             {
                 Name = "Greatclub",
-                Usage = "At-Will",
+                PowerType = PowerType.AtWill,
                 ActionType = ActionType.Standard,
-                Keywords = "Weapon",
+                Keywords = new List<PowerKeyword> { PowerKeyword.Weapon },
+                IsAttack = true,
                 Range = "Reach 2",
-                Target = "One creature",
-                Attack = "+8 vs. AC",
-                Hit = "2d6 + 4 damage, and the ogre pushes the target 1 square"
+                TargetInfo = "One creature",
+                Versus = Defense.ArmorClass,
+                AttackAbility = Ability.Strength,
+                Hit = new AttackHit { BaseDamage = "2d6 + 4", HitEffect = "the ogre pushes the target 1 square" }
             });
 
             ogre.Powers.Add(new CreaturePower
             {
                 Name = "Sweeping Club",
-                Usage = "Recharge 5-6",
+                PowerType = PowerType.Encounter,
+                UsageInfo = "Recharge 5-6",
                 ActionType = ActionType.Standard,
-                Keywords = "Weapon",
+                Keywords = new List<PowerKeyword> { PowerKeyword.Weapon },
+                IsAttack = true,
                 Range = "Close blast 2",
-                Target = "Creatures in blast",
-                Attack = "+6 vs. AC",
-                Hit = "1d6 + 4 damage, and the ogre pushes the target 1 square"
+                TargetInfo = "Creatures in blast",
+                Versus = Defense.ArmorClass,
+                AttackAbility = Ability.Strength,
+                Hit = new AttackHit { BaseDamage = "1d6 + 4", HitEffect = "the ogre pushes the target 1 square" }
             });
 
             return ogre;
@@ -246,32 +257,36 @@ namespace MonsterBuilder4E.Utility
             drake.Traits.Add(new CreatureTrait
             {
                 Name = "Threatening Reach",
-                Description = "The drake can make opportunity attacks against all enemies within 2 squares of it.",
-                Type = "Passive"
+                Effect = "The drake can make opportunity attacks against all enemies within 2 squares of it."
             });
 
             drake.Powers.Add(new CreaturePower
             {
                 Name = "Bite",
-                Usage = "At-Will",
+                PowerType = PowerType.AtWill,
                 ActionType = ActionType.Standard,
-                Keywords = "",
+                Keywords = new List<PowerKeyword>(),
+                IsAttack = true,
                 Range = "Reach 2",
-                Target = "One creature",
-                Attack = "+9 vs. AC",
-                Hit = "1d10 + 4 damage, and the target is marked until the end of the drake's next turn"
+                TargetInfo = "One creature",
+                Versus = Defense.ArmorClass,
+                AttackAbility = Ability.Strength,
+                Hit = new AttackHit { BaseDamage = "1d10 + 4", HitEffect = "the target is marked until the end of the drake's next turn" }
             });
 
             drake.Powers.Add(new CreaturePower
             {
                 Name = "Snapping Jaws",
-                Usage = "At-Will",
+                PowerType = PowerType.AtWill,
                 ActionType = ActionType.ImmediateInterrupt,
-                Keywords = "",
+                Keywords = new List<PowerKeyword>(),
+                IsAttack = true,
                 Range = "Reach 2",
-                Target = "One marked enemy that shifts",
-                Attack = "+9 vs. AC",
-                Hit = "1d10 + 4 damage, and the target's movement ends"
+                TargetInfo = "One marked enemy that shifts",
+                Trigger = "An enemy marked by the drake shifts",
+                Versus = Defense.ArmorClass,
+                AttackAbility = Ability.Strength,
+                Hit = new AttackHit { BaseDamage = "1d10 + 4", HitEffect = "the target's movement ends" }
             });
 
             return drake;
@@ -312,52 +327,56 @@ namespace MonsterBuilder4E.Utility
             troll.Traits.Add(new CreatureTrait
             {
                 Name = "Regeneration 5",
-                Description = "The troll regains 5 hit points whenever it starts its turn and has at least 1 hit point. If the troll takes acid or fire damage, regeneration does not function on its next turn.",
-                Type = "Passive"
+                Effect = "The troll regains 5 hit points whenever it starts its turn and has at least 1 hit point. If the troll takes acid or fire damage, regeneration does not function on its next turn."
             });
 
             troll.Traits.Add(new CreatureTrait
             {
                 Name = "Troll Healing",
-                Description = "Whenever an ally within 5 squares of the troll uses second wind, the troll regains 5 hit points.",
-                Type = "Passive"
+                Effect = "Whenever an ally within 5 squares of the troll uses second wind, the troll regains 5 hit points."
             });
 
             troll.Powers.Add(new CreaturePower
             {
                 Name = "Claw",
-                Usage = "At-Will",
+                PowerType = PowerType.AtWill,
                 ActionType = ActionType.Standard,
-                Keywords = "",
+                Keywords = new List<PowerKeyword>(),
+                IsAttack = true,
                 Range = "Reach 2",
-                Target = "One creature",
-                Attack = "+10 vs. AC",
-                Hit = "2d6 + 5 damage"
+                TargetInfo = "One creature",
+                Versus = Defense.ArmorClass,
+                AttackAbility = Ability.Strength,
+                Hit = new AttackHit { BaseDamage = "2d6 + 5" }
             });
 
             troll.Powers.Add(new CreaturePower
             {
                 Name = "Frenzy",
-                Usage = "At-Will",
+                PowerType = PowerType.AtWill,
                 ActionType = ActionType.Standard,
-                Keywords = "",
+                Keywords = new List<PowerKeyword>(),
+                IsAttack = true,
                 Range = "Reach 2",
-                Target = "One creature",
-                Attack = "+8 vs. AC",
-                Hit = "2d6 + 5 damage",
+                TargetInfo = "One creature",
+                Versus = Defense.ArmorClass,
+                AttackAbility = Ability.Strength,
+                Hit = new AttackHit { BaseDamage = "2d6 + 5" },
                 Effect = "The troll makes a secondary attack against the same target. Secondary Attack: +8 vs. AC; 1d6 + 5 damage."
             });
 
             troll.Powers.Add(new CreaturePower
             {
                 Name = "Vicious Rend",
-                Usage = "Encounter",
+                PowerType = PowerType.Encounter,
                 ActionType = ActionType.Standard,
-                Keywords = "",
+                Keywords = new List<PowerKeyword>(),
+                IsAttack = true,
                 Range = "Reach 2",
-                Target = "One creature",
-                Attack = "+10 vs. AC",
-                Hit = "3d6 + 5 damage, and ongoing 5 damage (save ends)"
+                TargetInfo = "One creature",
+                Versus = Defense.ArmorClass,
+                AttackAbility = Ability.Strength,
+                Hit = new AttackHit { BaseDamage = "3d6 + 5", HitEffect = "ongoing 5 damage (save ends)" }
             });
 
             return troll;
