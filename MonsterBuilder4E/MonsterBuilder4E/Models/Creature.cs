@@ -149,6 +149,26 @@ public class Creature
     /// </summary>
     public int Will => MonsterStats.CalculateDefense(this, Defense.Will);
 
+    /// <summary>
+    /// Special AC modifier, which is added to the creature's base Armor Class to determine its final AC value.
+    /// </summary>
+    public int ArmorClassModifier {  get; set; }
+
+    /// <summary>
+    /// Special Fortitude modifier, which is added to the creature's base Fortitude defense to determine its final Fortitude value.
+    /// </summary>
+    public int FortitudeModifier { get; set; }
+
+    /// <summary>
+    /// Special Reflex modifier, which is added to the creature's base Reflex defense to determine its final Reflex value.
+    /// </summary>
+    public int ReflexModifier { get; set; }
+
+    /// <summary>
+    /// Special Will modifier, which is added to the creature's base Will defense to determine its final Will value.
+    /// </summary>
+    public int WillModifier { get; set; }
+
 
     //Savings Throws
 

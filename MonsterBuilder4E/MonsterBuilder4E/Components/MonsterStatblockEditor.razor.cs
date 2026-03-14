@@ -6,37 +6,6 @@ namespace MonsterBuilder4E.Components;
 
 public partial class MonsterStatblockEditor
 {
-    bool _basicStatsExpanded = true;
-    bool _abilityScoresExpanded = true;
-    bool _creatureVitalsExpanded = true;
-    bool _combatStatsExpanded = false;
-    bool _otherStatsExpanded = false;
-
-    private void ExpandCollapseBasicStats()
-    {
-        _basicStatsExpanded = !_basicStatsExpanded;
-    }
-
-    private void ExpandCollapseAbilityScores()
-    {
-        _abilityScoresExpanded = !_abilityScoresExpanded;
-    }
-
-    private void ExpandCollapseCreatureVitals()
-    {
-        _creatureVitalsExpanded = !_creatureVitalsExpanded;
-    }
-
-    private void ExpandCollapseCombatStats()
-    {
-        _combatStatsExpanded = !_combatStatsExpanded;
-    }
-
-    private void ExpandCollapseOtherStats()
-    {
-        _otherStatsExpanded = !_otherStatsExpanded;
-    }
-
     private Creature creature = new Creature();
     private IEnumerable<Skill> selectedSkills = new HashSet<Skill>();
     private string languagesText = string.Empty;

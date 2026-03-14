@@ -39,15 +39,19 @@ namespace MonsterBuilder4E.Utility
             switch (defense)
             {
                 case Defense.ArmorClass:
-                    return baseDefense + Math.Max(creature.Abilities.Dexterity.Modifier, creature.Abilities.Intelligence.Modifier);
+                    return baseDefense + Math.Max(creature.Abilities.Dexterity.Modifier, creature.Abilities.Intelligence.Modifier)
+                        + creature.ArmorClassModifier;
                 case Defense.Fortitude:
-                    return baseDefense + Math.Max(creature.Abilities.Strength.Modifier, creature.Abilities.Constitution.Modifier);
+                    return baseDefense + Math.Max(creature.Abilities.Strength.Modifier, creature.Abilities.Constitution.Modifier)
+                        + creature.FortitudeModifier;
                 case Defense.Reflex:
-                    return baseDefense + Math.Max(creature.Abilities.Dexterity.Modifier, creature.Abilities.Intelligence.Modifier);
+                    return baseDefense + Math.Max(creature.Abilities.Dexterity.Modifier, creature.Abilities.Intelligence.Modifier)
+                        + creature.ReflexModifier;
                 case Defense.Will:
-                    return baseDefense + Math.Max(creature.Abilities.Wisdom.Modifier, creature.Abilities.Charisma.Modifier);
+                    return baseDefense + Math.Max(creature.Abilities.Wisdom.Modifier, creature.Abilities.Charisma.Modifier)
+                        + creature.WillModifier;
                 default:
-                    return baseDefense;
+                    throw new NotImplementedException("Unsupported defense.");
             }
         }
 
