@@ -1,12 +1,12 @@
 ﻿
 <MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End" @onclick="ExpandCollapseContent"
           Class="mt-2 px-2" Style="cursor: pointer; background-color: lightgreen">
-    <MudText Typo="Typo.h6" Class="mt-1 mb-1">@(_contentExpanded ? "Edit Trait" : Trait.Name)</MudText>
-    <MudIcon Icon="@(_contentExpanded? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)"
+    <MudText Typo="Typo.h6" Class="mt-1 mb-1">@(Trait.ExpandEditor ? $"Edit \"{Trait.Name}\"" : Trait.Name)</MudText>
+    <MudIcon Icon="@(Trait.ExpandEditor? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)"
              Class="mt-1 mb-1" />
 </MudStack>
 
-<MudCollapse Expanded="_contentExpanded">
+<MudCollapse Expanded="Trait.ExpandEditor">
     <MudStack Spacing="4" Class="pa-2">
 
         <MudTextField @bind-Value="Trait.Name" @bind-Value:after="UpdateTrait" Label="Trait Name" Variant="Variant.Text" Typo="Typo.body2" />
@@ -31,20 +31,12 @@
     [Parameter]
     public CreatureTrait Trait { get; set; } = new();
 
-    [Parameter]
-    public EventCallback<CreatureTrait> RemoveTraitCallback { get; set; }
-
-    bool _contentExpanded = true;
-
     private void ExpandCollapseContent()
     {
-        _contentExpanded = !_contentExpanded;
+        Trait.ExpandEditor = !Trait.ExpandEditor;
     }
 
-    private async Task Remove()
-    {
-        await RemoveTraitCallback.InvokeAsync(Trait);
-    }
+    //Update trait on parent component
 
     [Parameter]
     public EventCallback<CreatureTrait> TraitChanged { get; set; }
@@ -52,6 +44,16 @@
     async Task UpdateTrait()
     {        
         await TraitChanged.InvokeAsync(Trait);
+    }
+
+    //Remove trait
+
+    [Parameter]
+    public EventCallback<CreatureTrait> RemoveTraitCallback { get; set; }
+
+    private async Task Remove()
+    {
+        await RemoveTraitCallback.InvokeAsync(Trait);
     }
 
 }

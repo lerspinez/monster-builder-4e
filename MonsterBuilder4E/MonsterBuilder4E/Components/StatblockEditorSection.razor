@@ -2,14 +2,11 @@
 <MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End" @onclick="ExpandCollapseContent"
     Class="mt-2 px-2" Style="cursor: pointer; background-color: lightseagreen">
     <MudText Typo="Typo.h6" Class="mt-1 mb-1">@SectionTitle</MudText>
-    <MudIcon Icon="@(_contentExpanded ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)"
-             Class="mt-1 mb-1" />
+    <MudIcon Icon="@(_contentExpanded ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)" Class="mt-1 mb-1" />
 </MudStack>
 
-@* <MudDivider class="mb-2" Style="border-color: black" /> *@
-
 <MudCollapse Expanded="_contentExpanded">
-    <MudStack Spacing="4" Class="pa-2">
+    <MudStack Spacing="@StackSpacing" Class="pa-2">
         @ChildContent                    
     </MudStack>
 </MudCollapse>
@@ -17,6 +14,9 @@
 @code {
     [Parameter]
     public string SectionTitle { get; set; } = string.Empty;
+
+    [Parameter]
+    public int StackSpacing { get; set; } = 4;
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }

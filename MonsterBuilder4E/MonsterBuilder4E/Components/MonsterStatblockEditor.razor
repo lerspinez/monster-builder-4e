@@ -175,11 +175,21 @@
                 </StatblockEditorSection>
                                 
                 @* ---- Section: Monster Traits ---- *@
-                <StatblockEditorSection SectionTitle="Traits">
+                <StatblockEditorSection SectionTitle="Traits" StackSpacing="0">
 
-                    <MudButton OnClick="AddTrait" Variant="Variant.Filled" Color="Color.Success" Size="Size.Small">Add Trait</MudButton>
+                    <MudStack Row Justify="Justify.FlexEnd" Spacing="4">
+                        <MudTooltip Text="Add Trait">
+                            <MudIconButton Icon="@Icons.Material.Filled.Add"  Size="Size.Small" Class="mt-1 mb-1" @onclick="AddTrait" />
+                        </MudTooltip>
+                        <MudTooltip Text="Sort Traits">
+                            <MudIconButton Icon="@Icons.Material.Filled.Sort" Size="Size.Small" Class="mt-1 mb-1" @onclick="SortTraits" />
+                        </MudTooltip>
+                        <MudTooltip Text="Collapse All">
+                            <MudIconButton Icon="@Icons.Material.Filled.UnfoldLess" Size="Size.Small" Class="mt-1 mb-1" @onclick="CollapseAllTraits" />
+                        </MudTooltip>
+                    </MudStack>
                     
-                    <MudStack>
+                    <MudStack Spacing="0">
                         @for (var i = 0; i < creature.Traits.Count; i++)
                         {
                             var currentTrait = creature.Traits[i];
@@ -190,11 +200,21 @@
                 </StatblockEditorSection>   
 
                 @* ---- Section: Monster Powers ---- *@
-                <StatblockEditorSection SectionTitle="Powers">
+                <StatblockEditorSection SectionTitle="Powers" StackSpacing="0">
 
-                    <MudButton OnClick="AddPower" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">Add Power</MudButton>                    
+                    <MudStack Row Justify="Justify.FlexEnd" Spacing="4">
+                        <MudTooltip Text="Add Power">
+                            <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Class="mt-1 mb-1" @onclick="AddPower" />
+                        </MudTooltip>
+                        <MudTooltip Text="Sort Powers">
+                            <MudIconButton Icon="@Icons.Material.Filled.Sort" Size="Size.Small" Class="mt-1 mb-1" @onclick="SortPowers" />
+                        </MudTooltip>
+                        <MudTooltip Text="Collapse All">
+                            <MudIconButton Icon="@Icons.Material.Filled.UnfoldLess" Size="Size.Small" Class="mt-1 mb-1" @onclick="CollapseAllPowers" />
+                        </MudTooltip>
+                    </MudStack>
                     
-                    <MudStack>
+                    <MudStack Spacing="0">
                         @for (var i = 0; i < creature.Powers.Count; i++)
                         {
                             var currentPower = creature.Powers[i];

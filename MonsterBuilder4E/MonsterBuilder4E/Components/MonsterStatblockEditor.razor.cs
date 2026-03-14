@@ -57,6 +57,21 @@ public partial class MonsterStatblockEditor
         creature.Traits.Remove(trait);
     }
 
+    private void SortTraits()
+    {
+        CollapseAllTraits();
+
+        creature.Traits = [.. creature.Traits.OrderByDescending(t => t.IsAura).ThenBy(t => t.Name)];
+    }
+
+    private void CollapseAllTraits()
+    {
+        foreach (var trait in creature.Traits)
+        {
+            trait.ExpandEditor = false;
+        }
+    }
+
     private void AddPower()
     {
         creature.Powers.Add(new CreaturePower());
@@ -67,15 +82,52 @@ public partial class MonsterStatblockEditor
         creature.Powers.Remove(power);
     }
 
+    private void SortPowers()
+    {
+        CollapseAllPowers();
+
+        var nameSorted = creature.Powers.OrderBy(p => p.Name).ToList();
+
+        creature.Powers = SortByActionType(nameSorted);
+    }
+
+    private static List<CreaturePower> SortByActionType(List<CreaturePower> powers)
+    {
+        return
+        [
+            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.Standard)]),
+            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.Move)]),
+            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.Minor)]),
+            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.Free)]),
+            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.NoAction)]),
+        ];
+    }
+
+    private static List<CreaturePower> SortByPowerType(List<CreaturePower> powers)
+    {
+        return 
+        [
+            .. powers.Where(p => p.PowerType == PowerType.AtWill), 
+            .. powers.Where(p => p.PowerType == PowerType.Recharge), 
+            .. powers.Where(p => p.PowerType == PowerType.Encounter), 
+            .. powers.Where(p => p.PowerType == PowerType.Daily)
+        ];
+    }
+
+    private void CollapseAllPowers()
+    {
+        foreach (var power in creature.Powers)
+        {
+            power.ExpandEditor = false;
+        }
+    }
+
     private List<string> ParseCommaDelimitedList(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
             return new List<string>();
 
-        return text.Split(',')
-            .Select(s => s.Trim())
-            .Where(s => !string.IsNullOrEmpty(s))
-            .ToList();
+        return [.. text.Split(',').Select(s => s.Trim()).Where(s => !string.IsNullOrEmpty(s))];
     }
 
     private string FormatModifier(int value)

@@ -360,6 +360,11 @@ public class CreaturePower
     /// Indicates the weight of the power for sorting purposes. Powers with higher sort weights will be displayed before traits with lower sort weights in the user interface.
     /// </summary>
     public int SortWeight { get; set; } = 0;
+
+    /// <summary>
+    /// Indicates if the power should be displayed in the open state on the statblock editor.
+    /// </summary>
+    public bool ExpandEditor { get; set; } = true;
 }
 
 /// <summary>
@@ -452,7 +457,7 @@ public class CreatureTrait
     /// <summary>
     /// Name of the trait, such as "Regeneration", "Camouflage", "Aura of Fear", etc.
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } = "Trait";
 
     /// <summary>
     /// Indicates if the trait is an aura, which means it affects all creatures within a certain range around the monster.
@@ -473,6 +478,11 @@ public class CreatureTrait
     /// Indicates the weight of the trait for sorting purposes. Traits with higher sort weights will be displayed before traits with lower sort weights in the user interface.
     /// </summary>
     public int SortWeight { get; set; } = 0;
+
+    /// <summary>
+    /// Indicates if the trait should be displayed in the open state on the statblock editor.
+    /// </summary>
+    public bool ExpandEditor { get; set; } = true;
 }
 
 
