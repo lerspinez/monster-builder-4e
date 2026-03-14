@@ -6,30 +6,21 @@
              Class="mt-1 mb-1" />
 </MudStack>
 
-@* @if (_contentExpanded)
-{
-    
-}
-else
-{
-    
-} *@
-
 <MudCollapse Expanded="_contentExpanded">
     <MudStack Spacing="4" Class="pa-2">
 
-        <MudTextField @bind-Value="Trait.Name" Label="Trait Name" Variant="Variant.Text" Typo="Typo.body2" />
+        <MudTextField @bind-Value="Trait.Name" @bind-Value:after="UpdateTrait" Label="Trait Name" Variant="Variant.Text" Typo="Typo.body2" />
 
         <MudGrid>
             <MudItem xs="4">
-                <MudCheckBox @bind-Value="Trait.IsAura" Label="Is aura?" LabelPlacement="Placement.Start" />
+                <MudCheckBox @bind-Value="Trait.IsAura" @bind-Value:after="UpdateTrait" Label="Is aura?" LabelPlacement="Placement.Start" />
             </MudItem>
             <MudItem xs="4">
-                <MudNumericField @bind-Value="Trait.AuraRange" Label="Aura Range" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="20" />
+                <MudNumericField @bind-Value="Trait.AuraRange" @bind-Value:after="UpdateTrait" Label="Aura Range" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="20" />
             </MudItem>
         </MudGrid>
 
-        <MudTextField @bind-Value="Trait.Effect" Label="Effect" Variant="Variant.Text" Typo="Typo.body2" Lines="2" />
+        <MudTextField @bind-Value="Trait.Effect" @bind-Value:after="UpdateTrait" Label="Effect" Variant="Variant.Text" Typo="Typo.body2" Lines="2" />
 
         <MudButton OnClick="() => Remove()" Color="Color.Error" Size="Size.Small">Remove</MudButton>
 
@@ -58,10 +49,9 @@ else
     [Parameter]
     public EventCallback<CreatureTrait> TraitChanged { get; set; }
 
-    async Task OnTraitUpdate(ChangeEventArgs e)
-    {
-        var trait = (CreatureTrait)e.Value!;
-        await TraitChanged.InvokeAsync(trait);
+    async Task UpdateTrait()
+    {        
+        await TraitChanged.InvokeAsync(Trait);
     }
 
 }

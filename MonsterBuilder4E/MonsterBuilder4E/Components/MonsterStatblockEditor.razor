@@ -189,151 +189,16 @@
 
                 </StatblockEditorSection>   
 
-                @* ---- Section: Monster Actions ---- *@
-                <StatblockEditorSection SectionTitle="Actions">
+                @* ---- Section: Monster Powers ---- *@
+                <StatblockEditorSection SectionTitle="Powers">
 
-                    <MudButton OnClick="AddPower" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">Add Power</MudButton>
-
-                    <MudStack Spacing="4">
-                        @foreach (var power in creature.Powers)
+                    <MudButton OnClick="AddPower" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">Add Power</MudButton>                    
+                    
+                    <MudStack>
+                        @for (var i = 0; i < creature.Powers.Count; i++)
                         {
-                            <MudCard>
-                                <MudCardContent>
-                                    @* Power Name *@
-                                    <MudTextField @bind-Value="power.Name" Label="Power Name" Variant="Variant.Outlined" />
-
-                                    <MudCollapse Expanded="power.IsExpanded">
-                                        <MudStack Spacing="4">
-
-                                            @* Power Keywords *@
-                                            <MudTextField @bind-Value="power.Keywords" Label="Keywords" Variant="Variant.Text" Typo="Typo.body2" Placeholder="Weapon, fire, healing, etc" />
-                        
-                                            <MudGrid>
-                                                @* Action Type *@
-                                                <MudItem xs="6">
-                                                    <MudSelect @bind-Value="power.ActionType" Label="Action" Variant="Variant.Text" Typo="Typo.body2">
-                                                        @foreach (var actionType in Enum.GetValues<ActionType>())
-                                                        {
-                                                            <MudSelectItem Value="@actionType">@actionType</MudSelectItem>
-                                                        }
-                                                    </MudSelect>
-                                                </MudItem>
-                                                @* Power Type *@
-                                                <MudItem xs="6">
-                                                    <MudSelect @bind-Value="power.PowerType" Label="Usage" Variant="Variant.Text" Typo="Typo.body2">
-                                                        @foreach (var powerType in Enum.GetValues<PowerType>())
-                                                        {
-                                                            <MudSelectItem Value="@powerType">@powerType</MudSelectItem>
-                                                        }
-                                                    </MudSelect>
-                                                </MudItem>
-                                            </MudGrid>
-                                        
-                                            <MudGrid>
-                                                @* Power Range *@
-                                                <MudItem xs="6">
-                                                    <MudTextField @bind-Value="power.Range" Label="Range" Variant="Variant.Text" Typo="Typo.body2" Placeholder="Melee 1, ranged 10/20, close blast 2, etc" />
-                                                </MudItem>
-                                                @* Target Info *@
-                                                <MudItem xs="6">
-                                                    <MudTextField @bind-Value="power.TargetInfo" Label="Target" Variant="Variant.Text" Typo="Typo.body2" Placeholder="One creature, all creatures in area, etc" />
-                                                </MudItem>
-                                            </MudGrid>
-
-                                            <MudCheckBox @bind-Value="power.IsAttack" Label="Is Attack" />
-
-                                            @if (power.IsAttack)
-                                            {
-                                                <MudGrid>
-                                                    @* Attack Ability *@
-                                                    <MudItem xs="4">
-                                                        <MudSelect @bind-Value="power.AttackAbility" Label="Attack Roll" Variant="Variant.Text" Typo="Typo.body2">
-                                                            @foreach (var ability in Enum.GetValues<Ability>())
-                                                            {
-                                                                <MudSelectItem Value="@ability">@ability</MudSelectItem>
-                                                            }
-                                                        </MudSelect>
-                                                    </MudItem>
-                                                    @* Attack Modifier *@
-                                                    <MudItem xs="4">
-                                                        <MudNumericField @bind-Value="power.AttackModifier" Label="Attack Bonus" Variant="Variant.Text" Typo="Typo.body2" Min="-10" Max="10" />
-                                                    </MudItem>
-                                                    @* Target Defense *@
-                                                    <MudItem xs="4">
-                                                        <MudSelect @bind-Value="power.Versus" Label="Target Defense" Variant="Variant.Text" Typo="Typo.body2">
-                                                            @foreach (var defense in Enum.GetValues<Defense>())
-                                                            {
-                                                                <MudSelectItem Value="@defense">@defense</MudSelectItem>
-                                                            }
-                                                        </MudSelect>
-                                                    </MudItem>
-                                                </MudGrid>
-                                            
-                                                <MudGrid>
-                                                    @* Base Damage *@
-                                                    <MudItem xs="4">
-                                                        <MudTextField @bind-Value="power.Hit.BaseDamage" Label="Damage Roll" Variant="Variant.Text" Typo="Typo.body2" Placeholder="1d8, 2d6, etc" />
-                                                    </MudItem>
-                                                    @* Ability Modifier *@
-                                                    <MudItem xs="4">
-                                                        <MudSelect @bind-Value="power.Hit.AbilityModifier" Label="Ability Modifier" Variant="Variant.Text" Typo="Typo.body2">
-                                                            @foreach (var ability in Enum.GetValues<Ability>())
-                                                            {
-                                                                <MudSelectItem Value="@ability">@ability</MudSelectItem>
-                                                            }
-                                                        </MudSelect>
-                                                    </MudItem>
-                                                    @* Damage Modifier *@
-                                                    <MudItem xs="4">
-                                                        <MudNumericField @bind-Value="power.Hit.DamageModifier" Label="Damage Bonus" Variant="Variant.Text" Typo="Typo.body2" Min="-10" Max="50" />
-                                                    </MudItem>
-                                                </MudGrid>
-                                            
-                                                <MudGrid>
-                                                    @* Damage Type *@
-                                                    <MudItem xs="4">
-                                                        <MudSelect @bind-Value="power.Hit.DamageType" Label="Damage Type" Variant="Variant.Text" Typo="Typo.body2" Placeholder="Untyped">
-                                                            @foreach (var damageType in Enum.GetValues<DamageType>())
-                                                            {
-                                                                <MudSelectItem Value="@damageType">@damageType</MudSelectItem>
-                                                            }
-                                                        </MudSelect>
-                                                    </MudItem>
-                                                    @* Critical Hit *@
-                                                    <MudItem xs="4">
-                                                        <MudTextField @bind-Value="power.Hit.CriticalHit" Label="Critical Hit" Variant="Variant.Text" Typo="Typo.body2" Placeholder="+1d12 damage, etc" />
-                                                    </MudItem>
-                                                    @* On Miss *@
-                                                    <MudItem xs="4">
-                                                        <MudSelect @bind-Value="power.Miss" Label="On Miss" Variant="Variant.Text" Typo="Typo.body2">
-                                                            @foreach (var missEffect in Enum.GetValues<AttackMiss>())
-                                                            {
-                                                                <MudSelectItem Value="@missEffect">@missEffect</MudSelectItem>
-                                                            }
-                                                        </MudSelect>
-                                                    </MudItem>
-                                                </MudGrid>
-                                            
-                                                <MudGrid>
-                                                    @* Hit Effect *@
-                                                    <MudItem xs="6">
-                                                        <MudTextField @bind-Value="power.Hit.HitEffect" Label="Hit Effect" Variant="Variant.Text" Typo="Typo.body2" Placeholder="ongoing 5 fire damage, etc" />
-                                                    </MudItem>
-                                                    @* Miss Effect *@
-                                                    <MudItem xs="6">
-                                                        <MudTextField @bind-Value="power.MissEffect" Label="Miss Effect" Variant="Variant.Text" Typo="Typo.body2" Placeholder="the power is not expended, etc" />
-                                                    </MudItem>
-                                                </MudGrid>
-                                            }
-
-                                            <MudTextField @bind-Value="power.Effect" Label="Effect" Variant="Variant.Text" Typo="Typo.body2" Lines="2" />
-
-                                            <MudButton OnClick="() => RemovePower(power)" Color="Color.Error" Size="Size.Small">Remove</MudButton>
-
-                                        </MudStack>
-                                    </MudCollapse>
-                                </MudCardContent>
-                            </MudCard>
+                            var currentPower = creature.Powers[i];
+                            <MonsterPowerEditor @bind-Power="currentPower" RemovePowerCallback="RemovePower" />
                         }
                     </MudStack>
 

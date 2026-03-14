@@ -237,24 +237,6 @@ public class Creature
     public int EnhancementBonus { get; set; } = 0;
 }
 
-public class CreaturePowerOld
-{
-    public string Name { get; set; } = string.Empty;
-    public string Type { get; set; } = string.Empty;
-    public string Usage { get; set; } = string.Empty;
-    public ActionType ActionType { get; set; }
-    public string Range { get; set; } = string.Empty;
-    public string Attack { get; set; } = string.Empty;
-    public string Target { get; set; } = string.Empty;
-    public string Hit { get; set; } = string.Empty;
-    public string Miss { get; set; } = string.Empty;
-    public string Effect { get; set; } = string.Empty;
-    public string Trigger { get; set; } = string.Empty;
-    public string Keywords { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-}
-
-
 /// <summary>
 /// Describes an attack power for a monster in D&D 4E. 
 /// This class includes properties that define the characteristics of the attack, such as its name, keywords, action type, power type, range, target information, and the effects of hitting or missing with the attack.
@@ -374,7 +356,10 @@ public class CreaturePower
     /// </summary>
     public string? Effect { get; set; }
 
-    public bool IsExpanded { get; set; } = true;
+    /// <summary>
+    /// Indicates the weight of the power for sorting purposes. Powers with higher sort weights will be displayed before traits with lower sort weights in the user interface.
+    /// </summary>
+    public int SortWeight { get; set; } = 0;
 }
 
 /// <summary>
@@ -483,6 +468,11 @@ public class CreatureTrait
     /// Effect of the trait, which can include things like "The monster regenerates 5 hit points at the start of its turn", "The monster is invisible when in natural terrain", "Enemies that end their turn adjacent to the monster take 5 damage", etc.
     /// </summary>
     public string? Effect { get; set; }
+
+    /// <summary>
+    /// Indicates the weight of the trait for sorting purposes. Traits with higher sort weights will be displayed before traits with lower sort weights in the user interface.
+    /// </summary>
+    public int SortWeight { get; set; } = 0;
 }
 
 
