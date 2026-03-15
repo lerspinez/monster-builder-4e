@@ -13,10 +13,10 @@
     </MudStack>
                     
     <MudStack Spacing="0">
-        @for (var i = 0; i < Traits.Count; i++)
+        @for (var i = 0; i < Creature.Traits.Count; i++)
         {
-            var currentTrait = Traits[i];
-            <TraitEditor @bind-Trait="currentTrait" UpdateCallback="UpdateTraits" RemoveCallback="RemoveTrait" />
+            var currentTrait = Creature.Traits[i];
+            <TraitEditor @bind-Trait="currentTrait" UpdateCallback="UpdateCreature" RemoveCallback="RemoveTrait" />
         }
     </MudStack>
 </MudStack>
@@ -24,40 +24,39 @@
 @code {
 
     [Parameter]
-    public List<CreatureTrait> Traits { get; set; } = new();
+    public Creature Creature { get; set; } = new();
 
     [Parameter]
-    public EventCallback<List<CreatureTrait>> TraitsChanged { get; set; }
+    public EventCallback<Creature> CreatureChanged { get; set; }
 
-    async Task UpdateTraits()
+    async Task UpdateCreature()
     {
-        await TraitsChanged.InvokeAsync(Traits);
+        await CreatureChanged.InvokeAsync(Creature);
     }
 
     private void AddTrait()
     {
-        Traits.Add(new CreatureTrait());
-        UpdateTraits();
+        Creature.Traits.Add(new Trait());
+        UpdateCreature();
     }
 
-    private void RemoveTrait(CreatureTrait trait)
+    private void RemoveTrait(Trait trait)
     {
-        Traits.Remove(trait);
-        UpdateTraits();
+        Creature.Traits.Remove(trait);
+        UpdateCreature();
     }
 
     private void SortTraits()
     {
         CollapseAllTraits();
 
-        Traits = [.. Traits.OrderByDescending(t => t.IsAura).ThenBy(t => t.Name)];
-
-        UpdateTraits();
+        Creature.Traits = [.. Creature.Traits.OrderByDescending(t => t.IsAura).ThenBy(t => t.Name)];
+        UpdateCreature();
     }
 
     private void CollapseAllTraits()
     {
-        foreach (var trait in Traits)
+        foreach (var trait in Creature.Traits)
         {
             trait.ExpandEditor = false;
         }

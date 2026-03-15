@@ -149,12 +149,12 @@
                 </StatblockEditorSection>
                                 
                 @* ---- Section: Monster Traits ---- *@
-                <StatblockEditorSection SectionTitle="Traits" StackSpacing="0">
-                    <TraitsEditor @bind-Traits="creature.Traits" />
+                <StatblockEditorSection SectionTitle="Traits">
+                    <TraitsEditor @bind-Creature="creature" />
                 </StatblockEditorSection>   
 
                 @* ---- Section: Monster Powers ---- *@
-                <StatblockEditorSection SectionTitle="Powers" StackSpacing="0">
+                <StatblockEditorSection SectionTitle="Powers">
 
                     <MudStack Row Justify="Justify.FlexEnd" Spacing="4">
                         <MudTooltip Text="Add Power">
@@ -249,9 +249,9 @@
                                         {
                                             <span><strong>Attack:</strong> @power.Range; @FormatAttack(power) vs. @power.Versus<br /></span>
                                         }
-                                        @if (power.IsAttack && !string.IsNullOrEmpty(power.Hit.BaseDamage))
+                                        @if (power.IsAttack && !string.IsNullOrEmpty(power.OnHit.BaseDamage))
                                         {
-                                            <span><strong>Hit:</strong> @power.Hit.BaseDamage damage@(!string.IsNullOrEmpty(power.Hit.HitEffect) ? ", " + power.Hit.HitEffect : "")<br /></span>
+                                            <span><strong>Hit:</strong> @power.OnHit.BaseDamage damage@(!string.IsNullOrEmpty(power.OnHit.HitEffect) ? ", " + power.OnHit.HitEffect : "")<br /></span>
                                         }
                                         @if (!string.IsNullOrEmpty(power.Effect))
                                         {

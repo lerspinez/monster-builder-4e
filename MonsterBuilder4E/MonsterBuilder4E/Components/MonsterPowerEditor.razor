@@ -81,12 +81,12 @@
             <MudGrid>
                 @* Base Damage *@
                 <MudItem xs="4">
-                    <MudTextField @bind-Value="Power.Hit.BaseDamage" @bind-Value:after="UpdatePower" Label="Base Damage" Variant="Variant.Text" Typo="Typo.body2" 
+                    <MudTextField @bind-Value="Power.OnHit.BaseDamage" @bind-Value:after="UpdatePower" Label="Base Damage" Variant="Variant.Text" Typo="Typo.body2" 
                         Placeholder="1d8, 2d6, etc" />
                 </MudItem>
                 @* Damage Ability *@
                 <MudItem xs="4">
-                    <MudSelect @bind-Value="Power.Hit.AbilityModifier" @bind-Value:after="UpdatePower" Label="Damage Ability" Variant="Variant.Text" Typo="Typo.body2">
+                    <MudSelect @bind-Value="Power.OnHit.AbilityModifier" @bind-Value:after="UpdatePower" Label="Damage Ability" Variant="Variant.Text" Typo="Typo.body2">
                         @foreach (var ability in Enum.GetValues<Ability>())
                         {
                             <MudSelectItem Value="@ability">@Formatter.Enum(ability.ToString())</MudSelectItem>
@@ -95,14 +95,14 @@
                 </MudItem>
                 @* Damage Modifier *@
                 <MudItem xs="4">
-                    <MudNumericField @bind-Value="Power.Hit.DamageModifier" @bind-Value:after="UpdatePower" Label="Damage Modifier" Variant="Variant.Text" Typo="Typo.body2" Min="-10" Max="50" />
+                    <MudNumericField @bind-Value="Power.OnHit.DamageModifier" @bind-Value:after="UpdatePower" Label="Damage Modifier" Variant="Variant.Text" Typo="Typo.body2" Min="-10" Max="50" />
                 </MudItem>
             </MudGrid>
             
             <MudGrid>
                 @* Damage Type *@
                 <MudItem xs="4">
-                    <MudSelect @bind-Value="Power.Hit.DamageType" @bind-Value:after="UpdatePower" Label="Damage Type" Variant="Variant.Text" Typo="Typo.body2">
+                    <MudSelect @bind-Value="Power.OnHit.DamageType" @bind-Value:after="UpdatePower" Label="Damage Type" Variant="Variant.Text" Typo="Typo.body2">
                         @foreach (var damageType in Enum.GetValues<DamageType>())
                         {
                             <MudSelectItem Value="@damageType">@Formatter.Enum(damageType.ToString())</MudSelectItem>
@@ -111,12 +111,12 @@
                 </MudItem>
                 @* Critical Hit *@
                 <MudItem xs="4">
-                    <MudTextField @bind-Value="Power.Hit.CriticalHit" @bind-Value:after="UpdatePower" Label="Critical Hit" Variant="Variant.Text" Typo="Typo.body2" 
+                    <MudTextField @bind-Value="Power.OnHit.CriticalHit" @bind-Value:after="UpdatePower" Label="Critical Hit" Variant="Variant.Text" Typo="Typo.body2" 
                         Placeholder="+1d12 damage, etc" />
                 </MudItem>
                 @* On Miss *@
                 <MudItem xs="4">
-                    <MudSelect @bind-Value="Power.Miss" @bind-Value:after="UpdatePower" Label="On Miss" Variant="Variant.Text" Typo="Typo.body2">
+                    <MudSelect @bind-Value="Power.OnMiss" @bind-Value:after="UpdatePower" Label="On Miss" Variant="Variant.Text" Typo="Typo.body2">
                         @foreach (var missEffect in Enum.GetValues<AttackMiss>())
                         {
                             <MudSelectItem Value="@missEffect">@Formatter.Enum(missEffect.ToString())</MudSelectItem>
@@ -128,7 +128,7 @@
             <MudGrid>
                 @* Hit Effect *@
                 <MudItem xs="6">
-                    <MudTextField @bind-Value="Power.Hit.HitEffect" @bind-Value:after="UpdatePower" Label="Hit Effect" Variant="Variant.Text" Typo="Typo.body2" 
+                    <MudTextField @bind-Value="Power.OnHit.HitEffect" @bind-Value:after="UpdatePower" Label="Hit Effect" Variant="Variant.Text" Typo="Typo.body2" 
                         Placeholder="ongoing 5 fire damage, etc" />
                 </MudItem>
                 @* Miss Effect *@
@@ -148,7 +148,7 @@
 
 @code {
     [Parameter]
-    public CreaturePower Power { get; set; } = new();
+    public Power Power { get; set; } = new();
 
     public string _powerHeader => $"{Power.Name} ({Power.ActionType}, {Power.PowerType})";
 
@@ -160,7 +160,7 @@
     //Update power on parent component
 
     [Parameter]
-    public EventCallback<CreaturePower> PowerChanged { get; set; }
+    public EventCallback<Power> PowerChanged { get; set; }
 
     async Task UpdatePower()
     {
@@ -170,7 +170,7 @@
     //Remove power
 
     [Parameter]
-    public EventCallback<CreaturePower> RemovePowerCallback { get; set; }
+    public EventCallback<Power> RemovePowerCallback { get; set; }
 
     private async Task Remove()
     {

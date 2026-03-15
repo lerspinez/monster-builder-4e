@@ -44,7 +44,7 @@
 
 @code {
     [Parameter]
-    public CreatureTrait Trait { get; set; } = new();
+    public Trait Trait { get; set; } = new();
 
     private void ExpandCollapseContent()
     {
@@ -54,10 +54,10 @@
     //Update trait on parent component    
 
     [Parameter]
-    public EventCallback<CreatureTrait> UpdateCallback { get; set; }
+    public EventCallback UpdateCallback { get; set; }
 
     [Parameter]
-    public EventCallback<CreatureTrait> TraitChanged { get; set; }
+    public EventCallback<Trait> TraitChanged { get; set; }
 
     async Task UpdateTrait()
     {        
@@ -68,7 +68,7 @@
     //Remove trait
 
     [Parameter]
-    public EventCallback<CreatureTrait> RemoveCallback { get; set; }
+    public EventCallback<Trait> RemoveCallback { get; set; }
 
     private async Task Remove()
     {

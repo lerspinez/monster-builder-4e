@@ -148,9 +148,9 @@
                                     {
                                         <div><strong>Target:</strong> @power.TargetInfo</div>
                                     }
-                                    @if (power.IsAttack && !string.IsNullOrEmpty(power.Hit.BaseDamage))
+                                    @if (power.IsAttack && !string.IsNullOrEmpty(power.OnHit.BaseDamage))
                                     {
-                                        <div><strong>Hit:</strong> @power.Hit.ToText()</div>
+                                        <div><strong>Hit:</strong> @power.OnHit.ToText()</div>
                                     }
                                     @if (!string.IsNullOrEmpty(power.Effect))
                                     {
@@ -486,8 +486,8 @@
                                 <input type="text" @bind="power.Keywords" class="form-control" placeholder="Keywords (e.g., Fire, Weapon)" />
                                 <input type="text" @bind="power.Range" class="form-control" placeholder="Range (e.g., Melee 1, Ranged 10)" />
                                 <input type="text" @bind="power.TargetInfo" class="form-control" placeholder="Target (e.g., One creature)" />
-                                <textarea @bind="power.Hit.BaseDamage" class="form-control" placeholder="Hit damage (e.g., 2d6 + 3)"></textarea>
-                                <textarea @bind="power.Hit.HitEffect" class="form-control" placeholder="Hit effect"></textarea>
+                                <textarea @bind="power.OnHit.BaseDamage" class="form-control" placeholder="Hit damage (e.g., 2d6 + 3)"></textarea>
+                                <textarea @bind="power.OnHit.HitEffect" class="form-control" placeholder="Hit effect"></textarea>
                                 <textarea @bind="power.Effect" class="form-control" placeholder="Effect"></textarea>
                                 <button @onclick="() => RemovePower(power)" class="btn btn-danger btn-sm">Remove</button>
                             </div>
@@ -583,9 +583,9 @@
                                         {
                                             <div><strong>Target:</strong> @power.TargetInfo</div>
                                         }
-                                        @if (power.IsAttack && !string.IsNullOrEmpty(power.Hit.BaseDamage))
+                                        @if (power.IsAttack && !string.IsNullOrEmpty(power.OnHit.BaseDamage))
                                         {
-                                            <div><strong>Hit:</strong> @power.Hit.ToText()</div>
+                                            <div><strong>Hit:</strong> @power.OnHit.ToText()</div>
                                         }
                                         @if (!string.IsNullOrEmpty(power.Effect))
                                         {
@@ -728,20 +728,20 @@
 
     private void AddTrait()
     {
-        creature.Traits.Add(new CreatureTrait());
+        creature.Traits.Add(new Trait());
     }
 
-    private void RemoveTrait(CreatureTrait trait)
+    private void RemoveTrait(Trait trait)
     {
         creature.Traits.Remove(trait);
     }
 
     private void AddPower()
     {
-        creature.Powers.Add(new CreaturePower());
+        creature.Powers.Add(new Power());
     }
 
-    private void RemovePower(CreaturePower power)
+    private void RemovePower(Power power)
     {
         creature.Powers.Remove(power);
     }

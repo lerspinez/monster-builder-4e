@@ -167,5 +167,59 @@ namespace MonsterBuilder4E.Utility
         {
             return GetAbilityCheckModifier(creature, ability) + creature.EnhancementBonus + externalModifier;
         }
+
+        public static string GetAttackHitTextblock(Creature creature, AttackHit attackHit, bool includeCrit = false)
+        {
+            string hitTextblock = string.Empty;
+
+            //Attack damage.
+
+            string attackDamage = string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(attackHit.BaseDamage))
+                attackDamage = attackHit.BaseDamage;
+
+            //Try parse base damage and if number add to modifiers.
+
+            int damageModifier = GetAttackPowerModifier(creature, attackHit.AbilityModifier, attackHit.DamageModifier);
+
+            if (attackHit.SecondaryAbilityModifiers.Count != 0)
+            {
+                foreach (var ability in attackHit.SecondaryAbilityModifiers)
+                {
+                    damageModifier += creature.Abilities.GetModifier(ability);
+                }
+            }
+
+            if (damageModifier != 0)
+                attackDamage += damageModifier > 0 ? $"+{damageModifier}" : damageModifier.ToString();
+
+            //If 0 damage and no base damage, then it's just a hit with no damage, so don't add anything to the textblock.
+
+            var damageType = attackHit.DamageType != DamageType.Untyped 
+                ? $"{Formatter.Enum(attackHit.DamageType.ToString(), true)} damage" : "damage";
+
+            if (string.IsNullOrWhiteSpace(attackDamage))
+                hitTextblock = "No damage";
+            else
+                hitTextblock += $"{attackDamage} {damageType}";
+
+            //Damage annotation.
+
+            string damageAnnotation = string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(attackHit.CriticalHit))
+                damageAnnotation += $"Crit: {attackHit.CriticalHit}";
+
+            if(damageAnnotation != string.Empty)
+                hitTextblock += $" ({damageAnnotation})";
+
+            //Additional on-hit effects.
+
+            if (!string.IsNullOrEmpty(attackHit.HitEffect))
+                hitTextblock += $", and {attackHit.HitEffect}";
+
+            return hitTextblock;
+        }
     }
 }

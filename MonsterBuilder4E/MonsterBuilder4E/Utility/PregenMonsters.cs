@@ -53,13 +53,13 @@ namespace MonsterBuilder4E.Utility
             goblin.TrainedSkills.Add(Skill.Stealth);
             goblin.Equipment = new List<string> { "short sword", "leather armor" };
 
-            goblin.Traits.Add(new CreatureTrait
+            goblin.Traits.Add(new Trait
             {
                 Name = "Goblin Tactics",
                 Effect = "The goblin gains a +2 bonus to AC while at least two allies are within 5 squares of it."
             });
 
-            goblin.Powers.Add(new CreaturePower
+            goblin.Powers.Add(new Power
             {
                 Name = "Short Sword",
                 PowerType = PowerType.AtWill,
@@ -70,10 +70,10 @@ namespace MonsterBuilder4E.Utility
                 TargetInfo = "One creature",
                 Versus = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
-                Hit = new AttackHit { BaseDamage = "1d6 + 3" }
+                OnHit = new AttackHit { BaseDamage = "1d6 + 3" }
             });
 
-            goblin.Powers.Add(new CreaturePower
+            goblin.Powers.Add(new Power
             {
                 Name = "Javelin",
                 PowerType = PowerType.AtWill,
@@ -84,7 +84,7 @@ namespace MonsterBuilder4E.Utility
                 TargetInfo = "One creature",
                 Versus = Defense.ArmorClass,
                 AttackAbility = Ability.Dexterity,
-                Hit = new AttackHit { BaseDamage = "1d6 + 3" }
+                OnHit = new AttackHit { BaseDamage = "1d6 + 3" }
             });
 
             return goblin;
@@ -122,13 +122,13 @@ namespace MonsterBuilder4E.Utility
             orc.TrainedSkills.Add(Skill.Intimidate);
             orc.Equipment = new List<string> { "greataxe", "hide armor" };
 
-            orc.Traits.Add(new CreatureTrait
+            orc.Traits.Add(new Trait
             {
                 Name = "Warrior's Surge",
                 Effect = "While bloodied, the orc gains a +2 bonus to attack rolls."
             });
 
-            orc.Powers.Add(new CreaturePower
+            orc.Powers.Add(new Power
             {
                 Name = "Greataxe",
                 PowerType = PowerType.AtWill,
@@ -139,10 +139,10 @@ namespace MonsterBuilder4E.Utility
                 TargetInfo = "One creature",
                 Versus = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
-                Hit = new AttackHit { BaseDamage = "1d12 + 3" }
+                OnHit = new AttackHit { BaseDamage = "1d12 + 3" }
             });
 
-            orc.Powers.Add(new CreaturePower
+            orc.Powers.Add(new Power
             {
                 Name = "Handaxe",
                 PowerType = PowerType.AtWill,
@@ -153,7 +153,7 @@ namespace MonsterBuilder4E.Utility
                 TargetInfo = "One creature",
                 Versus = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
-                Hit = new AttackHit { BaseDamage = "1d6 + 3" }
+                OnHit = new AttackHit { BaseDamage = "1d6 + 3" }
             });
 
             return orc;
@@ -190,7 +190,7 @@ namespace MonsterBuilder4E.Utility
 
             ogre.Equipment = new List<string> { "greatclub", "hide armor" };
 
-            ogre.Powers.Add(new CreaturePower
+            ogre.Powers.Add(new Power
             {
                 Name = "Greatclub",
                 PowerType = PowerType.AtWill,
@@ -201,10 +201,10 @@ namespace MonsterBuilder4E.Utility
                 TargetInfo = "One creature",
                 Versus = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
-                Hit = new AttackHit { BaseDamage = "2d6 + 4", HitEffect = "the ogre pushes the target 1 square" }
+                OnHit = new AttackHit { BaseDamage = "2d6 + 4", HitEffect = "the ogre pushes the target 1 square" }
             });
 
-            ogre.Powers.Add(new CreaturePower
+            ogre.Powers.Add(new Power
             {
                 Name = "Sweeping Club",
                 PowerType = PowerType.Encounter,
@@ -216,7 +216,7 @@ namespace MonsterBuilder4E.Utility
                 TargetInfo = "Creatures in blast",
                 Versus = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
-                Hit = new AttackHit { BaseDamage = "1d6 + 4", HitEffect = "the ogre pushes the target 1 square" }
+                OnHit = new AttackHit { BaseDamage = "1d6 + 4", HitEffect = "the ogre pushes the target 1 square" }
             });
 
             return ogre;
@@ -254,13 +254,13 @@ namespace MonsterBuilder4E.Utility
             drake.TrainedSkills.Add(Skill.Athletics);
             drake.Resistances.Add("fire 5");
 
-            drake.Traits.Add(new CreatureTrait
+            drake.Traits.Add(new Trait
             {
                 Name = "Threatening Reach",
                 Effect = "The drake can make opportunity attacks against all enemies within 2 squares of it."
             });
 
-            drake.Powers.Add(new CreaturePower
+            drake.Powers.Add(new Power
             {
                 Name = "Bite",
                 PowerType = PowerType.AtWill,
@@ -271,10 +271,10 @@ namespace MonsterBuilder4E.Utility
                 TargetInfo = "One creature",
                 Versus = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
-                Hit = new AttackHit { BaseDamage = "1d10 + 4", HitEffect = "the target is marked until the end of the drake's next turn" }
+                OnHit = new AttackHit { BaseDamage = "1d10 + 4", HitEffect = "the target is marked until the end of the drake's next turn" }
             });
 
-            drake.Powers.Add(new CreaturePower
+            drake.Powers.Add(new Power
             {
                 Name = "Snapping Jaws",
                 PowerType = PowerType.AtWill,
@@ -286,7 +286,7 @@ namespace MonsterBuilder4E.Utility
                 Trigger = "An enemy marked by the drake shifts",
                 Versus = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
-                Hit = new AttackHit { BaseDamage = "1d10 + 4", HitEffect = "the target's movement ends" }
+                OnHit = new AttackHit { BaseDamage = "1d10 + 4", HitEffect = "the target's movement ends" }
             });
 
             return drake;
@@ -324,19 +324,19 @@ namespace MonsterBuilder4E.Utility
             troll.Vulnerabilities.Add("fire 5");
             troll.Vulnerabilities.Add("acid 5");
 
-            troll.Traits.Add(new CreatureTrait
+            troll.Traits.Add(new Trait
             {
                 Name = "Regeneration 5",
                 Effect = "The troll regains 5 hit points whenever it starts its turn and has at least 1 hit point. If the troll takes acid or fire damage, regeneration does not function on its next turn."
             });
 
-            troll.Traits.Add(new CreatureTrait
+            troll.Traits.Add(new Trait
             {
                 Name = "Troll Healing",
                 Effect = "Whenever an ally within 5 squares of the troll uses second wind, the troll regains 5 hit points."
             });
 
-            troll.Powers.Add(new CreaturePower
+            troll.Powers.Add(new Power
             {
                 Name = "Claw",
                 PowerType = PowerType.AtWill,
@@ -347,10 +347,10 @@ namespace MonsterBuilder4E.Utility
                 TargetInfo = "One creature",
                 Versus = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
-                Hit = new AttackHit { BaseDamage = "2d6 + 5" }
+                OnHit = new AttackHit { BaseDamage = "2d6 + 5" }
             });
 
-            troll.Powers.Add(new CreaturePower
+            troll.Powers.Add(new Power
             {
                 Name = "Frenzy",
                 PowerType = PowerType.AtWill,
@@ -361,11 +361,11 @@ namespace MonsterBuilder4E.Utility
                 TargetInfo = "One creature",
                 Versus = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
-                Hit = new AttackHit { BaseDamage = "2d6 + 5" },
+                OnHit = new AttackHit { BaseDamage = "2d6 + 5" },
                 Effect = "The troll makes a secondary attack against the same target. Secondary Attack: +8 vs. AC; 1d6 + 5 damage."
             });
 
-            troll.Powers.Add(new CreaturePower
+            troll.Powers.Add(new Power
             {
                 Name = "Vicious Rend",
                 PowerType = PowerType.Encounter,
@@ -376,7 +376,7 @@ namespace MonsterBuilder4E.Utility
                 TargetInfo = "One creature",
                 Versus = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
-                Hit = new AttackHit { BaseDamage = "3d6 + 5", HitEffect = "ongoing 5 damage (save ends)" }
+                OnHit = new AttackHit { BaseDamage = "3d6 + 5", HitEffect = "ongoing 5 damage (save ends)" }
             });
 
             return troll;

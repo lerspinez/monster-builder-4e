@@ -37,7 +37,7 @@ public partial class MonsterStatblockEditor
         creature.Equipment = new List<string> { "longsword", "chainmail", "heavy shield", "crossbow" };
 
         // Add Phalanx Soldier trait (aura)
-        creature.Traits.Add(new CreatureTrait
+        creature.Traits.Add(new Trait
         {
             Name = "Phalanx Soldier",
             IsAura = true,
@@ -46,7 +46,7 @@ public partial class MonsterStatblockEditor
         });
 
         // Add Longsword power (at-will melee attack)
-        creature.Powers.Add(new CreaturePower
+        creature.Powers.Add(new Power
         {
             Name = "Longsword",
             PowerType = PowerType.AtWill,
@@ -58,7 +58,7 @@ public partial class MonsterStatblockEditor
             TargetInfo = "One creature",
             Versus = Defense.ArmorClass,
             AttackAbility = Ability.Strength,
-            Hit = new AttackHit 
+            OnHit = new AttackHit 
             { 
                 BaseDamage = "1d8 + 5",
                 HitEffect = "the target is marked until the end of the hobgoblin's next turn"
@@ -66,7 +66,7 @@ public partial class MonsterStatblockEditor
         });
 
         // Add Crossbow Volley power (encounter ranged attack)
-        creature.Powers.Add(new CreaturePower
+        creature.Powers.Add(new Power
         {
             Name = "Crossbow Volley",
             PowerType = PowerType.Encounter,
@@ -78,14 +78,14 @@ public partial class MonsterStatblockEditor
             TargetInfo = "One creature",
             Versus = Defense.ArmorClass,
             AttackAbility = Ability.Dexterity,
-            Hit = new AttackHit 
+            OnHit = new AttackHit 
             { 
                 BaseDamage = "2d8 + 4"
             }
         });
 
         // Add Soldier's Retaliation (triggered action)
-        creature.Powers.Add(new CreaturePower
+        creature.Powers.Add(new Power
         {
             Name = "Soldier's Retaliation",
             PowerType = PowerType.AtWill,
@@ -110,10 +110,10 @@ public partial class MonsterStatblockEditor
 
     private void AddPower()
     {
-        creature.Powers.Add(new CreaturePower());
+        creature.Powers.Add(new Power());
     }
 
-    private void RemovePower(CreaturePower power)
+    private void RemovePower(Power power)
     {
         creature.Powers.Remove(power);
     }
@@ -127,7 +127,7 @@ public partial class MonsterStatblockEditor
         creature.Powers = SortByActionType(nameSorted);
     }
 
-    private static List<CreaturePower> SortByActionType(List<CreaturePower> powers)
+    private static List<Power> SortByActionType(List<Power> powers)
     {
         return
         [
@@ -139,7 +139,7 @@ public partial class MonsterStatblockEditor
         ];
     }
 
-    private static List<CreaturePower> SortByPowerType(List<CreaturePower> powers)
+    private static List<Power> SortByPowerType(List<Power> powers)
     {
         return 
         [
@@ -182,7 +182,7 @@ public partial class MonsterStatblockEditor
         };
     }
 
-    private string FormatAttack(CreaturePower power)
+    private string FormatAttack(Power power)
     {
         int attackBonus = creature.LevelBonus + creature.Abilities.GetModifier(power.AttackAbility) + power.AttackModifier;
         return FormatModifier(attackBonus);
