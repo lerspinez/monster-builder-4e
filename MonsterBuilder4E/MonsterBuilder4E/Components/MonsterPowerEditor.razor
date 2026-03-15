@@ -21,7 +21,7 @@
                 <MudSelect @bind-Value="Power.ActionType" @bind-Value:after="UpdatePower" Label="Action" Variant="Variant.Text" Typo="Typo.body2">
                     @foreach (var actionType in Enum.GetValues<ActionType>())
                     {
-                        <MudSelectItem Value="@actionType">@actionType</MudSelectItem>
+                        <MudSelectItem Value="@actionType">@Formatter.Enum(actionType.ToString())</MudSelectItem>
                     }
                 </MudSelect>
             </MudItem>
@@ -30,7 +30,7 @@
                 <MudSelect @bind-Value="Power.PowerType" @bind-Value:after="UpdatePower" Label="Usage" Variant="Variant.Text" Typo="Typo.body2">
                     @foreach (var powerType in Enum.GetValues<PowerType>())
                     {
-                        <MudSelectItem Value="@powerType">@powerType</MudSelectItem>
+                        <MudSelectItem Value="@powerType">@Formatter.Enum(powerType.ToString())</MudSelectItem>
                     }
                 </MudSelect>
             </MudItem>
@@ -56,23 +56,23 @@
             <MudGrid>
                 @* Attack Ability *@
                 <MudItem xs="4">
-                    <MudSelect @bind-Value="Power.AttackAbility" @bind-Value:after="UpdatePower" Label="Attack Roll" Variant="Variant.Text" Typo="Typo.body2">
+                    <MudSelect @bind-Value="Power.AttackAbility" @bind-Value:after="UpdatePower" Label="Attack Ability" Variant="Variant.Text" Typo="Typo.body2">
                         @foreach (var ability in Enum.GetValues<Ability>())
                         {
-                            <MudSelectItem Value="@ability">@ability</MudSelectItem>
+                            <MudSelectItem Value="@ability">@Formatter.Enum(ability.ToString())</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem>
                 @* Attack Modifier *@
                 <MudItem xs="4">
-                    <MudNumericField @bind-Value="Power.AttackModifier" @bind-Value:after="UpdatePower" Label="Attack Bonus" Variant="Variant.Text" Typo="Typo.body2" Min="-10" Max="10" />
+                    <MudNumericField @bind-Value="Power.AttackModifier" @bind-Value:after="UpdatePower" Label="Attack Modifier" Variant="Variant.Text" Typo="Typo.body2" Min="-10" Max="10" />
                 </MudItem>
                 @* Target Defense *@
                 <MudItem xs="4">
                     <MudSelect @bind-Value="Power.Versus" @bind-Value:after="UpdatePower" Label="Target Defense" Variant="Variant.Text" Typo="Typo.body2">
                         @foreach (var defense in Enum.GetValues<Defense>())
                         {
-                            <MudSelectItem Value="@defense">@defense</MudSelectItem>
+                            <MudSelectItem Value="@defense">@Formatter.Enum(defense.ToString())</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem>
@@ -81,31 +81,31 @@
             <MudGrid>
                 @* Base Damage *@
                 <MudItem xs="4">
-                    <MudTextField @bind-Value="Power.Hit.BaseDamage" @bind-Value:after="UpdatePower" Label="Damage Roll" Variant="Variant.Text" Typo="Typo.body2" 
+                    <MudTextField @bind-Value="Power.Hit.BaseDamage" @bind-Value:after="UpdatePower" Label="Base Damage" Variant="Variant.Text" Typo="Typo.body2" 
                         Placeholder="1d8, 2d6, etc" />
                 </MudItem>
-                @* Ability Modifier *@
+                @* Damage Ability *@
                 <MudItem xs="4">
-                    <MudSelect @bind-Value="Power.Hit.AbilityModifier" @bind-Value:after="UpdatePower" Label="Ability Modifier" Variant="Variant.Text" Typo="Typo.body2">
+                    <MudSelect @bind-Value="Power.Hit.AbilityModifier" @bind-Value:after="UpdatePower" Label="Damage Ability" Variant="Variant.Text" Typo="Typo.body2">
                         @foreach (var ability in Enum.GetValues<Ability>())
                         {
-                            <MudSelectItem Value="@ability">@ability</MudSelectItem>
+                            <MudSelectItem Value="@ability">@Formatter.Enum(ability.ToString())</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem>
                 @* Damage Modifier *@
                 <MudItem xs="4">
-                    <MudNumericField @bind-Value="Power.Hit.DamageModifier" @bind-Value:after="UpdatePower" Label="Damage Bonus" Variant="Variant.Text" Typo="Typo.body2" Min="-10" Max="50" />
+                    <MudNumericField @bind-Value="Power.Hit.DamageModifier" @bind-Value:after="UpdatePower" Label="Damage Modifier" Variant="Variant.Text" Typo="Typo.body2" Min="-10" Max="50" />
                 </MudItem>
             </MudGrid>
-                                            
+            
             <MudGrid>
                 @* Damage Type *@
                 <MudItem xs="4">
                     <MudSelect @bind-Value="Power.Hit.DamageType" @bind-Value:after="UpdatePower" Label="Damage Type" Variant="Variant.Text" Typo="Typo.body2">
                         @foreach (var damageType in Enum.GetValues<DamageType>())
                         {
-                            <MudSelectItem Value="@damageType">@damageType</MudSelectItem>
+                            <MudSelectItem Value="@damageType">@Formatter.Enum(damageType.ToString())</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem>
@@ -119,7 +119,7 @@
                     <MudSelect @bind-Value="Power.Miss" @bind-Value:after="UpdatePower" Label="On Miss" Variant="Variant.Text" Typo="Typo.body2">
                         @foreach (var missEffect in Enum.GetValues<AttackMiss>())
                         {
-                            <MudSelectItem Value="@missEffect">@missEffect</MudSelectItem>
+                            <MudSelectItem Value="@missEffect">@Formatter.Enum(missEffect.ToString())</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem>

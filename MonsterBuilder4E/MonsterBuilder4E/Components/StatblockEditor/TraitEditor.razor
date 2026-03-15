@@ -1,0 +1,78 @@
+﻿
+<MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End" Class="mt-2 px-2" Style="cursor: pointer; background-color: lightgreen">    
+    @if (Trait.ExpandEditor)
+    {
+        <MudTextField @bind-Value="Trait.Name" @bind-Value:after="UpdateTrait" Label="Trait Name" 
+            Variant="Variant.Outlined" Typo="Typo.h6" Margin="Margin.Dense" />
+        <MudTooltip Text="Delete Trait">
+            <MudIcon Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Class="mt-1 mb-1" @onclick="Remove" />
+        </MudTooltip>
+    }
+    else
+    {
+        <MudText Typo="Typo.h6" Class="mt-1 mb-1" @onclick="ExpandCollapseContent">@Trait.Name</MudText>
+    }
+    <MudIcon Icon="@(Trait.ExpandEditor? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)"
+        Class="mt-1 mb-1" @onclick="ExpandCollapseContent" />
+</MudStack>
+
+<MudCollapse Expanded="Trait.ExpandEditor">
+    <MudStack Spacing="2" Class="pa-2">
+
+        <MudTextField @bind-Value="Trait.Effect" @bind-Value:after="UpdateTrait" Label="Effect" 
+            Variant="Variant.Text" Typo="Typo.body2" MaxLines="5" Sizing="InputSizing.Auto" 
+            Placeholder="Gains +1 on attack rolls while bloodied, etc" />
+
+        <MudGrid>
+            <MudItem xs="3">
+                <MudStack Row Spacing="0" AlignItems="AlignItems.Center">
+                    <MudText Typo="Typo.body2">Is Aura:</MudText>
+                    <MudCheckBox @bind-Value="Trait.IsAura" @bind-Value:after="UpdateTrait" />
+                </MudStack>
+            </MudItem>            
+            <MudItem xs="3">
+                @if (Trait.IsAura)
+                {
+                    <MudNumericField @bind-Value="Trait.AuraRange" @bind-Value:after="UpdateTrait" Label="Aura Range" 
+                        Variant="Variant.Text" Typo="Typo.body2" Margin="Margin.Dense"  Min="1" Max="20" />
+                }
+            </MudItem>
+        </MudGrid>
+
+    </MudStack>
+</MudCollapse>
+
+@code {
+    [Parameter]
+    public CreatureTrait Trait { get; set; } = new();
+
+    private void ExpandCollapseContent()
+    {
+        Trait.ExpandEditor = !Trait.ExpandEditor;
+    }
+
+    //Update trait on parent component    
+
+    [Parameter]
+    public EventCallback<CreatureTrait> UpdateCallback { get; set; }
+
+    [Parameter]
+    public EventCallback<CreatureTrait> TraitChanged { get; set; }
+
+    async Task UpdateTrait()
+    {        
+        await TraitChanged.InvokeAsync(Trait);
+        await UpdateCallback.InvokeAsync();
+    }
+
+    //Remove trait
+
+    [Parameter]
+    public EventCallback<CreatureTrait> RemoveCallback { get; set; }
+
+    private async Task Remove()
+    {
+        await RemoveCallback.InvokeAsync(Trait);
+    }
+
+}

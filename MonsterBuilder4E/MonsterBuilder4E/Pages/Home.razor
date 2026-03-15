@@ -11,11 +11,11 @@
 
             <MudStack StretchItems="StretchItems.Start" Row="true">
                 <MudText>@creature.Name</MudText>
-                <MudText>Level @creature.Level @(creature.RoleModifier != RoleModifier.None ? FormatEnumName(creature.RoleModifier.ToString()) : "") @FormatEnumName(creature.Role.ToString())</MudText>
+                <MudText>Level @creature.Level @(creature.RoleModifier != RoleModifier.None ? Formatter.Enum(creature.RoleModifier.ToString()) : "") @Formatter.Enum(creature.Role.ToString())</MudText>
             </MudStack>
             <MudStack StretchItems="StretchItems.Start" Row="true">
                 <MudText>
-                    @creature.Size @FormatEnumName(creature.Origin.ToString()) @FormatEnumName(creature.Type.ToString()) 
+                    @creature.Size @Formatter.Enum(creature.Origin.ToString()) @Formatter.Enum(creature.Type.ToString()) 
                     @if (!string.IsNullOrEmpty(creature.CreatureKeywords)) {
                         <span>(@creature.CreatureKeywords)</span>
                     }
@@ -63,14 +63,14 @@
                     <div class="stat-block-header">
                         <h3 class="creature-name">@creature.Name</h3>
                         <div class="creature-subtitle">
-                            Level @creature.Level @(creature.RoleModifier != RoleModifier.None ? FormatEnumName(creature.RoleModifier.ToString()) : "") @FormatEnumName(creature.Role.ToString())
+                            Level @creature.Level @(creature.RoleModifier != RoleModifier.None ? Formatter.Enum(creature.RoleModifier.ToString()) : "") @Formatter.Enum(creature.Role.ToString())
                             @if (creature.XP > 0)
                             {
                                 <span>XP @creature.XP</span>
                             }
                         </div>
                         <div class="creature-type">
-                            @creature.Size @FormatEnumName(creature.Origin.ToString()) @FormatEnumName(creature.Type.ToString()) @if (!string.IsNullOrEmpty(creature.CreatureKeywords)) {
+                            @creature.Size @Formatter.Enum(creature.Origin.ToString()) @Formatter.Enum(creature.Type.ToString()) @if (!string.IsNullOrEmpty(creature.CreatureKeywords)) {
                             <span>(@creature.CreatureKeywords)</span>
                         }
                     </div>
@@ -191,7 +191,7 @@
                     </div>
 
                     <div class="stat-line">
-                        <strong>Alignment</strong> @FormatEnumName(creature.Alignment.ToString())
+                        <strong>Alignment</strong> @Formatter.Enum(creature.Alignment.ToString())
                         @if (creature.Languages.Any())
                         {
                             <span><strong>Languages</strong> @string.Join(", ", creature.Languages)</span>
@@ -415,7 +415,7 @@
                                 <select @bind="creature.Alignment" class="form-control">
                                     @foreach (var alignment in Enum.GetValues<Alignment>())
                                     {
-                                        <option value="@alignment">@FormatEnumName(alignment.ToString())</option>
+                                        <option value="@alignment">@Formatter.Enum(alignment.ToString())</option>
                                     }
                                 </select>
                             </div>
@@ -501,14 +501,14 @@
                         <div class="stat-block-header">
                             <h3 class="creature-name">@creature.Name</h3>
                             <div class="creature-subtitle">
-                                Level @creature.Level @(creature.RoleModifier != RoleModifier.None ? FormatEnumName(creature.RoleModifier.ToString()) : "") @FormatEnumName(creature.Role.ToString())
+                                Level @creature.Level @(creature.RoleModifier != RoleModifier.None ? Formatter.Enum(creature.RoleModifier.ToString()) : "") @Formatter.Enum(creature.Role.ToString())
                                 @if (creature.XP > 0)
                                 {
                                     <span>XP @creature.XP</span>
                                 }
                             </div>
                             <div class="creature-type">
-                                @creature.Size @FormatEnumName(creature.Origin.ToString()) @FormatEnumName(creature.Type.ToString()) @if (!string.IsNullOrEmpty(creature.CreatureKeywords)) {
+                                @creature.Size @Formatter.Enum(creature.Origin.ToString()) @Formatter.Enum(creature.Type.ToString()) @if (!string.IsNullOrEmpty(creature.CreatureKeywords)) {
                                 <span>(@creature.CreatureKeywords)</span>
                             }
                         </div>
@@ -626,7 +626,7 @@
                         </div>
 
                         <div class="stat-line">
-                            <strong>Alignment</strong> @FormatEnumName(creature.Alignment.ToString())
+                            <strong>Alignment</strong> @Formatter.Enum(creature.Alignment.ToString())
                             @if (creature.Languages.Any())
                             {
                                 <span><strong>Languages</strong> @string.Join(", ", creature.Languages)</span>
@@ -760,10 +760,5 @@
             PowerType.Daily => "◉",
             _ => "○"
         };
-    }
-
-    private string FormatEnumName(string enumName)
-    {
-        return System.Text.RegularExpressions.Regex.Replace(enumName, "([a-z])([A-Z])", "$1 $2");
     }
 }

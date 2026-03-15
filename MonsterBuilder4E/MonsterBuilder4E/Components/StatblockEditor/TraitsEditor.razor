@@ -1,0 +1,65 @@
+﻿
+<MudStack Spacing="0">
+    <MudStack Row Justify="Justify.FlexEnd" Spacing="4">
+        <MudTooltip Text="Add Trait">
+            <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Class="mt-1 mb-1" @onclick="AddTrait" />
+        </MudTooltip>
+        <MudTooltip Text="Sort Traits">
+            <MudIconButton Icon="@Icons.Material.Filled.Sort" Size="Size.Small" Class="mt-1 mb-1" @onclick="SortTraits" />
+        </MudTooltip>
+        <MudTooltip Text="Collapse All">
+            <MudIconButton Icon="@Icons.Material.Filled.UnfoldLess" Size="Size.Small" Class="mt-1 mb-1" @onclick="CollapseAllTraits" />
+        </MudTooltip>
+    </MudStack>
+                    
+    <MudStack Spacing="0">
+        @for (var i = 0; i < Traits.Count; i++)
+        {
+            var currentTrait = Traits[i];
+            <TraitEditor @bind-Trait="currentTrait" UpdateCallback="UpdateTraits" RemoveCallback="RemoveTrait" />
+        }
+    </MudStack>
+</MudStack>
+
+@code {
+
+    [Parameter]
+    public List<CreatureTrait> Traits { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<List<CreatureTrait>> TraitsChanged { get; set; }
+
+    async Task UpdateTraits()
+    {
+        await TraitsChanged.InvokeAsync(Traits);
+    }
+
+    private void AddTrait()
+    {
+        Traits.Add(new CreatureTrait());
+        UpdateTraits();
+    }
+
+    private void RemoveTrait(CreatureTrait trait)
+    {
+        Traits.Remove(trait);
+        UpdateTraits();
+    }
+
+    private void SortTraits()
+    {
+        CollapseAllTraits();
+
+        Traits = [.. Traits.OrderByDescending(t => t.IsAura).ThenBy(t => t.Name)];
+
+        UpdateTraits();
+    }
+
+    private void CollapseAllTraits()
+    {
+        foreach (var trait in Traits)
+        {
+            trait.ExpandEditor = false;
+        }
+    }
+}

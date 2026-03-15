@@ -34,6 +34,67 @@ public partial class MonsterStatblockEditor
         creature.TrainedSkills = new List<Skill> { Skill.Athletics, Skill.Intimidate };
         selectedSkills = creature.TrainedSkills;
 
+        creature.Equipment = new List<string> { "longsword", "chainmail", "heavy shield", "crossbow" };
+
+        // Add Phalanx Soldier trait (aura)
+        creature.Traits.Add(new CreatureTrait
+        {
+            Name = "Phalanx Soldier",
+            IsAura = true,
+            AuraRange = 1,
+            Effect = "The hobgoblin gains a +2 bonus to AC while at least two hobgoblin allies are within the aura."
+        });
+
+        // Add Longsword power (at-will melee attack)
+        creature.Powers.Add(new CreaturePower
+        {
+            Name = "Longsword",
+            PowerType = PowerType.AtWill,
+            ActionType = ActionType.Standard,
+            Keywords = "weapon",
+            IsAttack = true,
+            AttackType = Enums.AttackType.Melee,
+            Range = "Melee 1",
+            TargetInfo = "One creature",
+            Versus = Defense.ArmorClass,
+            AttackAbility = Ability.Strength,
+            Hit = new AttackHit 
+            { 
+                BaseDamage = "1d8 + 5",
+                HitEffect = "the target is marked until the end of the hobgoblin's next turn"
+            }
+        });
+
+        // Add Crossbow Volley power (encounter ranged attack)
+        creature.Powers.Add(new CreaturePower
+        {
+            Name = "Crossbow Volley",
+            PowerType = PowerType.Encounter,
+            ActionType = ActionType.Standard,
+            Keywords = "weapon",
+            IsAttack = true,
+            AttackType = Enums.AttackType.Ranged,
+            Range = "Ranged 15/30",
+            TargetInfo = "One creature",
+            Versus = Defense.ArmorClass,
+            AttackAbility = Ability.Dexterity,
+            Hit = new AttackHit 
+            { 
+                BaseDamage = "2d8 + 4"
+            }
+        });
+
+        // Add Soldier's Retaliation (triggered action)
+        creature.Powers.Add(new CreaturePower
+        {
+            Name = "Soldier's Retaliation",
+            PowerType = PowerType.AtWill,
+            ActionType = ActionType.ImmediateInterrupt,
+            IsAttack = false,
+            Trigger = "An enemy marked by the hobgoblin makes an attack that doesn't include the hobgoblin as a target",
+            Effect = "The hobgoblin uses longsword on the triggering enemy."
+        });
+
         languagesText = string.Join(", ", creature.Languages);
 
         // Calculate initiative
@@ -45,31 +106,6 @@ public partial class MonsterStatblockEditor
         creature.TrainedSkills = selectedSkills.ToList();
         creature.Languages = ParseCommaDelimitedList(languagesText);
         creature.Initiative = MonsterStats.CalculateInitiative(creature);
-    }
-
-    private void AddTrait()
-    {
-        creature.Traits.Add(new CreatureTrait());
-    }
-
-    private void RemoveTrait(CreatureTrait trait)
-    {
-        creature.Traits.Remove(trait);
-    }
-
-    private void SortTraits()
-    {
-        CollapseAllTraits();
-
-        creature.Traits = [.. creature.Traits.OrderByDescending(t => t.IsAura).ThenBy(t => t.Name)];
-    }
-
-    private void CollapseAllTraits()
-    {
-        foreach (var trait in creature.Traits)
-        {
-            trait.ExpandEditor = false;
-        }
     }
 
     private void AddPower()

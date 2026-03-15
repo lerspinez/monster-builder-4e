@@ -1,5 +1,6 @@
 ﻿@page "/"
 @page "/edit"
+@using MonsterBuilder4E.Components.StatblockEditor
 
 <PageTitle>Monster Statblock Editor</PageTitle>
 
@@ -7,7 +8,7 @@
     <MudText Typo="Typo.h3" Class="mb-4">Monster Statblock Editor</MudText>
 
     <MudGrid>
-        @* Form Panel *@
+        @* Editor Panel *@
         <MudItem xs="12" md="6">
             <MudPaper Class="pa-4" Elevation="2">
 
@@ -27,7 +28,7 @@
                             <MudSelect @bind-Value="creature.Role" Label="Role" Variant="Variant.Text" Typo="Typo.body2">
                                 @foreach (var role in Enum.GetValues<Role>())
                                 {
-                                    <MudSelectItem Value="@role">@role</MudSelectItem>
+                                    <MudSelectItem Value="@role">@Formatter.Enum(role.ToString())</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -36,13 +37,16 @@
                             <MudSelect @bind-Value="creature.RoleModifier" Label="Role Modifier" Variant="Variant.Text" Typo="Typo.body2">
                                 @foreach (var modifier in Enum.GetValues<RoleModifier>())
                                 {
-                                    <MudSelectItem Value="@modifier">@modifier</MudSelectItem>
+                                    <MudSelectItem Value="@modifier">@Formatter.Enum(modifier.ToString())</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
                         @* Checkbox: Leader Role *@
                         <MudItem xs="3">
-                            <MudCheckBox @bind-Value="creature.IsLeader" Label="Is Leader" LabelPlacement="Placement.Start" />
+                            <MudStack Row Spacing="0" AlignItems="AlignItems.Center">
+                                <MudText Typo="Typo.body2">Is Leader:</MudText>
+                                <MudCheckBox @bind-Value="creature.IsLeader" />
+                            </MudStack>
                         </MudItem>
                     </MudGrid>
 
@@ -52,7 +56,7 @@
                             <MudSelect @bind-Value="creature.Size" Label="Size" Variant="Variant.Text" Typo="Typo.body2">
                                 @foreach (var size in Enum.GetValues<CreatureSize>())
                                 {
-                                    <MudSelectItem Value="@size">@size</MudSelectItem>
+                                    <MudSelectItem Value="@size">@Formatter.Enum(size.ToString())</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -61,7 +65,7 @@
                             <MudSelect @bind-Value="creature.Origin" Label="Origin" Variant="Variant.Text" Typo="Typo.body2">
                                 @foreach (var origin in Enum.GetValues<CreatureOrigin>())
                                 {
-                                    <MudSelectItem Value="@origin">@origin</MudSelectItem>
+                                    <MudSelectItem Value="@origin">@Formatter.Enum(origin.ToString())</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -70,7 +74,7 @@
                             <MudSelect @bind-Value="creature.Type" Label="Type" Variant="Variant.Text" Typo="Typo.body2">
                                 @foreach (var type in Enum.GetValues<CreatureType>())
                                 {
-                                    <MudSelectItem Value="@type">@type</MudSelectItem>
+                                    <MudSelectItem Value="@type">@Formatter.Enum(type.ToString())</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -83,37 +87,7 @@
 
                 @* ---- Section: Ability Scores ---- *@
                 <StatblockEditorSection SectionTitle="Ability Scores">
-
-                    <MudGrid>
-                        @* Strength *@
-                        <MudItem xs="3">
-                            <MudNumericField @bind-Value="creature.Abilities.Strength.Score" Label="Strength" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
-                        </MudItem>
-                        @* Dexterity *@
-                        <MudItem xs="3">
-                            <MudNumericField @bind-Value="creature.Abilities.Dexterity.Score" Label="Dexterity" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
-                        </MudItem>
-                        @* Wisdom *@
-                        <MudItem xs="3">
-                            <MudNumericField @bind-Value="creature.Abilities.Wisdom.Score" Label="Wisdom" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
-                        </MudItem>
-                    </MudGrid>
-
-                    <MudGrid>
-                        @* Constitution *@
-                        <MudItem xs="3">
-                            <MudNumericField @bind-Value="creature.Abilities.Constitution.Score" Label="Constitution" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
-                        </MudItem>
-                        @* Intelligence *@
-                        <MudItem xs="3">
-                            <MudNumericField @bind-Value="creature.Abilities.Intelligence.Score" Label="Intelligence" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
-                        </MudItem>
-                        @* Charisma *@
-                        <MudItem xs="3">
-                            <MudNumericField @bind-Value="creature.Abilities.Charisma.Score" Label="Charisma" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
-                        </MudItem>
-                    </MudGrid>
-
+                    <AbilityScoresEditor @bind-Abilities="creature.Abilities" />
                 </StatblockEditorSection>
 
                 @* ---- Section: Vital Stats ---- *@
@@ -159,7 +133,7 @@
                            <MudSelect @bind-SelectedValues="selectedSkills" Label="Trained Skills" MultiSelection="true" Variant="Variant.Outlined">
                                @foreach (var skill in Enum.GetValues<Skill>())
                                {
-                                   <MudSelectItem Value="@skill">@skill</MudSelectItem>
+                                   <MudSelectItem Value="@skill">@Formatter.EnumName(skill.ToString())</MudSelectItem>
                                }
                            </MudSelect> *@
 
@@ -168,7 +142,7 @@
                     <MudSelect @bind-Value="creature.Alignment" Label="Alignment" Variant="Variant.Outlined" Class="mt-2">
                         @foreach (var alignment in Enum.GetValues<Alignment>())
                         {
-                            <MudSelectItem Value="@alignment">@alignment</MudSelectItem>
+                            <MudSelectItem Value="@alignment">@Formatter.Enum(alignment.ToString())</MudSelectItem>
                         }
                     </MudSelect>
 
@@ -176,27 +150,7 @@
                                 
                 @* ---- Section: Monster Traits ---- *@
                 <StatblockEditorSection SectionTitle="Traits" StackSpacing="0">
-
-                    <MudStack Row Justify="Justify.FlexEnd" Spacing="4">
-                        <MudTooltip Text="Add Trait">
-                            <MudIconButton Icon="@Icons.Material.Filled.Add"  Size="Size.Small" Class="mt-1 mb-1" @onclick="AddTrait" />
-                        </MudTooltip>
-                        <MudTooltip Text="Sort Traits">
-                            <MudIconButton Icon="@Icons.Material.Filled.Sort" Size="Size.Small" Class="mt-1 mb-1" @onclick="SortTraits" />
-                        </MudTooltip>
-                        <MudTooltip Text="Collapse All">
-                            <MudIconButton Icon="@Icons.Material.Filled.UnfoldLess" Size="Size.Small" Class="mt-1 mb-1" @onclick="CollapseAllTraits" />
-                        </MudTooltip>
-                    </MudStack>
-                    
-                    <MudStack Spacing="0">
-                        @for (var i = 0; i < creature.Traits.Count; i++)
-                        {
-                            var currentTrait = creature.Traits[i];
-                            <MonsterTraitEditor @bind-Trait="currentTrait" RemoveTraitCallback="RemoveTrait" />
-                        }
-                    </MudStack>
-
+                    <TraitsEditor @bind-Traits="creature.Traits" />
                 </StatblockEditorSection>   
 
                 @* ---- Section: Monster Powers ---- *@
