@@ -31,6 +31,12 @@ public class Power
     /// </summary>
     public PowerType PowerType { get; set; } = PowerType.AtWill;
 
+    public Recharge Recharge { get; set; } = Recharge.Roll;
+
+    public int RechargesOn { get; set; } = 6;
+
+    public string? RechargeInfo { get; set; }
+
     /// <summary>
     /// Additional usage about how the power can be used. For example, certain encounter powers may be used twice per encounter, but only once per round.
     /// </summary>
@@ -96,7 +102,7 @@ public class Power
     /// Indicates the defense that the attack targets, such as Armor Class, Fortitude, Reflex, or Will.
     /// This determines which of the monster's defenses the attack roll will be made against.
     /// </summary>
-    public Defense Versus { get; set; } = Defense.ArmorClass;
+    public Defense TargetDefense { get; set; } = Defense.ArmorClass;
 
     /// <summary>
     /// Contains the data for the power's "On Hit" effect. 
@@ -120,6 +126,8 @@ public class Power
     /// For attack powers, this effect happens regardless of whether the attack hits or misses.
     /// </summary>
     public string? Effect { get; set; }
+
+    public string? Special { get; set; }
 
     /// <summary>
     /// Indicates the weight of the power for sorting purposes. Powers with higher sort weights will be displayed before traits with lower sort weights in the user interface.

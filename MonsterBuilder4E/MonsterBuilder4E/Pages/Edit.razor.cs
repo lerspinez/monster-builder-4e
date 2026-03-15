@@ -2,13 +2,11 @@
 using MonsterBuilder4E.Models;
 using MonsterBuilder4E.Utility;
 
-namespace MonsterBuilder4E.Components;
+namespace MonsterBuilder4E.Pages;
 
-public partial class MonsterStatblockEditor
+public partial class Edit
 {
     private Creature creature = new Creature();
-    private IEnumerable<Skill> selectedSkills = new HashSet<Skill>();
-    private string languagesText = string.Empty;
 
     protected override void OnInitialized()
     {
@@ -32,7 +30,6 @@ public partial class MonsterStatblockEditor
         creature.Senses = "Perception +3; low-light vision";
 
         creature.TrainedSkills = new List<Skill> { Skill.Athletics, Skill.Intimidate };
-        selectedSkills = creature.TrainedSkills;
 
         creature.Equipment = new List<string> { "longsword", "chainmail", "heavy shield", "crossbow" };
 
@@ -56,10 +53,10 @@ public partial class MonsterStatblockEditor
             AttackType = Enums.AttackType.Melee,
             Range = "Melee 1",
             TargetInfo = "One creature",
-            Versus = Defense.ArmorClass,
+            TargetDefense = Defense.ArmorClass,
             AttackAbility = Ability.Strength,
-            OnHit = new AttackHit 
-            { 
+            OnHit = new AttackHit
+            {
                 BaseDamage = "1d8 + 5",
                 HitEffect = "the target is marked until the end of the hobgoblin's next turn"
             }
@@ -76,10 +73,10 @@ public partial class MonsterStatblockEditor
             AttackType = Enums.AttackType.Ranged,
             Range = "Ranged 15/30",
             TargetInfo = "One creature",
-            Versus = Defense.ArmorClass,
+            TargetDefense = Defense.ArmorClass,
             AttackAbility = Ability.Dexterity,
-            OnHit = new AttackHit 
-            { 
+            OnHit = new AttackHit
+            {
                 BaseDamage = "2d8 + 4"
             }
         });
@@ -95,75 +92,8 @@ public partial class MonsterStatblockEditor
             Effect = "The hobgoblin uses longsword on the triggering enemy."
         });
 
-        languagesText = string.Join(", ", creature.Languages);
-
         // Calculate initiative
         creature.Initiative = MonsterStats.CalculateInitiative(creature);
-    }
-
-    protected override void OnParametersSet()
-    {
-        creature.TrainedSkills = selectedSkills.ToList();
-        creature.Languages = ParseCommaDelimitedList(languagesText);
-        creature.Initiative = MonsterStats.CalculateInitiative(creature);
-    }
-
-    private void AddPower()
-    {
-        creature.Powers.Add(new Power());
-    }
-
-    private void RemovePower(Power power)
-    {
-        creature.Powers.Remove(power);
-    }
-
-    private void SortPowers()
-    {
-        CollapseAllPowers();
-
-        var nameSorted = creature.Powers.OrderBy(p => p.Name).ToList();
-
-        creature.Powers = SortByActionType(nameSorted);
-    }
-
-    private static List<Power> SortByActionType(List<Power> powers)
-    {
-        return
-        [
-            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.Standard)]),
-            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.Move)]),
-            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.Minor)]),
-            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.Free)]),
-            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.NoAction)]),
-        ];
-    }
-
-    private static List<Power> SortByPowerType(List<Power> powers)
-    {
-        return 
-        [
-            .. powers.Where(p => p.PowerType == PowerType.AtWill), 
-            .. powers.Where(p => p.PowerType == PowerType.Recharge), 
-            .. powers.Where(p => p.PowerType == PowerType.Encounter), 
-            .. powers.Where(p => p.PowerType == PowerType.Daily)
-        ];
-    }
-
-    private void CollapseAllPowers()
-    {
-        foreach (var power in creature.Powers)
-        {
-            power.ExpandEditor = false;
-        }
-    }
-
-    private List<string> ParseCommaDelimitedList(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            return new List<string>();
-
-        return [.. text.Split(',').Select(s => s.Trim()).Where(s => !string.IsNullOrEmpty(s))];
     }
 
     private string FormatModifier(int value)

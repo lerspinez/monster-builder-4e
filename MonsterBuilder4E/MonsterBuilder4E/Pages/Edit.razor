@@ -1,0 +1,138 @@
+﻿@page "/"
+
+@using MonsterBuilder4E.Components.Editor
+
+<PageTitle>Edit Monster</PageTitle>
+
+<MudText Typo="Typo.h4" Class="mb-4">Monster Statblock Editor</MudText>
+
+<MudGrid>
+    @* Editor Panel *@
+    <MudItem xs="12" md="6">
+        <MudPaper Class="pa-4" Elevation="2">
+            <MonsterEditor @bind-Creature="creature" />
+        </MudPaper>
+    </MudItem>
+
+    @* Live Preview Panel *@
+    <MudItem xs="12" md="6">
+        <MudPaper Class="pa-4" Elevation="2" Style="position: sticky; top: 20px;">
+            <MudText Typo="Typo.h5" Class="mb-3">Live Preview</MudText>
+
+            <MudCard Elevation="3" Style="max-width: 600px;">
+                <MudCardContent>
+                    @* Header *@
+                    <MudStack Spacing="1">
+                        <MudText Typo="Typo.h4" Style="font-weight: bold; margin: 0;">@creature.Name</MudText>
+                        <MudText Typo="Typo.body2" Style="font-style: italic;">
+                            Level @creature.Level @(creature.RoleModifier != RoleModifier.None ? creature.RoleModifier.ToString() : "") @creature.Role @(creature.IsLeader ? "(Leader)" : "")
+                        </MudText>
+                        <MudText Typo="Typo.body2" Style="font-style: italic;">
+                            @creature.Size @creature.Origin @creature.Type @(!string.IsNullOrEmpty(creature.CreatureKeywords) ? $"({creature.CreatureKeywords})" : "")
+                        </MudText>
+                        <MudText Typo="Typo.body2" Style="font-weight: bold;">XP @creature.XP</MudText>
+                    </MudStack>
+
+                    <MudDivider Class="my-3" />
+
+                    @* Initiative and Senses *@
+                    <MudStack Spacing="1">
+                        <MudText Typo="Typo.body2"><strong>Initiative</strong> @FormatModifier(creature.Initiative)</MudText>
+                        @if (!string.IsNullOrEmpty(creature.Senses))
+                        {
+                            <MudText Typo="Typo.body2"><strong>Senses</strong> @creature.Senses</MudText>
+                        }
+                    </MudStack>
+
+                    <MudDivider Class="my-3" />
+
+                    @* HP and Defenses *@
+                    <MudStack Spacing="1">
+                        <MudText Typo="Typo.body2"><strong>HP</strong> @creature.HitPoints; <strong>Bloodied</strong> @creature.Bloodied</MudText>
+                        <MudText Typo="Typo.body2">
+                            <strong>AC</strong> @creature.ArmorClass; <strong>Fortitude</strong> @creature.Fortitude, <strong>Reflex</strong> @creature.Reflex, <strong>Will</strong> @creature.Will
+                        </MudText>
+                        <MudText Typo="Typo.body2"><strong>Speed</strong> @creature.Speed@(!string.IsNullOrEmpty(creature.SpecialMovement) ? ", " + creature.SpecialMovement : "")</MudText>
+                    </MudStack>
+
+                    @if (creature.Traits.Any())
+                    {
+                        <MudDivider Class="my-3" />
+                        <MudStack Spacing="2">
+                            @foreach (var trait in creature.Traits)
+                            {
+                                <MudText Typo="Typo.body2">
+                                    <strong>@trait.Name</strong>@(trait.IsAura ? $" (aura {trait.AuraRange})" : "")<br />
+                                    @trait.Effect
+                                </MudText>
+                            }
+                        </MudStack>
+                    }
+
+                    @if (creature.Powers.Any())
+                    {
+                        <MudDivider Class="my-3" />
+                        <MudText Typo="Typo.h6" Style="font-weight: bold;">Standard Actions</MudText>
+                        <MudStack Spacing="2" Class="mt-2">
+                            @foreach (var power in creature.Powers.Where(p => p.ActionType == ActionType.Standard))
+                            {
+                                <MudText Typo="Typo.body2">
+                                    <span style="font-size: 1.2em;">@GetPowerIcon(power.PowerType)</span> <strong>@power.Name</strong> ✦ <strong>@power.PowerType</strong><br />
+                                    @if (power.IsAttack && !string.IsNullOrEmpty(power.Range))
+                                    {
+                                        <span><strong>Attack:</strong> @power.Range; @FormatAttack(power) vs. @power.TargetDefense<br /></span>
+                                    }
+                                    @if (power.IsAttack && !string.IsNullOrEmpty(power.OnHit.BaseDamage))
+                                    {
+                                        <span><strong>Hit:</strong> @power.OnHit.BaseDamage damage@(!string.IsNullOrEmpty(power.OnHit.HitEffect) ? ", " + power.OnHit.HitEffect : "")<br /></span>
+                                    }
+                                    @if (!string.IsNullOrEmpty(power.Effect))
+                                    {
+                                        <span><strong>Effect:</strong> @power.Effect</span>
+                                    }
+                                </MudText>
+                            }
+                        </MudStack>
+                    }
+
+                    <MudDivider Class="my-3" />
+
+                    @* Ability Scores *@
+                    <MudStack Row="true" Spacing="3" Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2"><strong>Str</strong> @creature.Abilities.Strength.Score (@FormatModifier(creature.AbilityCheckModifiers.Strength))</MudText>
+                        <MudText Typo="Typo.body2"><strong>Dex</strong> @creature.Abilities.Dexterity.Score (@FormatModifier(creature.AbilityCheckModifiers.Dexterity))</MudText>
+                        <MudText Typo="Typo.body2"><strong>Wis</strong> @creature.Abilities.Wisdom.Score (@FormatModifier(creature.AbilityCheckModifiers.Wisdom))</MudText>
+                    </MudStack>
+                    <MudStack Row="true" Spacing="3" Justify="Justify.SpaceBetween" Class="mt-1">
+                        <MudText Typo="Typo.body2"><strong>Con</strong> @creature.Abilities.Constitution.Score (@FormatModifier(creature.AbilityCheckModifiers.Constitution))</MudText>
+                        <MudText Typo="Typo.body2"><strong>Int</strong> @creature.Abilities.Intelligence.Score (@FormatModifier(creature.AbilityCheckModifiers.Intelligence))</MudText>
+                        <MudText Typo="Typo.body2"><strong>Cha</strong> @creature.Abilities.Charisma.Score (@FormatModifier(creature.AbilityCheckModifiers.Charisma))</MudText>
+                    </MudStack>
+
+                    <MudDivider Class="my-3" />
+
+                    @* Footer *@
+                    <MudStack Spacing="1">
+                        <MudText Typo="Typo.body2"><strong>Alignment</strong> @creature.Alignment</MudText>
+                        @if (creature.Languages.Any())
+                        {
+                            <MudText Typo="Typo.body2"><strong>Languages</strong> @string.Join(", ", creature.Languages)</MudText>
+                        }
+                        @if (creature.Skills.Any())
+                        {
+                            <MudText Typo="Typo.body2"><strong>Skills</strong> @string.Join(", ", creature.Skills)</MudText>
+                        }
+                        @if (creature.Equipment.Any())
+                        {
+                            <MudText Typo="Typo.body2"><strong>Equipment</strong> @string.Join(", ", creature.Equipment)</MudText>
+                        }
+                    </MudStack>
+                </MudCardContent>
+            </MudCard>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+}

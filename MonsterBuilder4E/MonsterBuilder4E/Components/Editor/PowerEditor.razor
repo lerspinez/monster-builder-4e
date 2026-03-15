@@ -69,7 +69,7 @@
                 </MudItem>
                 @* Target Defense *@
                 <MudItem xs="4">
-                    <MudSelect @bind-Value="Power.Versus" @bind-Value:after="UpdatePower" Label="Target Defense" Variant="Variant.Text" Typo="Typo.body2">
+                    <MudSelect @bind-Value="Power.TargetDefense" @bind-Value:after="UpdatePower" Label="Target Defense" Variant="Variant.Text" Typo="Typo.body2">
                         @foreach (var defense in Enum.GetValues<Defense>())
                         {
                             <MudSelectItem Value="@defense">@Formatter.Enum(defense.ToString())</MudSelectItem>
@@ -160,21 +160,25 @@
     //Update power on parent component
 
     [Parameter]
+    public EventCallback UpdateCallback { get; set; }
+
+    [Parameter]
     public EventCallback<Power> PowerChanged { get; set; }
 
     async Task UpdatePower()
     {
         await PowerChanged.InvokeAsync(Power);
+        await UpdateCallback.InvokeAsync();
     }
 
     //Remove power
 
     [Parameter]
-    public EventCallback<Power> RemovePowerCallback { get; set; }
+    public EventCallback<Power> RemoveCallback { get; set; }
 
     private async Task Remove()
     {
-        await RemovePowerCallback.InvokeAsync(Power);
+        await RemoveCallback.InvokeAsync(Power);
     }
 
 }

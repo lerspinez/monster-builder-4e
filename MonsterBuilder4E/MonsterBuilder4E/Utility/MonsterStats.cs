@@ -34,7 +34,7 @@ namespace MonsterBuilder4E.Utility
 
         public static int CalculateDefense(Creature creature, Defense defense)
         {
-            int baseDefense = 10 + creature.LevelBonus + GetEnhancementBonus(creature);
+            int baseDefense = 10 + creature.LevelBonus + GetDefenseEnhancementBonus(creature);
 
             switch (defense)
             {
@@ -163,15 +163,36 @@ namespace MonsterBuilder4E.Utility
             };
         }
 
-        public static int GetAttackPowerModifier(Creature creature, Ability ability, int externalModifier = 0)
+        public static int GetDamageRollModifier(Creature creature, Ability ability, int externalModifier = 0)
         {
-            return GetAbilityCheckModifier(creature, ability) + GetEnhancementBonus(creature) + externalModifier;
+            return creature.Abilities.GetModifier(ability) + GetAttackEnhancementBonus(creature) + creature.DamageModifier + externalModifier;
         }
 
-        public static int GetEnhancementBonus(Creature creature)
+        public static int GetDefenseEnhancementBonus(Creature creature)
         {
-            return 0;
-            //TO-DO: Implement enhancement bonus calculation.
+            return GetEnhancementBonus(creature, 1);
+        }
+
+        public static int GetAttackEnhancementBonus(Creature creature)
+        {
+            return GetEnhancementBonus(creature, 3);
+        }
+
+        public static int GetEnhancementBonus(Creature creature, int levelAdjustment)
+        {
+            if (creature.EnhancementBonus == EnhancementBonus.None)
+                return 0;
+
+            int enhancementBonus = (int)Math.Floor((creature.Level + levelAdjustment) / 5.0);
+
+            return creature.EnhancementBonus switch
+            {
+                EnhancementBonus.Standard => enhancementBonus,
+                EnhancementBonus.Half => (int)Math.Floor(enhancementBonus / 2.0),
+                EnhancementBonus.Minus1 => int.Max(enhancementBonus - 1, 0),
+                EnhancementBonus.Minus2 => int.Max(enhancementBonus - 2, 0),
+                _ => enhancementBonus,
+            };
         }
 
         public static string GetAttackHitTextblock(Creature creature, AttackHit attackHit, bool includeCrit = false)
@@ -187,7 +208,7 @@ namespace MonsterBuilder4E.Utility
 
             //Try parse base damage and if number add to modifiers.
 
-            int damageModifier = GetAttackPowerModifier(creature, attackHit.AbilityModifier, attackHit.DamageModifier);
+            int damageModifier = GetDamageRollModifier(creature, attackHit.AbilityModifier, attackHit.DamageModifier);
 
             if (attackHit.SecondaryAbilityModifiers.Count != 0)
             {

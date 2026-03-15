@@ -1,0 +1,92 @@
+﻿
+<MudStack Spacing="1" Class="pa-2">
+    <MudStack Row Justify="Justify.FlexEnd" Spacing="4">
+        <MudTooltip Text="Add Power">
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mt-1 mb-1" @onclick="AddPower" />
+        </MudTooltip>
+        <MudTooltip Text="Sort Powers">
+            <MudIcon Icon="@Icons.Material.Filled.Sort" Class="mt-1 mb-1" @onclick="SortPowers" />
+        </MudTooltip>
+        <MudTooltip Text="Collapse All">
+            <MudIcon Icon="@Icons.Material.Filled.UnfoldLess" Class="mt-1 mb-1" @onclick="CollapseAllPowers" />
+        </MudTooltip>
+    </MudStack>
+                    
+    <MudStack Spacing="1">
+        @for (var i = 0; i < Creature.Powers.Count; i++)
+        {
+            var currentPower = Creature.Powers[i];
+            <PowerEditor @bind-Power="currentPower" UpdateCallback="UpdateCreature" RemoveCallback="RemovePower" />
+        }
+    </MudStack>
+</MudStack>
+
+@code {
+    [Parameter]
+    public Creature Creature { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<Creature> CreatureChanged { get; set; }
+
+    [Parameter]
+    public EventCallback UpdateCallback { get; set; }
+
+    async Task UpdateCreature()
+    {
+        await CreatureChanged.InvokeAsync(Creature);
+        await UpdateCallback.InvokeAsync();
+    }
+
+    private void AddPower()
+    {
+        Creature.Powers.Add(new Power());
+        UpdateCreature();
+    }
+
+    private void RemovePower(Power power)
+    {
+        Creature.Powers.Remove(power);
+        UpdateCreature();
+    }
+
+    private void SortPowers()
+    {
+        CollapseAllPowers();
+
+        var nameSorted = Creature.Powers.OrderBy(p => p.Name).ToList();
+
+        Creature.Powers = SortByActionType(nameSorted);        
+        UpdateCreature();
+    }
+
+    private static List<Power> SortByActionType(List<Power> powers)
+    {
+        return
+        [
+            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.Standard)]),
+            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.Move)]),
+            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.Minor)]),
+            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.Free)]),
+            .. SortByPowerType([.. powers.Where(p => p.ActionType == ActionType.NoAction)]),
+        ];
+    }
+
+    private static List<Power> SortByPowerType(List<Power> powers)
+    {
+        return
+        [
+            .. powers.Where(p => p.PowerType == PowerType.AtWill),
+            .. powers.Where(p => p.PowerType == PowerType.Recharge),
+            .. powers.Where(p => p.PowerType == PowerType.Encounter),
+            .. powers.Where(p => p.PowerType == PowerType.Daily)
+        ];
+    }
+
+    private void CollapseAllPowers()
+    {
+        foreach (var power in Creature.Powers)
+        {
+            power.ExpandEditor = false;
+        }
+    }
+}

@@ -28,8 +28,12 @@
     [Parameter]
     public EventCallback<Creature> CreatureChanged { get; set; }
 
+    [Parameter]
+    public EventCallback UpdateCallback { get; set; }
+
     async Task UpdateCreature()
     {
         await CreatureChanged.InvokeAsync(Creature);
+        await UpdateCallback.InvokeAsync();
     }
 }

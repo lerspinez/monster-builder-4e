@@ -68,7 +68,7 @@ namespace MonsterBuilder4E.Utility
                 IsAttack = true,
                 Range = "Melee 1",
                 TargetInfo = "One creature",
-                Versus = Defense.ArmorClass,
+                TargetDefense = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
                 OnHit = new AttackHit { BaseDamage = "1d6 + 3" }
             });
@@ -82,7 +82,7 @@ namespace MonsterBuilder4E.Utility
                 IsAttack = true,
                 Range = "Ranged 10/20",
                 TargetInfo = "One creature",
-                Versus = Defense.ArmorClass,
+                TargetDefense = Defense.ArmorClass,
                 AttackAbility = Ability.Dexterity,
                 OnHit = new AttackHit { BaseDamage = "1d6 + 3" }
             });
@@ -137,7 +137,7 @@ namespace MonsterBuilder4E.Utility
                 IsAttack = true,
                 Range = "Melee 1",
                 TargetInfo = "One creature",
-                Versus = Defense.ArmorClass,
+                TargetDefense = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
                 OnHit = new AttackHit { BaseDamage = "1d12 + 3" }
             });
@@ -151,7 +151,7 @@ namespace MonsterBuilder4E.Utility
                 IsAttack = true,
                 Range = "Melee 1 or Ranged 5/10",
                 TargetInfo = "One creature",
-                Versus = Defense.ArmorClass,
+                TargetDefense = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
                 OnHit = new AttackHit { BaseDamage = "1d6 + 3" }
             });
@@ -199,7 +199,7 @@ namespace MonsterBuilder4E.Utility
                 IsAttack = true,
                 Range = "Reach 2",
                 TargetInfo = "One creature",
-                Versus = Defense.ArmorClass,
+                TargetDefense = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
                 OnHit = new AttackHit { BaseDamage = "2d6 + 4", HitEffect = "the ogre pushes the target 1 square" }
             });
@@ -214,7 +214,7 @@ namespace MonsterBuilder4E.Utility
                 IsAttack = true,
                 Range = "Close blast 2",
                 TargetInfo = "Creatures in blast",
-                Versus = Defense.ArmorClass,
+                TargetDefense = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
                 OnHit = new AttackHit { BaseDamage = "1d6 + 4", HitEffect = "the ogre pushes the target 1 square" }
             });
@@ -268,7 +268,7 @@ namespace MonsterBuilder4E.Utility
                 IsAttack = true,
                 Range = "Reach 2",
                 TargetInfo = "One creature",
-                Versus = Defense.ArmorClass,
+                TargetDefense = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
                 OnHit = new AttackHit { BaseDamage = "1d10 + 4", HitEffect = "the target is marked until the end of the drake's next turn" }
             });
@@ -283,7 +283,7 @@ namespace MonsterBuilder4E.Utility
                 Range = "Reach 2",
                 TargetInfo = "One marked enemy that shifts",
                 Trigger = "An enemy marked by the drake shifts",
-                Versus = Defense.ArmorClass,
+                TargetDefense = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
                 OnHit = new AttackHit { BaseDamage = "1d10 + 4", HitEffect = "the target's movement ends" }
             });
@@ -341,7 +341,7 @@ namespace MonsterBuilder4E.Utility
                 IsAttack = true,
                 Range = "Reach 2",
                 TargetInfo = "One creature",
-                Versus = Defense.ArmorClass,
+                TargetDefense = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
                 OnHit = new AttackHit { BaseDamage = "2d6 + 5" }
             });
@@ -355,7 +355,7 @@ namespace MonsterBuilder4E.Utility
                 IsAttack = true,
                 Range = "Reach 2",
                 TargetInfo = "One creature",
-                Versus = Defense.ArmorClass,
+                TargetDefense = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
                 OnHit = new AttackHit { BaseDamage = "2d6 + 5" },
                 Effect = "The troll makes a secondary attack against the same target. Secondary Attack: +8 vs. AC; 1d6 + 5 damage."
@@ -370,7 +370,7 @@ namespace MonsterBuilder4E.Utility
                 IsAttack = true,
                 Range = "Reach 2",
                 TargetInfo = "One creature",
-                Versus = Defense.ArmorClass,
+                TargetDefense = Defense.ArmorClass,
                 AttackAbility = Ability.Strength,
                 OnHit = new AttackHit { BaseDamage = "3d6 + 5", HitEffect = "ongoing 5 damage (save ends)" }
             });
