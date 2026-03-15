@@ -1,0 +1,89 @@
+﻿
+<MudStack Spacing="4" Class="pa-2">
+
+    <MudGrid>
+        @* Input: Monster Level*@
+        <MudItem xs="3">
+            <MudNumericField @bind-Value="Creature.Level" @bind-Value:after="UpdateCreature" Label="Level" 
+                Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="35" />
+        </MudItem>
+        @* Select Input: Combat Role *@
+        <MudItem xs="3">
+            <MudSelect @bind-Value="Creature.Role" @bind-Value:after="UpdateCreature" Label="Role" 
+                Variant="Variant.Text" Typo="Typo.body2">
+                @foreach (var role in Enum.GetValues<Role>())
+                {
+                    <MudSelectItem Value="@role">@Formatter.Enum(role.ToString())</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        @* Select Input: Combat Role Modifier *@
+        <MudItem xs="3">
+            <MudSelect @bind-Value="Creature.RoleModifier" @bind-Value:after="UpdateCreature" Label="Role Modifier" 
+                Variant="Variant.Text" Typo="Typo.body2">
+                @foreach (var modifier in Enum.GetValues<RoleModifier>())
+                {
+                    <MudSelectItem Value="@modifier">@Formatter.Enum(modifier.ToString())</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        @* Checkbox: Leader Role *@
+        <MudItem xs="3">
+            <MudStack Row Spacing="0" AlignItems="AlignItems.Center">
+                <MudText Typo="Typo.body2">Is Leader:</MudText>
+                <MudCheckBox @bind-Value="Creature.IsLeader" @bind-Value:after="UpdateCreature" />
+            </MudStack>
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid>
+        <MudItem xs="3">
+            @* Select Input: Creature Size *@
+            <MudSelect @bind-Value="Creature.Size" @bind-Value:after="UpdateCreature" Label="Size" 
+                Variant="Variant.Text" Typo="Typo.body2">
+                @foreach (var size in Enum.GetValues<CreatureSize>())
+                {
+                    <MudSelectItem Value="@size">@Formatter.Enum(size.ToString())</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="3">
+            @* Select Input: Creature Origin *@
+            <MudSelect @bind-Value="Creature.Origin" @bind-Value:after="UpdateCreature" Label="Origin" 
+                Variant="Variant.Text" Typo="Typo.body2">
+                @foreach (var origin in Enum.GetValues<CreatureOrigin>())
+                {
+                    <MudSelectItem Value="@origin">@Formatter.Enum(origin.ToString())</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="3">
+            @* Select Input: Creature Type *@
+            <MudSelect @bind-Value="Creature.Type" @bind-Value:after="UpdateCreature" Label="Type" 
+                Variant="Variant.Text" Typo="Typo.body2">
+                @foreach (var type in Enum.GetValues<CreatureType>())
+                {
+                    <MudSelectItem Value="@type">@Formatter.Enum(type.ToString())</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+    </MudGrid>
+
+    @* Input: Creature Keywords *@
+    <MudTextField @bind-Value="Creature.CreatureKeywords" @bind-Value:after="UpdateCreature" Label="Keywords" 
+        Variant="Variant.Text" Typo="Typo.body2" />
+
+</MudStack>
+
+@code {
+    [Parameter]
+    public Creature Creature { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<Creature> CreatureChanged { get; set; }
+
+    async Task UpdateCreature()
+    {
+        await CreatureChanged.InvokeAsync(Creature);
+    }
+}

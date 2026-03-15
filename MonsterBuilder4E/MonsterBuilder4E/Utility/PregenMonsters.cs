@@ -252,7 +252,6 @@ namespace MonsterBuilder4E.Utility
             drake.Initiative = MonsterStats.CalculateInitiative(drake);
 
             drake.TrainedSkills.Add(Skill.Athletics);
-            drake.Resistances.Add("fire 5");
 
             drake.Traits.Add(new Trait
             {
@@ -320,9 +319,6 @@ namespace MonsterBuilder4E.Utility
             };
 
             troll.Initiative = MonsterStats.CalculateInitiative(troll);
-
-            troll.Vulnerabilities.Add("fire 5");
-            troll.Vulnerabilities.Add("acid 5");
 
             troll.Traits.Add(new Trait
             {

@@ -11,172 +11,74 @@
         @* Editor Panel *@
         <MudItem xs="12" md="6">
             <MudPaper Class="pa-4" Elevation="2">
-
-                @* ---- Monster Name ---- *@
-                <MudTextField @bind-Value="creature.Name" Label="Name" Variant="Variant.Outlined" Typo="Typo.h5" />
-
-                @* ---- Section: Basic Information ---- *@
-                <StatblockEditorSection SectionTitle="Basic Info">
-
-                    <MudGrid>
-                        @* Input: Monster Level*@
-                        <MudItem xs="3">
-                            <MudNumericField @bind-Value="creature.Level" Label="Level" Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="35" />
-                        </MudItem>
-                        @* Select Input: Combat Role *@
-                        <MudItem xs="3">
-                            <MudSelect @bind-Value="creature.Role" Label="Role" Variant="Variant.Text" Typo="Typo.body2">
-                                @foreach (var role in Enum.GetValues<Role>())
-                                {
-                                    <MudSelectItem Value="@role">@Formatter.Enum(role.ToString())</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudItem>
-                        @* Select Input: Combat Role Modifier *@
-                        <MudItem xs="3">
-                            <MudSelect @bind-Value="creature.RoleModifier" Label="Role Modifier" Variant="Variant.Text" Typo="Typo.body2">
-                                @foreach (var modifier in Enum.GetValues<RoleModifier>())
-                                {
-                                    <MudSelectItem Value="@modifier">@Formatter.Enum(modifier.ToString())</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudItem>
-                        @* Checkbox: Leader Role *@
-                        <MudItem xs="3">
-                            <MudStack Row Spacing="0" AlignItems="AlignItems.Center">
-                                <MudText Typo="Typo.body2">Is Leader:</MudText>
-                                <MudCheckBox @bind-Value="creature.IsLeader" />
-                            </MudStack>
-                        </MudItem>
-                    </MudGrid>
-
-                    <MudGrid>
-                        <MudItem xs="3">
-                            @* Select Input: Creature Size *@
-                            <MudSelect @bind-Value="creature.Size" Label="Size" Variant="Variant.Text" Typo="Typo.body2">
-                                @foreach (var size in Enum.GetValues<CreatureSize>())
-                                {
-                                    <MudSelectItem Value="@size">@Formatter.Enum(size.ToString())</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudItem>
-                        <MudItem xs="3">
-                            @* Select Input: Creature Origin *@
-                            <MudSelect @bind-Value="creature.Origin" Label="Origin" Variant="Variant.Text" Typo="Typo.body2">
-                                @foreach (var origin in Enum.GetValues<CreatureOrigin>())
-                                {
-                                    <MudSelectItem Value="@origin">@Formatter.Enum(origin.ToString())</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudItem>
-                        <MudItem xs="3">
-                            @* Select Input: Creature Type *@
-                            <MudSelect @bind-Value="creature.Type" Label="Type" Variant="Variant.Text" Typo="Typo.body2">
-                                @foreach (var type in Enum.GetValues<CreatureType>())
-                                {
-                                    <MudSelectItem Value="@type">@Formatter.Enum(type.ToString())</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudItem>
-                    </MudGrid>
-
-                    @* Input: Creature Keywords *@
-                    <MudTextField @bind-Value="creature.CreatureKeywords" Label="Keywords" Variant="Variant.Text" Typo="Typo.body2" />
-
-                </StatblockEditorSection>
-
-                @* ---- Section: Ability Scores ---- *@
-                <StatblockEditorSection SectionTitle="Ability Scores">
-                    <AbilityScoresEditor @bind-Abilities="creature.Abilities" />
-                </StatblockEditorSection>
-
-                @* ---- Section: Vital Stats ---- *@
-                <StatblockEditorSection SectionTitle="Vital Stats">
-
-                    <MudTextField @bind-Value="creature.Senses" Label="Senses" Variant="Variant.Text" Typo="Typo.body2" Placeholder="e.g., darkvision" />
-
-                    <MudNumericField @bind-Value="creature.Speed" Label="Speed" Variant="Variant.Text" Typo="Typo.body2" Min="0" />
-
-                </StatblockEditorSection>
-
-                @* ---- Section: Combat Stats ---- *@
-                <StatblockEditorSection SectionTitle="Combat Stats">
-
-                    <MudGrid>
-                        <MudItem xs="6">
-                            <MudTextField Value="@creature.HitPoints.ToString()" Label="Hit Points" Variant="Variant.Text" Typo="Typo.body2" ReadOnly="true" />
-                        </MudItem>
-                    </MudGrid>
-
-                    <MudGrid>
-                        <MudItem xs="3">
-                            <MudTextField Value="@creature.ArmorClass.ToString()" Label="AC" Variant="Variant.Text" Typo="Typo.body2" ReadOnly="true" />
-                        </MudItem>
-                        <MudItem xs="3">
-                            <MudTextField Value="@creature.Fortitude.ToString()" Label="Fortitude" Variant="Variant.Text" Typo="Typo.body2" ReadOnly="true" />
-                        </MudItem>
-                        <MudItem xs="3">
-                            <MudTextField Value="@creature.Reflex.ToString()" Label="Reflex" Variant="Variant.Text" Typo="Typo.body2" ReadOnly="true" />
-                        </MudItem>
-                        <MudItem xs="3">
-                            <MudTextField Value="@creature.Will.ToString()" Label="Will" Variant="Variant.Text" Typo="Typo.body2" ReadOnly="true" />
-                        </MudItem>
-                    </MudGrid>
-
-                </StatblockEditorSection>
-
-                @* ---- Section: Other Stats ---- *@
-                <StatblockEditorSection SectionTitle="Other Stats">
-
-                    @* Skills and Languages *@
-                    @* <MudText Typo="Typo.h6" Class="mt-4 mb-2">Skills & Languages</MudText>
-                           <MudSelect @bind-SelectedValues="selectedSkills" Label="Trained Skills" MultiSelection="true" Variant="Variant.Outlined">
-                               @foreach (var skill in Enum.GetValues<Skill>())
-                               {
-                                   <MudSelectItem Value="@skill">@Formatter.EnumName(skill.ToString())</MudSelectItem>
-                               }
-                           </MudSelect> *@
-
-                    <MudTextField @bind-Value="languagesText" Label="Languages (comma separated)" Variant="Variant.Outlined" Class="mt-2" Placeholder="Common, Goblin" />
-
-                    <MudSelect @bind-Value="creature.Alignment" Label="Alignment" Variant="Variant.Outlined" Class="mt-2">
-                        @foreach (var alignment in Enum.GetValues<Alignment>())
-                        {
-                            <MudSelectItem Value="@alignment">@Formatter.Enum(alignment.ToString())</MudSelectItem>
-                        }
-                    </MudSelect>
-
-                </StatblockEditorSection>
-                                
-                @* ---- Section: Monster Traits ---- *@
-                <StatblockEditorSection SectionTitle="Traits">
-                    <TraitsEditor @bind-Creature="creature" />
-                </StatblockEditorSection>   
-
-                @* ---- Section: Monster Powers ---- *@
-                <StatblockEditorSection SectionTitle="Powers">
-
-                    <MudStack Row Justify="Justify.FlexEnd" Spacing="4">
-                        <MudTooltip Text="Add Power">
-                            <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Class="mt-1 mb-1" @onclick="AddPower" />
-                        </MudTooltip>
-                        <MudTooltip Text="Sort Powers">
-                            <MudIconButton Icon="@Icons.Material.Filled.Sort" Size="Size.Small" Class="mt-1 mb-1" @onclick="SortPowers" />
-                        </MudTooltip>
-                        <MudTooltip Text="Collapse All">
-                            <MudIconButton Icon="@Icons.Material.Filled.UnfoldLess" Size="Size.Small" Class="mt-1 mb-1" @onclick="CollapseAllPowers" />
-                        </MudTooltip>
-                    </MudStack>
+                <MudStack Spacing="1">
                     
-                    <MudStack Spacing="0">
-                        @for (var i = 0; i < creature.Powers.Count; i++)
-                        {
-                            var currentPower = creature.Powers[i];
-                            <MonsterPowerEditor @bind-Power="currentPower" RemovePowerCallback="RemovePower" />
-                        }
+                    @* ---- Editor Header ---- *@
+                    <MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End">
+                        @* Monster Name *@
+                        <MudTextField @bind-Value="creature.Name" Label="Monster Name"
+                            Variant="Variant.Outlined" Typo="Typo.h5" Margin="Margin.Dense" />
+                        @* Reset button *@
+                        <MudTooltip Text="Reset">
+                            <MudIcon Icon="@Icons.Material.Filled.ClearAll" Size="Size.Large" />
+                        </MudTooltip>
+                        @* Collapse All button *@
+                        <MudTooltip Text="Collapse All">
+                            <MudIcon Icon="@Icons.Material.Filled.UnfoldLess" Size="Size.Large" />
+                        </MudTooltip>
                     </MudStack>
 
-                </StatblockEditorSection>                
+                    @* ---- Section: Basic Information ---- *@
+                    <StatblockEditorSection SectionTitle="Basic Info">
+                        <BasicInfoEditor @bind-Creature="creature" />
+                    </StatblockEditorSection>
+
+                    @* ---- Section: Ability Scores ---- *@
+                    <StatblockEditorSection SectionTitle="Ability Scores">
+                        <AbilityScoresEditor @bind-Creature="creature" />
+                    </StatblockEditorSection>
+
+                    @* ---- Section: Tactical Stats ---- *@
+                    <StatblockEditorSection SectionTitle="Tactical Stats">
+                        <TacticalStatsEditor @bind-Creature="creature" />
+                    </StatblockEditorSection>
+
+                    @* ---- Section: Other Stats ---- *@
+                    <StatblockEditorSection SectionTitle="Other Stats">
+                        <OtherStatsEditor @bind-Creature="creature" />
+                    </StatblockEditorSection>
+                                
+                    @* ---- Section: Monster Traits ---- *@
+                    <StatblockEditorSection SectionTitle="Traits">
+                        <TraitsEditor @bind-Creature="creature" />
+                    </StatblockEditorSection>
+
+                    @* ---- Section: Monster Powers ---- *@
+                    <StatblockEditorSection SectionTitle="Powers">
+
+                        <MudStack Row Justify="Justify.FlexEnd" Spacing="4">
+                            <MudTooltip Text="Add Power">
+                                <MudIcon Icon="@Icons.Material.Filled.Add" Class="mt-1 mb-1" @onclick="AddPower" />
+                            </MudTooltip>
+                            <MudTooltip Text="Sort Powers">
+                                <MudIcon Icon="@Icons.Material.Filled.Sort" Class="mt-1 mb-1" @onclick="SortPowers" />
+                            </MudTooltip>
+                            <MudTooltip Text="Collapse All">
+                                <MudIcon Icon="@Icons.Material.Filled.UnfoldLess" Class="mt-1 mb-1" @onclick="CollapseAllPowers" />
+                            </MudTooltip>
+                        </MudStack>
+                    
+                        <MudStack Spacing="0">
+                            @for (var i = 0; i < creature.Powers.Count; i++)
+                            {
+                                var currentPower = creature.Powers[i];
+                                <MonsterPowerEditor @bind-Power="currentPower" RemovePowerCallback="RemovePower" />
+                            }
+                        </MudStack>
+
+                    </StatblockEditorSection>
+
+                </MudStack>                              
                 
             </MudPaper>
         </MudItem>

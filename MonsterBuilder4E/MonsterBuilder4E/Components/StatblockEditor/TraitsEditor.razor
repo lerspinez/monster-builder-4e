@@ -1,18 +1,18 @@
 ﻿
-<MudStack Spacing="0">
+<MudStack Spacing="1" Class="pa-2">
     <MudStack Row Justify="Justify.FlexEnd" Spacing="4">
         <MudTooltip Text="Add Trait">
-            <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Class="mt-1 mb-1" @onclick="AddTrait" />
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mt-1 mb-1" @onclick="AddTrait" />
         </MudTooltip>
         <MudTooltip Text="Sort Traits">
-            <MudIconButton Icon="@Icons.Material.Filled.Sort" Size="Size.Small" Class="mt-1 mb-1" @onclick="SortTraits" />
+            <MudIcon Icon="@Icons.Material.Filled.Sort" Class="mt-1 mb-1" @onclick="SortTraits" />
         </MudTooltip>
         <MudTooltip Text="Collapse All">
-            <MudIconButton Icon="@Icons.Material.Filled.UnfoldLess" Size="Size.Small" Class="mt-1 mb-1" @onclick="CollapseAllTraits" />
+            <MudIcon Icon="@Icons.Material.Filled.UnfoldLess" Class="mt-1 mb-1" @onclick="CollapseAllTraits" />
         </MudTooltip>
     </MudStack>
                     
-    <MudStack Spacing="0">
+    <MudStack Spacing="1">
         @for (var i = 0; i < Creature.Traits.Count; i++)
         {
             var currentTrait = Creature.Traits[i];
@@ -22,7 +22,6 @@
 </MudStack>
 
 @code {
-
     [Parameter]
     public Creature Creature { get; set; } = new();
 

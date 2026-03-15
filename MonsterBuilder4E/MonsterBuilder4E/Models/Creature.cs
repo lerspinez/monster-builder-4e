@@ -9,12 +9,16 @@ public class Creature
     /// The name of the creature, such as "Goblin", "Orc", "Dragon", etc.
     /// This is a required property that identifies the creature and is used for display purposes in the application.
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } = "Monster";
 
     /// <summary>
     /// Short description of the creature, which can include its appearance, behavior, or any notable characteristics.
     /// </summary>
     public string Description { get; set; } = string.Empty;
+
+    //-----------------------------
+    // Basic Information
+    //-----------------------------
 
     /// <summary>
     /// Level of the monster, which is a key factor in determining its overall power and challenge rating in D&D 4E.
@@ -60,13 +64,13 @@ public class Creature
     /// Origin of the creature, as defined in D&D 4E. 
     /// This can include categories like Natural, Elemental, Fey, Shadow, and more.
     /// </summary>
-    public CreatureOrigin Origin { get; set; }
+    public CreatureOrigin Origin { get; set; } = CreatureOrigin.Natural;
 
     /// <summary>
     /// The creature's type, as defined in D&D 4E. 
     /// Creature types include Humanoid, Beast, Dragon, Animate, etc.
     /// </summary>
-    public CreatureType Type { get; set; }
+    public CreatureType Type { get; set; } = CreatureType.Humanoid;
 
     /// <summary>
     /// Any keywords associated with the creature, from the D&D 4E list.
@@ -80,20 +84,51 @@ public class Creature
     /// </summary>
     public string Race { get; set; } = string.Empty;
 
+    //-----------------------------
+    // Ability Scores
+    //-----------------------------
+
     /// <summary>
     /// The creature's ability scores, which include Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma.
     /// </summary>
     public AbilityScores Abilities { get; set; } = new();
 
+    //-----------------------------
+    // Tactical Stats
+    //-----------------------------
+
+    /// <summary>
+    /// Indicates if the monster has a racial or innate bonus on initiative.
+    /// </summary>
+    public int InitiativeModifier { get; set; } = 0;
+
     /// <summary>
     /// Indicates the creature's initiative modifier, which is calculated based on its level and Dexterity modifier.
     /// </summary>
-    public int Initiative { get; set; } //GetInitiative method in MonsterStats
+    public int Initiative { get; set; } //TO-DO: GetInitiative method in MonsterStats
 
     /// <summary>
     /// Defines the creature's special senses under the D&D 4E rules, such as Darkvision, Tremorsense, Blindsight, etc.
     /// </summary>
-    public string Senses { get; set; } = string.Empty; //GetSenses method in MonsterStats
+    public string Senses { get; set; } = string.Empty;
+
+    /// <summary>
+    /// The creature's land speed, which is the number of squares it can move on its turn in combat according to D&D 4E rules.
+    /// </summary>
+    public int Speed { get; set; }
+
+    /// <summary>
+    /// Special movement types the creature has, such as flying, swimming, climbing, teleportation, etc.
+    /// These movement modes use the D&D 4E rules.
+    /// </summary>
+    public string SpecialMovement { get; set; } = string.Empty;
+
+    // Hit Points
+
+    /// <summary>
+    /// Indicates if the monster gets any bonus hit points, aside from their role and role modifier.
+    /// </summary>
+    public BonusHitPoints BonusHitPoints { get; set; } = BonusHitPoints.None;
 
     /// <summary>
     /// Indicates the creature's maximum hit points, which are calculated based on its level, role, and Constitution score according to D&D 4E rules.
@@ -110,23 +145,24 @@ public class Creature
     /// </remarks>
     public int Bloodied => (int)Math.Floor(HitPoints / 2.0);
 
+    // Immunities, Resistances and Vulnerabilities
+
     /// <summary>
     /// Defines the creature's immunities, according to D&D 4E rules.
     /// </summary>
-    public List<string> ImmuneConditions { get; set; } = new();
+    public string Immunities { get; set; } = string.Empty;
 
     /// <summary>
     /// Defines the creature's damage resistances according to D&D 4E rules.
     /// </summary>
-    public List<string> Resistances { get; set; } = new();
+    public string Resistances { get; set; } = string.Empty;
 
     /// <summary>
     /// Defines the creature's vulnerabilities according to D&D 4E rules.
     /// </summary>
-    public List<string> Vulnerabilities { get; set; } = new();
+    public string Vulnerabilities { get; set; } = string.Empty;
 
-
-    //Defenses
+    // Defenses
 
     /// <summary>
     /// The creature's Armor Class defense (AC), which is calculated based on its level, equipped armor, Dex/Int modifier, and any other relevant factors according to D&D 4E rules.
@@ -149,41 +185,69 @@ public class Creature
     /// </summary>
     public int Will => MonsterStats.CalculateDefense(this, Defense.Will);
 
+    //Defense Modifiers
+
     /// <summary>
     /// Special AC modifier, which is added to the creature's base Armor Class to determine its final AC value.
     /// </summary>
-    public int ArmorClassModifier {  get; set; }
+    public int ArmorClassModifier { get; set; } = 0;
 
     /// <summary>
     /// Special Fortitude modifier, which is added to the creature's base Fortitude defense to determine its final Fortitude value.
     /// </summary>
-    public int FortitudeModifier { get; set; }
+    public int FortitudeModifier { get; set; } = 0;
 
     /// <summary>
     /// Special Reflex modifier, which is added to the creature's base Reflex defense to determine its final Reflex value.
     /// </summary>
-    public int ReflexModifier { get; set; }
+    public int ReflexModifier { get; set; } = 0;
 
     /// <summary>
     /// Special Will modifier, which is added to the creature's base Will defense to determine its final Will value.
     /// </summary>
-    public int WillModifier { get; set; }
+    public int WillModifier { get; set; } = 0;
 
+    //Saving Throws
 
-    //Savings Throws
+    /// <summary>
+    /// Indicates if the monster gets any bonus on saving throws.
+    /// </summary>
+    public int SavingThrowModifier { get; set; } = 0; //TO-DO: Connect with MonsterStats, its calculated based on role modifier
+
+    // Enhancement Bonus
+
+    /// <summary>
+    /// A creature's enhancement bonus is added to their attack rolls, damage rolls, and to their defenses.
+    /// </summary>
+    public EnhancementBonus EnhancementBonus { get; set; } = EnhancementBonus.Standard;
+
+    // Offense Modifiers
+
+    /// <summary>
+    /// Indicates if the monster gets an innate modifier on attack rolls in addition to level and ability scores.
+    /// </summary>
+    public int AttackModifier { get; set; } = 0;
+
+    /// <summary>
+    /// Indicates if the monster gets an innate modifier on damage rolls in addition to level and ability scores.
+    /// </summary>
+    public int DamageModifier { get; set; } = 0;
+
+    /// <summary>
+    /// Indicates if the monster has an special effect on their critical hits.
+    /// </summary>
+    public string CriticalHitEffect { get; set; } = string.Empty;
 
     //Action Points
 
     /// <summary>
-    /// The creature's land speed, which is the number of squares it can move on its turn in combat according to D&D 4E rules.
+    /// Indicates if the monster has any action points, which allow the creature to take an extra action on its turn.
     /// </summary>
-    public int Speed { get; set; }
+    public int ActionPoints { get; set; } = 0;  //TO-DO: Connect with MonsterStats, its calculated based on role modifier
 
-    /// <summary>
-    /// Special movement types the creature has, such as flying, swimming, climbing, teleportation, etc.
-    /// These movement modes use the D&D 4E rules.
-    /// </summary>
-    public string SpecialMovement { get; set; } = string.Empty;
+    //-----------------------------
+    // Traits
+    //-----------------------------
 
     /// <summary>
     /// Traits are special abilities or characteristics that the creature has, which can include things like aura effects, regeneration, camouflage, etc.
@@ -191,11 +255,15 @@ public class Creature
     /// </summary>
     public List<Trait> Traits { get; set; } = new();
 
-    //Actions
-
-    //Triggered Actions
+    //-----------------------------
+    // Powers
+    //-----------------------------
 
     public List<Power> Powers { get; set; } = new();
+
+    //-----------------------------
+    // Other Stats
+    //-----------------------------
 
     /// <summary>
     /// Lists the skills in which the creature is trained, which means it gets a +5 bonus on checks with those skills, per D&D 4E rules.
@@ -230,9 +298,4 @@ public class Creature
     /// Defines the items carried by the creature, including weapons, armor, and other equipment.
     /// </summary>
     public List<string> Equipment { get; set; } = new();
-
-    /// <summary>
-    /// A creature's enhancement bonus is added to their attack rolls, damage rolls, and to their defenses.
-    /// </summary>
-    public int EnhancementBonus { get; set; } = 0;
 }

@@ -1,0 +1,95 @@
+﻿
+<MudStack Spacing="4" Class="pa-2">
+
+    @* Senses *@
+    <MudTextField @bind-Value="Creature.Senses" @bind-Value:after="UpdateCreature" Label="Senses" 
+        Variant="Variant.Text" Typo="Typo.body2" Placeholder="e.g., darkvision, tremorsense" />
+
+    <MudGrid>
+        @* Speed *@
+        <MudItem xs="4">
+            <MudNumericField @bind-Value="Creature.Speed" @bind-Value:after="UpdateCreature" Label="Speed"
+                Variant="Variant.Text" Typo="Typo.body2" Min="0" Max="200" />
+        </MudItem>
+        @* Special Movement Modes *@
+        <MudItem xs="8">
+            <MudTextField @bind-Value="Creature.SpecialMovement" @bind-Value:after="UpdateCreature" Label="Movement Modes"
+                Variant="Variant.Text" Typo="Typo.body2" Placeholder="e.g., swim 10, fly 6 (hover), etc" />
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid>
+        @* Enhancement Bonus *@
+        <MudItem xs="4">
+            <MudSelect @bind-Value="Creature.EnhancementBonus" @bind-Value:after="UpdateCreature" Label="Enhancement Bonus"
+                Variant="Variant.Text" Typo="Typo.body2">
+                @foreach (var enhancementBonus in Enum.GetValues<EnhancementBonus>())
+                {
+                    <MudSelectItem Value="@enhancementBonus">@Formatter.Enum(enhancementBonus.ToString())</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+    </MudGrid>
+
+    <MudStack Row Spacing="0" AlignItems="AlignItems.End">
+        <MudText Typo="Typo.body1">Combat Modifiers</MudText>
+        <MudTooltip Text="These modifiers are in addition to the monster's level and abilty scores.">
+            <MudIconButton Icon="@Icons.Material.Outlined.Info" Color="Color.Primary" Size="Size.Small" />
+        </MudTooltip>
+    </MudStack>
+        
+    <MudGrid>
+        @* AC Modifier *@
+        <MudItem xs="3">
+            <MudNumericField @bind-Value="Creature.ArmorClassModifier" @bind-Value:after="UpdateCreature" Label="Armor Class"
+                Variant="Variant.Text" Typo="Typo.body2" Min="-5" Max="10" />
+        </MudItem>
+        @* Fortitude Modifier *@
+        <MudItem xs="3">
+            <MudNumericField @bind-Value="Creature.FortitudeModifier" @bind-Value:after="UpdateCreature" Label="Fortitude"
+                Variant="Variant.Text" Typo="Typo.body2" Min="-5" Max="10" />
+        </MudItem>
+        @* Reflex Modifier *@
+        <MudItem xs="3">
+            <MudNumericField @bind-Value="Creature.ReflexModifier" @bind-Value:after="UpdateCreature" Label="Reflex"
+                Variant="Variant.Text" Typo="Typo.body2" Min="-5" Max="10" />
+        </MudItem>
+        @* Will Modifier *@
+        <MudItem xs="3">
+            <MudNumericField @bind-Value="Creature.WillModifier" @bind-Value:after="UpdateCreature" Label="Will"
+                Variant="Variant.Text" Typo="Typo.body2" Min="-5" Max="10" />
+        </MudItem>
+    </MudGrid>
+        
+    <MudGrid>
+        @* Attack Modifier *@
+        <MudItem xs="3">
+            <MudNumericField @bind-Value="Creature.AttackModifier" @bind-Value:after="UpdateCreature" Label="Atack"
+                Variant="Variant.Text" Typo="Typo.body2" Min="-5" Max="10" />
+        </MudItem>
+        @* Damage Modifier *@
+        <MudItem xs="3">
+            <MudNumericField @bind-Value="Creature.DamageModifier" @bind-Value:after="UpdateCreature" Label="Damage"
+                Variant="Variant.Text" Typo="Typo.body2" Min="-5" Max="10" />
+        </MudItem>
+        @* Reflex Modifier *@
+        <MudItem xs="6">
+            <MudTextField @bind-Value="Creature.CriticalHitEffect" @bind-Value:after="UpdateCreature" Label="Critical Hit"
+                Variant="Variant.Text" Typo="Typo.body2" Placeholder="e.g., +1d6 damage, ongoing 5 fire damage, etc" />
+        </MudItem>
+    </MudGrid>
+
+</MudStack>
+
+@code {
+    [Parameter]
+    public Creature Creature { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<Creature> CreatureChanged { get; set; }
+
+    async Task UpdateCreature()
+    {
+        await CreatureChanged.InvokeAsync(Creature);
+    }
+}

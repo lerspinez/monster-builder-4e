@@ -1,48 +1,53 @@
-﻿<MudGrid>
-    @* Strength *@
-    <MudItem xs="3">
-        <MudNumericField @bind-Value="Abilities.Strength.Score" @bind-Value:after="UpdateAbilities" Label="Strength" 
-            Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
-    </MudItem>
-    @* Dexterity *@
-    <MudItem xs="3">
-        <MudNumericField @bind-Value="Abilities.Dexterity.Score" @bind-Value:after="UpdateAbilities" Label="Dexterity" 
-            Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
-    </MudItem>
-    @* Wisdom *@
-    <MudItem xs="3">
-        <MudNumericField @bind-Value="Abilities.Wisdom.Score" @bind-Value:after="UpdateAbilities" Label="Wisdom" 
-            Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
-    </MudItem>
-</MudGrid>
+﻿
+<MudStack Spacing="4" Class="pa-2">
 
-<MudGrid>
-    @* Constitution *@
-    <MudItem xs="3">
-        <MudNumericField @bind-Value="Abilities.Constitution.Score" @bind-Value:after="UpdateAbilities" Label="Constitution" 
-            Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
-    </MudItem>
-    @* Intelligence *@
-    <MudItem xs="3">
-        <MudNumericField @bind-Value="Abilities.Intelligence.Score" @bind-Value:after="UpdateAbilities" Label="Intelligence" 
-            Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
-    </MudItem>
-    @* Charisma *@
-    <MudItem xs="3">
-        <MudNumericField @bind-Value="Abilities.Charisma.Score" @bind-Value:after="UpdateAbilities" Label="Charisma" 
-            Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
-    </MudItem>
-</MudGrid>
+    <MudGrid>
+        @* Strength *@
+        <MudItem xs="3">
+            <MudNumericField @bind-Value="Creature.Abilities.Strength.Score" @bind-Value:after="UpdateCreature" Label="Strength"
+                             Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
+        </MudItem>
+        @* Dexterity *@
+        <MudItem xs="3">
+            <MudNumericField @bind-Value="Creature.Abilities.Dexterity.Score" @bind-Value:after="UpdateCreature" Label="Dexterity"
+                             Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
+        </MudItem>
+        @* Wisdom *@
+        <MudItem xs="3">
+            <MudNumericField @bind-Value="Creature.Abilities.Wisdom.Score" @bind-Value:after="UpdateCreature" Label="Wisdom"
+                             Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid>
+        @* Constitution *@
+        <MudItem xs="3">
+            <MudNumericField @bind-Value="Creature.Abilities.Constitution.Score" @bind-Value:after="UpdateCreature" Label="Constitution"
+                             Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
+        </MudItem>
+        @* Intelligence *@
+        <MudItem xs="3">
+            <MudNumericField @bind-Value="Creature.Abilities.Intelligence.Score" @bind-Value:after="UpdateCreature" Label="Intelligence"
+                             Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
+        </MudItem>
+        @* Charisma *@
+        <MudItem xs="3">
+            <MudNumericField @bind-Value="Creature.Abilities.Charisma.Score" @bind-Value:after="UpdateCreature" Label="Charisma"
+                             Variant="Variant.Text" Typo="Typo.body2" Min="1" Max="30" />
+        </MudItem>
+    </MudGrid>
+
+</MudStack>
 
 @code {
     [Parameter]
-    public AbilityScores Abilities { get; set; } = new();
+    public Creature Creature { get; set; } = new();
 
     [Parameter]
-    public EventCallback<AbilityScores> AbilitiesChanged { get; set; }
+    public EventCallback<Creature> CreatureChanged { get; set; }
 
-    async Task UpdateAbilities()
+    async Task UpdateCreature()
     {
-        await AbilitiesChanged.InvokeAsync(Abilities);
+        await CreatureChanged.InvokeAsync(Creature);
     }
 }

@@ -34,7 +34,7 @@ namespace MonsterBuilder4E.Utility
 
         public static int CalculateDefense(Creature creature, Defense defense)
         {
-            int baseDefense = 10 + creature.LevelBonus + creature.EnhancementBonus;
+            int baseDefense = 10 + creature.LevelBonus + GetEnhancementBonus(creature);
 
             switch (defense)
             {
@@ -165,7 +165,13 @@ namespace MonsterBuilder4E.Utility
 
         public static int GetAttackPowerModifier(Creature creature, Ability ability, int externalModifier = 0)
         {
-            return GetAbilityCheckModifier(creature, ability) + creature.EnhancementBonus + externalModifier;
+            return GetAbilityCheckModifier(creature, ability) + GetEnhancementBonus(creature) + externalModifier;
+        }
+
+        public static int GetEnhancementBonus(Creature creature)
+        {
+            return 0;
+            //TO-DO: Implement enhancement bonus calculation.
         }
 
         public static string GetAttackHitTextblock(Creature creature, AttackHit attackHit, bool includeCrit = false)

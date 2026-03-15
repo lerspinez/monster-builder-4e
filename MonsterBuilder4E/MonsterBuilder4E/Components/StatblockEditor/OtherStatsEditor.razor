@@ -1,0 +1,35 @@
+﻿
+<MudStack Spacing="4" Class="pa-2">
+
+    @* Skills and Languages *@
+    @* <MudText Typo="Typo.h6" Class="mt-4 mb-2">Skills & Languages</MudText>
+                           <MudSelect @bind-SelectedValues="selectedSkills" Label="Trained Skills" MultiSelection="true" Variant="Variant.Outlined">
+                               @foreach (var skill in Enum.GetValues<Skill>())
+                               {
+                                   <MudSelectItem Value="@skill">@Formatter.EnumName(skill.ToString())</MudSelectItem>
+                               }
+                           </MudSelect> *@
+
+    @* <MudTextField @bind-Value="languagesText" Label="Languages (comma separated)" Variant="Variant.Outlined" Class="mt-2" Placeholder="Common, Goblin" /> *@
+
+    <MudSelect @bind-Value="Creature.Alignment" @bind-Value:after="UpdateCreature" Label="Alignment" Variant="Variant.Outlined">
+        @foreach (var alignment in Enum.GetValues<Alignment>())
+        {
+            <MudSelectItem Value="@alignment">@Formatter.Enum(alignment.ToString())</MudSelectItem>
+        }
+    </MudSelect>
+
+</MudStack>
+
+@code {
+    [Parameter]
+    public Creature Creature { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<Creature> CreatureChanged { get; set; }
+
+    async Task UpdateCreature()
+    {
+        await CreatureChanged.InvokeAsync(Creature);
+    }
+}

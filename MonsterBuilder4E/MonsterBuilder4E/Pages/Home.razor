@@ -92,10 +92,10 @@
                             <strong>Resist</strong> @string.Join(", ", creature.Resistances)
                         </div>
                     }
-                    @if (creature.ImmuneConditions.Any())
+                    @if (creature.Immunities.Any())
                     {
                         <div class="stat-line">
-                            <strong>Immune</strong> @string.Join(", ", creature.ImmuneConditions)
+                            <strong>Immune</strong> @string.Join(", ", creature.Immunities)
                         </div>
                     }
                     @if (creature.Vulnerabilities.Any())
@@ -150,7 +150,7 @@
                                     }
                                     @if (power.IsAttack && !string.IsNullOrEmpty(power.OnHit.BaseDamage))
                                     {
-                                        <div><strong>Hit:</strong> @power.OnHit.ToText()</div>
+                                        <div><strong>Hit:</strong> @power.OnHit.BaseDamage</div>
                                     }
                                     @if (!string.IsNullOrEmpty(power.Effect))
                                     {
@@ -530,10 +530,10 @@
                                 <strong>Resist</strong> @string.Join(", ", creature.Resistances)
                             </div>
                         }
-                        @if (creature.ImmuneConditions.Any())
+                        @if (creature.Immunities.Any())
                         {
                             <div class="stat-line">
-                                <strong>Immune</strong> @string.Join(", ", creature.ImmuneConditions)
+                                <strong>Immune</strong> @string.Join(", ", creature.Immunities)
                             </div>
                         }
                         @if (creature.Vulnerabilities.Any())
@@ -585,7 +585,7 @@
                                         }
                                         @if (power.IsAttack && !string.IsNullOrEmpty(power.OnHit.BaseDamage))
                                         {
-                                            <div><strong>Hit:</strong> @power.OnHit.ToText()</div>
+                                            <div><strong>Hit:</strong> @power.OnHit.BaseDamage</div>
                                         }
                                         @if (!string.IsNullOrEmpty(power.Effect))
                                         {
@@ -679,7 +679,7 @@
     private void PopulateFormFields()
     {
         resistancesText = string.Join(", ", creature.Resistances);
-        immunitiesText = string.Join(", ", creature.ImmuneConditions);
+        immunitiesText = string.Join(", ", creature.Immunities);
         vulnerabilitiesText = string.Join(", ", creature.Vulnerabilities);
         languagesText = string.Join(", ", creature.Languages);
         equipmentText = string.Join(", ", creature.Equipment);
@@ -694,9 +694,6 @@
 
     private void ParseLists()
     {
-        creature.Resistances = ParseCommaDelimitedList(resistancesText);
-        creature.ImmuneConditions = ParseCommaDelimitedList(immunitiesText);
-        creature.Vulnerabilities = ParseCommaDelimitedList(vulnerabilitiesText);
         creature.Languages = ParseCommaDelimitedList(languagesText);
         creature.Equipment = ParseCommaDelimitedList(equipmentText);
     }
