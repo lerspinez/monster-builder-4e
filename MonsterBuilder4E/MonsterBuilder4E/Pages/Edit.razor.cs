@@ -95,26 +95,4 @@ public partial class Edit
         // Calculate initiative
         creature.Initiative = MonsterStats.CalculateInitiative(creature);
     }
-
-    private string FormatModifier(int value)
-    {
-        return value >= 0 ? $"+{value}" : value.ToString();
-    }
-
-    private string GetPowerIcon(PowerType powerType)
-    {
-        return powerType switch
-        {
-            PowerType.AtWill => "⚔",
-            PowerType.Encounter => "⬢",
-            PowerType.Daily => "◉",
-            _ => "○"
-        };
-    }
-
-    private string FormatAttack(Power power)
-    {
-        int attackBonus = creature.LevelBonus + creature.Abilities.GetModifier(power.AttackAbility) + power.AttackModifier;
-        return FormatModifier(attackBonus);
-    }
 }
