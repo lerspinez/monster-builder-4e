@@ -1,19 +1,19 @@
 ﻿
-<MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End" Class="px-2" Style="cursor: pointer; background-color: lightgreen">    
+<MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End" Class="px-2" Style="background-color: lightgreen">
     @if (Trait.ExpandEditor)
     {
         <MudTextField @bind-Value="Trait.Name" @bind-Value:after="UpdateTrait" Label="Trait Name" 
             Variant="Variant.Outlined" Typo="Typo.h6" Margin="Margin.Dense" />
         <MudTooltip Text="Delete Trait">
-            <MudIcon Icon="@Icons.Material.Filled.Delete" Class="mt-1 mb-1" @onclick="Remove" />
+            <MudIcon Icon="@Icons.Material.Filled.Delete" Class="mt-1 mb-1 cursor-pointer" @onclick="Remove" />
         </MudTooltip>
     }
     else
     {
         <MudText Typo="Typo.h6" Class="mt-1 mb-1" @onclick="ExpandCollapseContent">@Trait.Name</MudText>
     }
-    <MudIcon Icon="@(Trait.ExpandEditor? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)"
-        Class="mt-1 mb-1" @onclick="ExpandCollapseContent" />
+    <MudIcon Icon="@(Trait.ExpandEditor ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)"
+        Class="mt-1 mb-1 cursor-pointer" @onclick="ExpandCollapseContent" />
 </MudStack>
 
 <MudCollapse Expanded="Trait.ExpandEditor">

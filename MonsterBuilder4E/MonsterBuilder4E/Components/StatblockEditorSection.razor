@@ -1,6 +1,6 @@
 ﻿
-<MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End" @onclick="ExpandCollapseContent"
-    Class="px-2 py-1" Style="cursor: pointer; background-color: lightseagreen">
+<MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End" @onclick="ExpandCollapse"
+    Class="px-2 py-1 cursor-pointer" Style="background-color: lightseagreen">
     <MudText Typo="Typo.h6">@SectionTitle</MudText>
     <MudIcon Icon="@(_contentExpanded ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)" />
 </MudStack>
@@ -18,8 +18,13 @@
 
     bool _contentExpanded = true;
 
-    private void ExpandCollapseContent()
+    private void ExpandCollapse()
     {
         _contentExpanded = !_contentExpanded;
+    }
+
+    public void Collapse()
+    {
+        _contentExpanded = false;
     }
 }

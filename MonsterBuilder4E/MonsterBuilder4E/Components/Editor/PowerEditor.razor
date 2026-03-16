@@ -1,13 +1,23 @@
 ﻿
-<MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End" @onclick="ExpandCollapseContent"
-          Class="mt-2 px-2" Style="cursor: pointer; background-color: lightgreen">
-    <MudText Typo="Typo.h6" Class="mt-1 mb-1">@(Power.ExpandEditor ? $"Edit \"{Power.Name}\"" : _powerHeader)</MudText>
-    <MudIcon Icon="@(Power.ExpandEditor? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)"
-             Class="mt-1 mb-1" />
+<MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End" Class="px-2" Style="background-color: lightgreen">
+    @if (Power.ExpandEditor)
+    {
+        <MudTextField @bind-Value="Power.Name" @bind-Value:after="UpdatePower" Label="Power Name"
+            Variant="Variant.Outlined" Typo="Typo.h6" Margin="Margin.Dense" />
+        <MudTooltip Text="Delete Power">
+            <MudIcon Icon="@Icons.Material.Filled.Delete" Class="mt-1 mb-1 cursor-pointer" @onclick="Remove" />
+        </MudTooltip>
+    }
+    else
+    {
+        <MudText Typo="Typo.h6" Class="mt-1 mb-1" @onclick="ExpandCollapseContent">@Power.Name</MudText>
+    }
+    <MudIcon Icon="@(Power.ExpandEditor ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)"
+             Class="mt-1 mb-1 cursor-pointer" @onclick="ExpandCollapseContent" />
 </MudStack>
 
 <MudCollapse Expanded="Power.ExpandEditor">
-    <MudStack Spacing="4" Class="pa-2">
+    <MudStack Spacing="2" Class="pa-2">
 
         <MudTextField @bind-Value="Power.Name" @bind-Value:after="UpdatePower" Label="Power Name" Variant="Variant.Text" Typo="Typo.body2" />
 
@@ -49,7 +59,32 @@
             </MudItem>
         </MudGrid>
 
-        <MudCheckBox @bind-Value="Power.IsAttack" @bind-Value:after="UpdatePower" Label="Is Attack" />
+        <MudGrid>
+            <MudItem xs="4">
+                <MudStack Row Spacing="0" AlignItems="AlignItems.Center">
+                    <MudText Typo="Typo.body2">Is Attack:</MudText>
+                    <MudCheckBox @bind-Value="Power.IsAttack" @bind-Value:after="UpdatePower" />
+                </MudStack>
+            </MudItem>
+            @if (Power.IsAttack)
+            {
+                <MudItem xs="4">
+                    <MudStack Row Spacing="0" AlignItems="AlignItems.Center">
+                        <MudText Typo="Typo.body2">Is Basic Attack:</MudText>
+                        <MudCheckBox @bind-Value="Power.IsBasicAttack" @bind-Value:after="UpdatePower" />
+                    </MudStack>
+                </MudItem>
+                <MudItem xs="4">
+                    <MudSelect @bind-Value="Power.TargetDefense" @bind-Value:after="UpdatePower" Label="Weapon" 
+                        Variant="Variant.Text" Typo="Typo.body2">
+                        @foreach (var defense in Enum.GetValues<Defense>())
+                        {
+                            <MudSelectItem Value="@defense">@Formatter.Enum(defense.ToString())</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+            }
+        </MudGrid>
 
         @if (Power.IsAttack)
         {
@@ -139,9 +174,9 @@
             </MudGrid>
         }
 
-        <MudTextField @bind-Value="Power.Effect" @bind-Value:after="UpdatePower" Label="Effect" Variant="Variant.Text" Typo="Typo.body2" Lines="2" />
-
-        <MudButton OnClick="() => Remove()" Color="Color.Error" Size="Size.Small">Remove</MudButton>
+        <MudTextField @bind-Value="Power.Effect" @bind-Value:after="UpdatePower" Label="Effect" 
+            Variant="Variant.Text" Typo="Typo.body2" MaxLines="5" Sizing="InputSizing.Auto"
+            Placeholder="The target is marked, creates a zone of difficult terrain, etc" />
 
     </MudStack>
 </MudCollapse>

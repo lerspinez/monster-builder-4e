@@ -1,52 +1,60 @@
 ﻿
-<MudStack Spacing="1" >
-                    
+<MudPaper Class="rounded-0 pa-0" Elevation="0" Style="height: 100%;">
+
     @* ---- Editor Header ---- *@
-    <MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End">
+    <MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End" Spacing="4" Class="mb-2 pr-2" Style="height: 10%;">
         @* Monster Name *@
         <MudTextField @bind-Value="Creature.Name" @bind-Value:after="UpdateCreature" Label="Monster Name"
                       Variant="Variant.Outlined" Typo="Typo.h5" Margin="Margin.Dense" />
         @* Reset button *@
         <MudTooltip Text="Reset">
-            <MudIcon Icon="@Icons.Material.Filled.ClearAll" Size="Size.Large" />
+            <MudIcon Icon="@Icons.Material.Filled.ClearAll" Size="Size.Large" Class="cursor-pointer" @onclick="ResetEditor" />
         </MudTooltip>
         @* Collapse All button *@
         <MudTooltip Text="Collapse All">
-            <MudIcon Icon="@Icons.Material.Filled.UnfoldLess" Size="Size.Large" />
+            <MudIcon Icon="@Icons.Material.Filled.UnfoldLess" Size="Size.Large" Class="cursor-pointer" @onclick="CollapseAllSections" />
         </MudTooltip>
     </MudStack>
 
-    @* ---- Section: Basic Information ---- *@
-    <StatblockEditorSection SectionTitle="Basic Info">
-        <BasicInfoEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
-    </StatblockEditorSection>
+    <MudPaper Class="rounded-0 pa-0 overflow-y-scroll" Elevation="0" Style="height: 90%; background-color: transparent;">
+        <MudStack Spacing="1">
 
-    @* ---- Section: Ability Scores ---- *@
-    <StatblockEditorSection SectionTitle="Ability Scores">
-        <AbilityScoresEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
-    </StatblockEditorSection>
+            @* ---- Section: Basic Information ---- *@
+            <StatblockEditorSection SectionTitle="Basic Info" @ref="_basicInfoSection">
+                <BasicInfoEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
+            </StatblockEditorSection>
 
-    @* ---- Section: Tactical Stats ---- *@
-    <StatblockEditorSection SectionTitle="Tactical Stats">
-        <TacticalStatsEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
-    </StatblockEditorSection>
+            @* ---- Section: Ability Scores ---- *@
+            <StatblockEditorSection SectionTitle="Ability Scores" @ref="_abilityScoresSection">
+                <AbilityScoresEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
+            </StatblockEditorSection>
 
-    @* ---- Section: Other Stats ---- *@
-    <StatblockEditorSection SectionTitle="Other Stats">
-        <OtherStatsEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
-    </StatblockEditorSection>
+            @* ---- Section: Tactical Stats ---- *@
+            <StatblockEditorSection SectionTitle="Tactical Stats" @ref="_tacticalStatsSection">
+                <TacticalStatsEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
+            </StatblockEditorSection>
+
+            @* ---- Section: Other Stats ---- *@
+            <StatblockEditorSection SectionTitle="Other Stats" @ref="_otherStatsSection">
+                <OtherStatsEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
+            </StatblockEditorSection>
                                 
-    @* ---- Section: Monster Traits ---- *@
-    <StatblockEditorSection SectionTitle="Traits">
-        <TraitsEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
-    </StatblockEditorSection>
+            @* ---- Section: Monster Traits ---- *@
+            <StatblockEditorSection SectionTitle="Traits" @ref="_traitsSection">
+                <TraitsEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
+            </StatblockEditorSection>
 
-    @* ---- Section: Monster Powers ---- *@
-    <StatblockEditorSection SectionTitle="Powers">
-        <PowersEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
-    </StatblockEditorSection>
+            @* ---- Section: Monster Powers ---- *@
+            <StatblockEditorSection SectionTitle="Powers" @ref="_powersSection">
+                <PowersEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
+            </StatblockEditorSection>
 
-</MudStack>
+        </MudStack>
+    </MudPaper>
+
+</MudPaper>
+
+
 
 @code {
     [Parameter]
@@ -58,5 +66,28 @@
     async Task UpdateCreature()
     {
         await CreatureChanged.InvokeAsync(Creature);
+    }
+
+    private async void ResetEditor()
+    {
+        Creature = new Creature();
+        await UpdateCreature();
+    }
+
+    private StatblockEditorSection? _basicInfoSection;
+    private StatblockEditorSection? _abilityScoresSection;
+    private StatblockEditorSection? _tacticalStatsSection;
+    private StatblockEditorSection? _otherStatsSection;
+    private StatblockEditorSection? _traitsSection;
+    private StatblockEditorSection? _powersSection;
+
+    private void CollapseAllSections()
+    {
+        _basicInfoSection?.Collapse();
+        _abilityScoresSection?.Collapse();
+        _tacticalStatsSection?.Collapse();
+        _otherStatsSection?.Collapse();
+        _traitsSection?.Collapse();
+        _powersSection?.Collapse();
     }
 }

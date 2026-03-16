@@ -4,20 +4,14 @@
 
 <PageTitle>Edit Monster</PageTitle>
 
-<MudText Typo="Typo.h5" Class="mb-4">Monster Statblock Editor</MudText>
+<MudGrid Spacing="4" Class="mt-4">
 
-<MudGrid>
-
-    <MudItem xs="12" md="6" Style="height: 80vh">
-        <MudPaper Class="pa-4 overflow-y-scroll" Elevation="2" Style="max-height: 100%;">
-            <MonsterEditorStacked @bind-Creature="creature" />
-        </MudPaper>
+    <MudItem xs="12" md="6" Style="height: 80vh;">
+        <MonsterEditorStacked @bind-Creature="creature" />
     </MudItem>
 
-    <MudItem xs="12" md="6" Style="height: 80vh">
-        <MudPaper Class="pa-4 overflow-y-scroll" Elevation="2" Style="max-height: 100%; background-color:antiquewhite;">
-            <StatblockPreview Creature="creature" />
-        </MudPaper>
+    <MudItem xs="12" md="6" Style="height: 80vh;">
+        <StatblockPreview Creature="creature" />
     </MudItem>
 
 </MudGrid>

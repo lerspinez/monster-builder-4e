@@ -2,13 +2,13 @@
 <MudStack Spacing="1" Class="pa-2">
     <MudStack Row Justify="Justify.FlexEnd" Spacing="4">
         <MudTooltip Text="Add Power">
-            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mt-1 mb-1" @onclick="AddPower" />
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mt-1 mb-1 cursor-pointer" @onclick="AddPower" />
         </MudTooltip>
         <MudTooltip Text="Sort Powers">
-            <MudIcon Icon="@Icons.Material.Filled.Sort" Class="mt-1 mb-1" @onclick="SortPowers" />
+            <MudIcon Icon="@Icons.Material.Filled.Sort" Class="mt-1 mb-1 cursor-pointer" @onclick="SortPowers" />
         </MudTooltip>
         <MudTooltip Text="Collapse All">
-            <MudIcon Icon="@Icons.Material.Filled.UnfoldLess" Class="mt-1 mb-1" @onclick="CollapseAllPowers" />
+            <MudIcon Icon="@Icons.Material.Filled.UnfoldLess" Class="mt-1 mb-1 cursor-pointer" @onclick="CollapseAllPowers" />
         </MudTooltip>
     </MudStack>
                     
