@@ -16,6 +16,11 @@ public class Trait
     public string Name { get; set; } = "Trait";
 
     /// <summary>
+    /// Keywords associated with the trait, such as "fire", "necrotic", "radiant", etc.
+    /// </summary>
+    public string Keywords { get; set; } = string.Empty;
+
+    /// <summary>
     /// Indicates if the trait is an aura, which means it affects all creatures within a certain range around the monster.
     /// </summary>
     public bool IsAura { get; set; }

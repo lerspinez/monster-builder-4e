@@ -1,0 +1,181 @@
+﻿<MudCard Class="stat-block-card" >
+    <MudCardContent Style="width: 100%; padding: 0px; background-color: palegreen">
+
+        @* Header Section *@
+        <MonsterStatblockHeader>
+            <MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End">
+                <MudText Typo="Typo.h6" Style="font-weight: bold; color: white;">@Creature.Name</MudText>
+                <MudText Typo="Typo.body1" Style="font-weight: bold; color: white;">
+                    Level @Creature.Level @(Creature.RoleModifier != RoleModifier.None ? Creature.RoleModifier.ToString() : "") @Creature.Role @(Creature.IsLeader ? "(Leader)" : "")
+                </MudText>
+            </MudStack>
+            <MudStack Row StretchItems="StretchItems.Start">
+                <MudText Typo="Typo.body1" Style="color: white;">
+                    @Creature.Size @Creature.Origin @Creature.Type @(!string.IsNullOrEmpty(Creature.CreatureKeywords) ? $"({Creature.CreatureKeywords})" : "")
+                </MudText>
+                <MudText Typo="Typo.body1" Style="color: white;">
+                    XP @Creature.XP
+                </MudText>
+            </MudStack>
+        </MonsterStatblockHeader>
+
+        @* Monster Vitals *@
+        <MonsterStatblockSectionContent>
+            @* Senses, Initiative *@
+            <MudStack Row StretchItems="StretchItems.Start">
+                <MudText Typo="Typo.body1">
+                    <strong>Senses</strong> @MonsterStats.GetSensesTextblock(Creature)
+                </MudText>
+                <MudText Typo="Typo.body1">
+                    <MudIcon Icon="@Icons.Material.Filled.FlashOn" Size="Size.Small" Style="font-size: 0.8rem" />
+                    <strong>Initiative</strong> @Formatter.Modifier(Creature.Initiative)
+                </MudText>
+            </MudStack>
+            @* HP and Defenses *@
+            <MudText Typo="Typo.body1"><strong>HP</strong> @Creature.HitPoints; <strong>Bloodied</strong> @Creature.Bloodied</MudText>
+            <MudText Typo="Typo.body1">
+                <strong>AC</strong> @Creature.ArmorClass;
+                <strong>Fortitude</strong> @Creature.Fortitude,
+                <strong>Reflex</strong> @Creature.Reflex,
+                <strong>Will</strong> @Creature.Will
+                </MudText>
+            <MudText Typo="Typo.body1"><strong>Speed</strong> @MonsterStats.GetSpeedTextblock(Creature)</MudText>
+        </MonsterStatblockSectionContent>
+        
+
+        @* Traits *@
+        <MonsterStatblockSectionHeader>
+            <MudText Typo="Typo.body1" Style="font-weight: bold; color: white;">Traits</MudText>
+        </MonsterStatblockSectionHeader>
+
+        @foreach (var trait in Creature.Traits)
+        {
+            <MonsterStatblockEntryHeader>
+                <MudText Typo="Typo.body1">                    
+                    <strong>@if(trait.IsAura){ @("☼ ") } @trait.Name</strong>
+                    @if (!string.IsNullOrWhiteSpace(trait.Keywords))
+                    {
+                        @($"({trait.Keywords})")
+                    }
+                    @if (trait.IsAura)
+                    {
+                        @($" ✦ Aura {trait.AuraRange}")
+                    }
+                </MudText>
+            </MonsterStatblockEntryHeader>
+            <MonsterStatblockEntryContent>
+                <MudText Typo="Typo.body1">
+                    @trait.Effect
+                </MudText>
+            </MonsterStatblockEntryContent>
+        }
+        
+        @* Standard Actions *@
+        @if (Creature.Powers .Any(p => p.ActionType == ActionType.Standard))
+        {
+            <MonsterStatblockSectionHeader>
+                <MudText Typo="Typo.body1" Style="font-weight: bold; color: white;">Standard Actions</MudText>
+            </MonsterStatblockSectionHeader>
+            @foreach (var power in Creature.Powers.Where(p => p.ActionType == ActionType.Standard))
+            {
+                <PowerStatblock Creature="Creature" Power="power" />
+            }
+        }
+        
+        @* Move Actions *@
+        @if (Creature.Powers.Any(p => p.ActionType == ActionType.Move))
+        {
+            <MonsterStatblockSectionHeader>
+                <MudText Typo="Typo.body1" Style="font-weight: bold; color: white;">Move Actions</MudText>
+            </MonsterStatblockSectionHeader>
+            @foreach (var power in Creature.Powers.Where(p => p.ActionType == ActionType.Move))
+            {
+                <PowerStatblock Creature="Creature" Power="power" />
+            }
+        }
+        
+        @* Minor Actions *@
+        @if (Creature.Powers.Any(p => p.ActionType == ActionType.Minor))
+        {
+            <MonsterStatblockSectionHeader>
+                <MudText Typo="Typo.body1" Style="font-weight: bold; color: white;">Minor Actions</MudText>
+            </MonsterStatblockSectionHeader>
+            @foreach (var power in Creature.Powers.Where(p => p.ActionType == ActionType.Minor))
+            {
+                <PowerStatblock Creature="Creature" Power="power" />
+            }
+        }
+        
+        @* Free Actions *@
+        @if (Creature.Powers.Any(p => p.ActionType == ActionType.Free))
+        {
+            <MonsterStatblockSectionHeader>
+                <MudText Typo="Typo.body1" Style="font-weight: bold; color: white;">Free Actions</MudText>
+            </MonsterStatblockSectionHeader>
+            @foreach (var power in Creature.Powers.Where(p => p.ActionType == ActionType.Free))
+            {
+                <PowerStatblock Creature="Creature" Power="power" />
+            }
+        }
+        
+        @* Triggered Actions *@
+        @if (Creature.Powers.Any(p => p.ActionType == ActionType.ImmediateReaction || p.ActionType == ActionType.ImmediateInterrupt))
+        {
+            <MonsterStatblockSectionHeader>
+                <MudText Typo="Typo.body1" Style="font-weight: bold; color: white;">Triggered Actions</MudText>
+            </MonsterStatblockSectionHeader>
+            @foreach (var power in Creature.Powers.Where(p => p.ActionType == ActionType.ImmediateReaction || p.ActionType == ActionType.ImmediateInterrupt))
+            {
+                <PowerStatblock Creature="Creature" Power="power" />
+            }
+        }
+
+        @* Triggered Actions *@
+        <MonsterStatblockSectionHeader>
+            <MudText Typo="Typo.body1" Style="font-weight: bold; color: white;">Triggered Actions</MudText>
+        </MonsterStatblockSectionHeader>
+
+        @* Soldier's Retaliation *@
+        <MonsterStatblockEntryHeader>
+            <MudText Typo="Typo.body1">
+                <span style="font-size: 1.2em;">⚔</span> <strong>Soldier's Retaliation</strong> ✦ <strong>At-Will</strong><br />
+            </MudText>
+        </MonsterStatblockEntryHeader>
+        <MonsterStatblockEntryContent>
+            <MudText Typo="Typo.body1">
+                <em><strong>Trigger</strong></em>: An enemy marked by the hobgoblin makes an attack that doesn't include the hobgoblin as a target.<br />
+                <strong>Effect</strong> (Immediate Interrupt): The hobgoblin uses longsword on the triggering enemy.
+            </MudText>
+        </MonsterStatblockEntryContent>
+
+        <MudDivider Style="margin: 12px 0; border-color: black;" />
+
+        @* Ability Scores *@
+        <MudStack Row="true" Spacing="3" Justify="Justify.SpaceBetween">
+            <MudText Typo="Typo.body1"><strong>Str</strong> 18 (+6)</MudText>
+            <MudText Typo="Typo.body1"><strong>Dex</strong> 14 (+4)</MudText>
+            <MudText Typo="Typo.body1"><strong>Wis</strong> 12 (+3)</MudText>
+        </MudStack>
+        <MudStack Row="true" Spacing="3" Justify="Justify.SpaceBetween">
+            <MudText Typo="Typo.body1"><strong>Con</strong> 16 (+5)</MudText>
+            <MudText Typo="Typo.body1"><strong>Int</strong> 10 (+2)</MudText>
+            <MudText Typo="Typo.body1"><strong>Cha</strong> 11 (+2)</MudText>
+        </MudStack>
+
+        <MudDivider Style="margin: 12px 0; border-color: black;" />
+
+        @* Footer Section *@
+        <MudStack Spacing="1">
+            <MudText Typo="Typo.body1"><strong>Alignment</strong> Evil</MudText>
+            <MudText Typo="Typo.body1"><strong>Languages</strong> Common, Goblin</MudText>
+            <MudText Typo="Typo.body1"><strong>Skills</strong> Athletics +10, Intimidate +7</MudText>
+            <MudText Typo="Typo.body1"><strong>Equipment</strong> longsword, chainmail, heavy shield, crossbow</MudText>
+        </MudStack>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter]
+    public Creature Creature { get; set; } = new();
+
+}

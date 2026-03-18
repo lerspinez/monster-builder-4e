@@ -105,7 +105,7 @@ public class Creature
     /// <summary>
     /// Indicates the creature's initiative modifier, which is calculated based on its level and Dexterity modifier.
     /// </summary>
-    public int Initiative { get; set; } //TO-DO: GetInitiative method in MonsterStats
+    public int Initiative => MonsterStats.CalculateInitiative(this);
 
     /// <summary>
     /// Defines the creature's special senses under the D&D 4E rules, such as Darkvision, Tremorsense, Blindsight, etc.
@@ -116,6 +116,11 @@ public class Creature
     /// The creature's land speed, which is the number of squares it can move on its turn in combat according to D&D 4E rules.
     /// </summary>
     public int Speed { get; set; }
+
+    /// <summary>
+    /// Indicates any special movement traits the creature has on its land speed, such as earth walk, etc.
+    /// </summary>
+    public string MovementTraits { get; set; } = string.Empty;
 
     /// <summary>
     /// Special movement types the creature has, such as flying, swimming, climbing, teleportation, etc.

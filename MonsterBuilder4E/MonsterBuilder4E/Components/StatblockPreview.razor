@@ -1,5 +1,8 @@
-﻿
-<MudPaper Class="rounded-0 pa-2 overflow-y-scroll" Elevation="0" Style="max-height: 100%; background-color: antiquewhite;">
+﻿@using MonsterBuilder4E.Components.Statblock
+
+<MudPaper Class="rounded-0 pa-2 overflow-y-scroll" Elevation="0" Style="max-height: 100%;">
+
+    <MonsterStatblock Creature="Creature" />
     
     @* Header *@
     <MudStack Spacing="1">

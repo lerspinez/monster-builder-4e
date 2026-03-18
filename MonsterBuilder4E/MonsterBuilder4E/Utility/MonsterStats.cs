@@ -27,9 +27,33 @@ namespace MonsterBuilder4E.Utility
             { Skill.Thievery, Ability.Dexterity }
         };
 
+        public static string GetSensesTextblock(Creature creature)
+        {
+            var textblock = string.Empty;
+
+            var perceptionModifier = GetSkillModifier(creature, Skill.Perception);
+
+            textblock += $"Perception {Formatter.Modifier(perceptionModifier)}; {creature.Senses}";
+
+            return textblock;
+        }
+
         public static int CalculateInitiative(Creature creature)
         {
-            return creature.LevelBonus + creature.Abilities.Dexterity.Modifier;
+            return creature.LevelBonus + creature.Abilities.Dexterity.Modifier + creature.InitiativeModifier;
+        }
+
+        public static string GetSpeedTextblock(Creature creature)
+        {
+            var textblock = $"{creature.Speed}";
+
+            if (!string.IsNullOrWhiteSpace(creature.MovementTraits))
+                textblock += $" ({creature.MovementTraits})";
+
+            if (!string.IsNullOrWhiteSpace(creature.SpecialMovement))
+                textblock += $", {creature.SpecialMovement}";
+
+            return textblock;
         }
 
         public static int CalculateDefense(Creature creature, Defense defense)
@@ -130,10 +154,9 @@ namespace MonsterBuilder4E.Utility
 
             foreach (var skill in creature.TrainedSkills)
             {
-                int abilityCheckModifier = GetAbilityCheckModifier(creature, GetSkillAbility(skill));
-                int skillModifier = abilityCheckModifier + 5;
+                var modifier = GetSkillModifier(creature, skill, true);
 
-                skills.Add($"{skill} +{skillModifier}");
+                skills.Add($"{skill} +{Formatter.Modifier(modifier)}");
             }
 
             return skills;
@@ -148,6 +171,18 @@ namespace MonsterBuilder4E.Utility
         public static int GetAbilityCheckModifier(Creature creature, Ability ability)
         {
             return creature.LevelBonus + creature.Abilities.GetModifier(ability);
+        }
+
+        public static int GetSkillModifier(Creature creature, Skill skill, bool isTrained = false)
+        {
+            Ability ability = GetSkillAbility(skill);
+
+            int skillModifier = GetAbilityCheckModifier(creature, ability);
+
+            if (isTrained || creature.TrainedSkills.Contains(skill))
+                skillModifier += 5;
+
+            return skillModifier;
         }
 
         public static AbilityCheckModifiers GetAbilityCheckModifiers(Creature creature)

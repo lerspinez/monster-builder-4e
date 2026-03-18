@@ -48,7 +48,6 @@ namespace MonsterBuilder4E.Utility
                 Senses = "Perception +0; low-light vision"
             };
 
-            goblin.Initiative = MonsterStats.CalculateInitiative(goblin);
 
             goblin.TrainedSkills.Add(Skill.Stealth);
             goblin.Equipment = new List<string> { "short sword", "leather armor" };
@@ -117,7 +116,6 @@ namespace MonsterBuilder4E.Utility
                 Senses = "Perception +1; low-light vision"
             };
 
-            orc.Initiative = MonsterStats.CalculateInitiative(orc);
 
             orc.TrainedSkills.Add(Skill.Intimidate);
             orc.Equipment = new List<string> { "greataxe", "hide armor" };
@@ -186,7 +184,6 @@ namespace MonsterBuilder4E.Utility
                 Senses = "Perception +1"
             };
 
-            ogre.Initiative = MonsterStats.CalculateInitiative(ogre);
 
             ogre.Equipment = new List<string> { "greatclub", "hide armor" };
 
@@ -249,7 +246,6 @@ namespace MonsterBuilder4E.Utility
                 Senses = "Perception +8; low-light vision"
             };
 
-            drake.Initiative = MonsterStats.CalculateInitiative(drake);
 
             drake.TrainedSkills.Add(Skill.Athletics);
 
@@ -318,7 +314,6 @@ namespace MonsterBuilder4E.Utility
                 Senses = "Perception +2; darkvision"
             };
 
-            troll.Initiative = MonsterStats.CalculateInitiative(troll);
 
             troll.Traits.Add(new Trait
             {

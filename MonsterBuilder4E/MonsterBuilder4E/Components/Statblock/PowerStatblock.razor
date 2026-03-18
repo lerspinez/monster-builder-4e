@@ -1,0 +1,34 @@
+﻿
+<MonsterStatblockEntryHeader>
+    <MudText Typo="Typo.body1">
+        <strong>@Power.Name</strong>
+        @if(!string.IsNullOrWhiteSpace(Power.Keywords))
+        {
+            @($" ({Power.Keywords})")
+        }
+        ✦ <strong>@Formatter.Enum(Power.PowerType.ToString())</strong>
+    </MudText>
+</MonsterStatblockEntryHeader>
+<MonsterStatblockEntryContent>
+    <MudText Typo="Typo.body1">
+        @if (Power.ActionType == ActionType.ImmediateReaction || Power.ActionType == ActionType.ImmediateInterrupt)
+        {
+            <strong>Trigger:</strong> @Power.Trigger <br />
+        }
+        <strong>Attack:</strong> @MonsterStats.GetAttackHitTextblock(Creature, Power.OnHit)<br />
+        <strong>Hit:</strong> @MonsterStats.GetAttackHitTextblock(Creature, Power.OnHit)<br />
+        @if (!string.IsNullOrWhiteSpace(Power.Effect))
+        {
+            <strong>Effect:</strong> @Power.Effect <br />
+        }
+    </MudText>
+</MonsterStatblockEntryContent>
+
+@code {
+    [Parameter]
+    public Creature Creature { get; set; } = new();
+    
+    [Parameter]
+    public Power Power { get; set; } = new();
+
+}

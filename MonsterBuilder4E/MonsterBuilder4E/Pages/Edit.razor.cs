@@ -27,9 +27,9 @@ public partial class Edit
         creature.Speed = 6;
         creature.Alignment = Alignment.Evil;
         creature.Languages = new List<string> { "Common", "Goblin" };
-        creature.Senses = "Perception +3; low-light vision";
+        creature.Senses = "Low-light vision";
 
-        creature.TrainedSkills = new List<Skill> { Skill.Athletics, Skill.Intimidate };
+        creature.TrainedSkills = new List<Skill> { Skill.Athletics, Skill.Endurance, Skill.Intimidate };
 
         creature.Equipment = new List<string> { "longsword", "chainmail", "heavy shield", "crossbow" };
 
@@ -91,8 +91,5 @@ public partial class Edit
             Trigger = "An enemy marked by the hobgoblin makes an attack that doesn't include the hobgoblin as a target",
             Effect = "The hobgoblin uses longsword on the triggering enemy."
         });
-
-        // Calculate initiative
-        creature.Initiative = MonsterStats.CalculateInitiative(creature);
     }
 }

@@ -1,0 +1,68 @@
+﻿
+<MudPaper Class="rounded-0 pa-0" Elevation="0" Style="height: 100%;">
+
+    @* ---- Editor Header ---- *@
+    <MudStack Row StretchItems="StretchItems.Start" AlignItems="AlignItems.End" Spacing="4" Class="mb-2 pr-2" Style="height: 10%;">
+        @* Monster Name *@
+        <MudTextField @bind-Value="Creature.Name" @bind-Value:after="UpdateCreature" Label="Monster Name"
+                      Variant="Variant.Outlined" Typo="Typo.h5" Margin="Margin.Dense" />
+        @* Reset button *@
+        <MudTooltip Text="Reset">
+            <MudIcon Icon="@Icons.Material.Filled.ClearAll" Size="Size.Large" Class="cursor-pointer" @onclick="ResetEditor" />
+        </MudTooltip>
+    </MudStack>
+
+    <MudPaper Class="rounded-0 pa-0" Elevation="0" Style="height: 100%; background-color: transparent;">
+        <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" TabPanelsClass="pa-6">
+            @* ---- Tab: Basic Info ---- *@
+            <MudTabPanel Text="Basic">
+                <BasicInfoEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
+            </MudTabPanel>
+            @* ---- Tab: Ability Scores ---- *@
+            <MudTabPanel Text="Abilities">
+                <AbilityScoresEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
+            </MudTabPanel>
+            @* ---- Tab: Tactical Stats ---- *@
+            <MudTabPanel Text="Tactical">
+                <TacticalStatsEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
+            </MudTabPanel>
+            @* ---- Tab: Traits ---- *@
+            <MudTabPanel Text="Traits">
+                <TraitsEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
+            </MudTabPanel>
+            @* ---- Tab: Powers ---- *@
+            <MudTabPanel Text="Powers">
+                <MudPaper Class="rounded-0 pa-0 overflow-y-scroll" Elevation="0" 
+                    Style="height: 90%; background-color: transparent;">
+                    <PowersEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
+                </MudPaper>
+            </MudTabPanel>
+            @* ---- Tab: Other Stats ---- *@
+            <MudTabPanel Text="Other">
+                <OtherStatsEditor @bind-Creature="Creature" UpdateCallback="UpdateCreature" />
+            </MudTabPanel>
+        </MudTabs>
+    </MudPaper>
+
+</MudPaper>
+
+
+
+@code {
+    [Parameter]
+    public Creature Creature { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<Creature> CreatureChanged { get; set; }
+
+    async Task UpdateCreature()
+    {
+        await CreatureChanged.InvokeAsync(Creature);
+    }
+
+    private async void ResetEditor()
+    {
+        Creature = new Creature();
+        await UpdateCreature();
+    }
+}
