@@ -156,7 +156,7 @@ namespace MonsterBuilder4E.Utility
             {
                 var modifier = GetSkillModifier(creature, skill, true);
 
-                skills.Add($"{skill} +{Formatter.Modifier(modifier)}");
+                skills.Add($"{skill} {Formatter.Modifier(modifier)}");
             }
 
             return skills;
@@ -198,6 +198,11 @@ namespace MonsterBuilder4E.Utility
             };
         }
 
+        public static int GetAttackRollModifier(Creature creature, Ability ability, int externalModifier = 0)
+        {
+            return GetAbilityCheckModifier(creature, ability) + GetAttackEnhancementBonus(creature) + creature.AttackModifier + externalModifier;
+        }
+
         public static int GetDamageRollModifier(Creature creature, Ability ability, int externalModifier = 0)
         {
             return creature.Abilities.GetModifier(ability) + GetAttackEnhancementBonus(creature) + creature.DamageModifier + externalModifier;
@@ -230,7 +235,39 @@ namespace MonsterBuilder4E.Utility
             };
         }
 
-        public static string GetAttackHitTextblock(Creature creature, AttackHit attackHit, bool includeCrit = false)
+        public static string GetPowerAttackTextblock(Creature creature, Power power)
+        {
+            string attackTextblock = string.Empty;
+
+            if (!power.IsAttack)
+                return attackTextblock;
+
+            if (!string.IsNullOrWhiteSpace(power.Range))
+            {
+                attackTextblock = power.Range;
+
+                if (!string.IsNullOrWhiteSpace(power.TargetInfo))
+                    attackTextblock += $" ({power.TargetInfo})";
+            }
+
+            if (attackTextblock.Length > 0)
+                attackTextblock += $"; ";
+
+            var attackRollModifier = GetAttackRollModifier(creature, power.AttackAbility, power.AttackModifier);
+
+            var attackRoll = $"{Formatter.Modifier(attackRollModifier)} " +
+                $"vs. {Formatter.Enum(power.TargetDefense.ToString())}"
+                .Replace("Armor Class", "AC");
+
+            //TO-DO: Armor Class to AC replacement clean-up
+            //TO-DO: ConditionalAttackModifiers property may be useful
+
+            attackTextblock += attackRoll;
+
+            return attackTextblock;
+        }
+
+        public static string GetPowerHitTextblock(Creature creature, Power power, bool includeCrit = false)
         {
             string hitTextblock = string.Empty;
 
@@ -238,16 +275,16 @@ namespace MonsterBuilder4E.Utility
 
             string attackDamage = string.Empty;
 
-            if (!string.IsNullOrWhiteSpace(attackHit.BaseDamage))
-                attackDamage = attackHit.BaseDamage;
+            if (!string.IsNullOrWhiteSpace(power.OnHit.BaseDamage))
+                attackDamage = power.OnHit.BaseDamage;
 
             //Try parse base damage and if number add to modifiers.
 
-            int damageModifier = GetDamageRollModifier(creature, attackHit.AbilityModifier, attackHit.DamageModifier);
+            int damageModifier = GetDamageRollModifier(creature, power.OnHit.AbilityModifier, power.OnHit.DamageModifier);
 
-            if (attackHit.SecondaryAbilityModifiers.Count != 0)
+            if (power.OnHit.SecondaryAbilityModifiers.Count != 0)
             {
-                foreach (var ability in attackHit.SecondaryAbilityModifiers)
+                foreach (var ability in power.OnHit.SecondaryAbilityModifiers)
                 {
                     damageModifier += creature.Abilities.GetModifier(ability);
                 }
@@ -258,8 +295,8 @@ namespace MonsterBuilder4E.Utility
 
             //If 0 damage and no base damage, then it's just a hit with no damage, so don't add anything to the textblock.
 
-            var damageType = attackHit.DamageType != DamageType.Untyped 
-                ? $"{Formatter.Enum(attackHit.DamageType.ToString(), true)} damage" : "damage";
+            var damageType = power.OnHit.DamageType != DamageType.Untyped 
+                ? $"{Formatter.Enum(power.OnHit.DamageType.ToString(), true)} damage" : "damage";
 
             if (string.IsNullOrWhiteSpace(attackDamage))
                 hitTextblock = "No damage";
@@ -270,16 +307,16 @@ namespace MonsterBuilder4E.Utility
 
             string damageAnnotation = string.Empty;
 
-            if (!string.IsNullOrWhiteSpace(attackHit.CriticalHit))
-                damageAnnotation += $"Crit: {attackHit.CriticalHit}";
+            if (!string.IsNullOrWhiteSpace(power.OnHit.CriticalHit))
+                damageAnnotation += $"Crit: {power.OnHit.CriticalHit}";
 
             if(damageAnnotation != string.Empty)
                 hitTextblock += $" ({damageAnnotation})";
 
             //Additional on-hit effects.
 
-            if (!string.IsNullOrEmpty(attackHit.HitEffect))
-                hitTextblock += $", and {attackHit.HitEffect}";
+            if (!string.IsNullOrEmpty(power.OnHit.HitEffect))
+                hitTextblock += $", and {power.OnHit.HitEffect}";
 
             return hitTextblock;
         }

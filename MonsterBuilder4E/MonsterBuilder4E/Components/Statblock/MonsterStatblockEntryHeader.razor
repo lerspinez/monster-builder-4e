@@ -1,5 +1,5 @@
 ﻿<MudCard Class="stat-block-card" Style="box-shadow: none; border-radius: 0px">
-    <MudCardContent Style="width: 100%; padding: 4px 6px; background-color: lightseagreen;">
+    <MudCardContent Style="@($"width: 100%; padding: 4px 6px; background-color: {_backgroundColor};")">
         @ChildContent
     </MudCardContent>
 </MudCard>
@@ -7,4 +7,23 @@
 @code {
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public PowerType _powerType { get; set; } = PowerType.AtWill;
+
+    private string _backgroundColor => GetBackgroundColor();
+
+    private string GetBackgroundColor()
+    {
+        switch (_powerType)
+        {
+            case PowerType.Encounter:
+            case PowerType.Recharge:
+                return "tan";
+            default:
+                return "lightseagreen";
+        }
+    }
+
+
 }

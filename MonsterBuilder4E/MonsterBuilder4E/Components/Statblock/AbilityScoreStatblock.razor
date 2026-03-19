@@ -1,0 +1,9 @@
+﻿<MudText Typo="Typo.body1"><strong>@Ability.ToString().Substring(0, 3)</strong> @Creature.Abilities.GetScore(Ability) (@Formatter.Modifier(MonsterStats.GetAbilityCheckModifier(Creature, Ability)))</MudText>
+
+@code {
+    [Parameter]
+    public Creature Creature { get; set; } = new();
+    
+    [Parameter]
+    public Ability Ability { get; set; } = Ability.None;
+}

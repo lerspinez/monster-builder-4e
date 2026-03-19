@@ -1,5 +1,5 @@
 ﻿
-<MonsterStatblockEntryHeader>
+<MonsterStatblockEntryHeader _powerType="Power.PowerType">
     <MudText Typo="Typo.body1">
         <strong>@Power.Name</strong>
         @if(!string.IsNullOrWhiteSpace(Power.Keywords))
@@ -10,18 +10,16 @@
     </MudText>
 </MonsterStatblockEntryHeader>
 <MonsterStatblockEntryContent>
-    <MudText Typo="Typo.body1">
         @if (Power.ActionType == ActionType.ImmediateReaction || Power.ActionType == ActionType.ImmediateInterrupt)
         {
-            <strong>Trigger:</strong> @Power.Trigger <br />
+            <PowerPropertyTextblock Property="Trigger" Value="@Power.Trigger" />
         }
-        <strong>Attack:</strong> @MonsterStats.GetAttackHitTextblock(Creature, Power.OnHit)<br />
-        <strong>Hit:</strong> @MonsterStats.GetAttackHitTextblock(Creature, Power.OnHit)<br />
-        @if (!string.IsNullOrWhiteSpace(Power.Effect))
+        @if (Power.IsAttack)
         {
-            <strong>Effect:</strong> @Power.Effect <br />
+            <PowerPropertyTextblock Property="Attack" Value="@MonsterStats.GetPowerAttackTextblock(Creature, Power)" />
+            <PowerPropertyTextblock Property="Hit" Value="@MonsterStats.GetPowerHitTextblock(Creature, Power)" />
         }
-    </MudText>
+        <PowerPropertyTextblock Property="Effect" Value="@Power.Effect" />
 </MonsterStatblockEntryContent>
 
 @code {

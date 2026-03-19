@@ -52,14 +52,13 @@ public partial class Edit
             IsAttack = true,
             AttackType = Enums.AttackType.Melee,
             Range = "Melee 1",
-            TargetInfo = "One creature",
             TargetDefense = Defense.ArmorClass,
             AttackAbility = Ability.Strength,
             OnHit = new AttackHit
             {
-                BaseDamage = "1d8 + 5",
-                HitEffect = "the target is marked until the end of the hobgoblin's next turn"
-            }
+                BaseDamage = "1d8",
+            },
+            Effect = "The target is marked until the end of the hobgoblin's next turn"
         });
 
         // Add Crossbow Volley power (encounter ranged attack)
@@ -72,12 +71,12 @@ public partial class Edit
             IsAttack = true,
             AttackType = Enums.AttackType.Ranged,
             Range = "Ranged 15/30",
-            TargetInfo = "One creature",
             TargetDefense = Defense.ArmorClass,
             AttackAbility = Ability.Dexterity,
             OnHit = new AttackHit
             {
-                BaseDamage = "2d8 + 4"
+                BaseDamage = "2d8",
+                AbilityModifier = Ability.Dexterity
             }
         });
 

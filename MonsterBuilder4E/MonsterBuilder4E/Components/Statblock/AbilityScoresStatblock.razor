@@ -1,0 +1,35 @@
+﻿
+<MudGrid>
+    @* Strength *@
+    <MudItem xs="3">
+        <AbilityScoreStatblock Creature="Creature" Ability="@Ability.Strength" />
+    </MudItem>
+    @* Dexterity *@
+    <MudItem xs="3">
+        <AbilityScoreStatblock Creature="Creature" Ability="@Ability.Dexterity" />
+    </MudItem>
+    @* Wisdom *@
+    <MudItem xs="3">
+        <AbilityScoreStatblock Creature="Creature" Ability="@Ability.Wisdom" />
+    </MudItem>
+</MudGrid>
+
+<MudGrid>
+    @* Constitution *@
+    <MudItem xs="3">
+        <AbilityScoreStatblock Creature="Creature" Ability="@Ability.Constitution" />
+    </MudItem>
+    @* Intelligence *@
+    <MudItem xs="3">
+        <AbilityScoreStatblock Creature="Creature" Ability="@Ability.Intelligence" />
+    </MudItem>
+    @* Charisma *@
+    <MudItem xs="3">
+        <AbilityScoreStatblock Creature="Creature" Ability="@Ability.Charisma" />
+    </MudItem>
+</MudGrid>
+
+@code {    
+    [Parameter]
+    public Creature Creature { get; set; } = new();
+}

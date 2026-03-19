@@ -1,0 +1,13 @@
+﻿@if(!string.IsNullOrEmpty(Value))
+{
+    <MudText Typo="Typo.body1"><strong>@Property</strong>: @Value</MudText>
+}
+
+@code {
+    [Parameter]
+    public string Property { get; set; } = string.Empty;
+
+    [Parameter]
+    public string? Value { get; set; }
+
+}

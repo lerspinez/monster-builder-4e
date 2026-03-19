@@ -1,5 +1,5 @@
-﻿<MudCard Class="stat-block-card" >
-    <MudCardContent Style="width: 100%; padding: 0px; background-color: palegreen">
+﻿<MudCard Elevation="0">
+    <MudCardContent Style="width: 100%; padding: 0px; background-color: palegreen;">
 
         @* Header Section *@
         <MonsterStatblockHeader>
@@ -27,7 +27,6 @@
                     <strong>Senses</strong> @MonsterStats.GetSensesTextblock(Creature)
                 </MudText>
                 <MudText Typo="Typo.body1">
-                    <MudIcon Icon="@Icons.Material.Filled.FlashOn" Size="Size.Small" Style="font-size: 0.8rem" />
                     <strong>Initiative</strong> @Formatter.Modifier(Creature.Initiative)
                 </MudText>
             </MudStack>
@@ -78,7 +77,7 @@
             </MonsterStatblockSectionHeader>
             @foreach (var power in Creature.Powers.Where(p => p.ActionType == ActionType.Standard))
             {
-                <PowerStatblock Creature="Creature" Power="power" />
+                <PowerStatblock Creature="Creature" Power="power"  />
             }
         }
         
@@ -130,47 +129,32 @@
             }
         }
 
-        @* Triggered Actions *@
+        @* Additional Info *@
         <MonsterStatblockSectionHeader>
-            <MudText Typo="Typo.body1" Style="font-weight: bold; color: white;">Triggered Actions</MudText>
+            <MudText Typo="Typo.body1" Style="font-weight: bold; color: white;">Additional Info</MudText>
         </MonsterStatblockSectionHeader>
 
-        @* Soldier's Retaliation *@
-        <MonsterStatblockEntryHeader>
-            <MudText Typo="Typo.body1">
-                <span style="font-size: 1.2em;">⚔</span> <strong>Soldier's Retaliation</strong> ✦ <strong>At-Will</strong><br />
-            </MudText>
-        </MonsterStatblockEntryHeader>
-        <MonsterStatblockEntryContent>
-            <MudText Typo="Typo.body1">
-                <em><strong>Trigger</strong></em>: An enemy marked by the hobgoblin makes an attack that doesn't include the hobgoblin as a target.<br />
-                <strong>Effect</strong> (Immediate Interrupt): The hobgoblin uses longsword on the triggering enemy.
-            </MudText>
-        </MonsterStatblockEntryContent>
+        <MonsterStatblockSectionContent BackgroundColor="lightseagreen">
+            @* Skills *@
+            @if (Creature.Skills.Any())
+            {
+                <MudText Typo="Typo.body1"><strong>Skills</strong> @string.Join(", ", Creature.Skills)</MudText>
+            }
+            @* Ability Scores *@
+            <AbilityScoresStatblock Creature="Creature" />
+        </MonsterStatblockSectionContent>
 
-        <MudDivider Style="margin: 12px 0; border-color: black;" />
-
-        @* Ability Scores *@
-        <MudStack Row="true" Spacing="3" Justify="Justify.SpaceBetween">
-            <MudText Typo="Typo.body1"><strong>Str</strong> 18 (+6)</MudText>
-            <MudText Typo="Typo.body1"><strong>Dex</strong> 14 (+4)</MudText>
-            <MudText Typo="Typo.body1"><strong>Wis</strong> 12 (+3)</MudText>
-        </MudStack>
-        <MudStack Row="true" Spacing="3" Justify="Justify.SpaceBetween">
-            <MudText Typo="Typo.body1"><strong>Con</strong> 16 (+5)</MudText>
-            <MudText Typo="Typo.body1"><strong>Int</strong> 10 (+2)</MudText>
-            <MudText Typo="Typo.body1"><strong>Cha</strong> 11 (+2)</MudText>
-        </MudStack>
-
-        <MudDivider Style="margin: 12px 0; border-color: black;" />
-
-        @* Footer Section *@
-        <MudStack Spacing="1">
-            <MudText Typo="Typo.body1"><strong>Alignment</strong> Evil</MudText>
-            <MudText Typo="Typo.body1"><strong>Languages</strong> Common, Goblin</MudText>
-            <MudText Typo="Typo.body1"><strong>Skills</strong> Athletics +10, Intimidate +7</MudText>
-            <MudText Typo="Typo.body1"><strong>Equipment</strong> longsword, chainmail, heavy shield, crossbow</MudText>
-        </MudStack>
+        @* <MonsterStatblockSectionContent>
+            <MudText Typo="Typo.body1"><strong>Alignment</strong> @Creature.Alignment</MudText>
+            @if (Creature.Languages.Any())
+            {
+                <MudText Typo="Typo.body1"><strong>Languages</strong> @string.Join(", ", Creature.Languages)</MudText>
+            }
+            @if (Creature.Equipment.Any())
+            {
+                <MudText Typo="Typo.body1"><strong>Equipment</strong> @string.Join(", ", Creature.Equipment)</MudText>
+            }
+        </MonsterStatblockSectionContent> *@
     </MudCardContent>
 </MudCard>
 
