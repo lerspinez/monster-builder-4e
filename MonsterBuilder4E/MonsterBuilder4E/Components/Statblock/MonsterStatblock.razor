@@ -143,10 +143,10 @@
 
         <MonsterStatblockSectionContent BackgroundColor="lightseagreen">
             @* Skills *@
-            @if (Creature.Skills.Any())
+            @* @if (Creature.Skills.Any())
             {
                 <MudText Typo="Typo.body1"><strong>Skills</strong> @string.Join(", ", Creature.Skills)</MudText>
-            }
+            } *@
             @* Ability Scores *@
             <AbilityScoresStatblock Creature="Creature" />
         </MonsterStatblockSectionContent>

@@ -47,13 +47,22 @@
         </MudGrid>
                                         
         <MudGrid>
+            @* RangeType *@
+            <MudItem xs="4">
+                <MudSelect @bind-Value="Power.AttackType" @bind-Value:after="UpdatePower" Label="Category" Variant="Variant.Text" Typo="Typo.body2">
+                    @foreach (var attackType in Enum.GetValues<AttackType>())
+                    {
+                        <MudSelectItem Value="@attackType">@Formatter.Enum(attackType.ToString())</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
             @* Power Range *@
-            <MudItem xs="6">
+            <MudItem xs="4">
                 <MudTextField @bind-Value="Power.Range" @bind-Value:after="UpdatePower" Label="Range" Variant="Variant.Text" Typo="Typo.body2" 
                     Placeholder="Melee 1, ranged 10/20, close blast 2, etc" />
             </MudItem>
             @* Target Info *@
-            <MudItem xs="6">
+            <MudItem xs="4">
                 <MudTextField @bind-Value="Power.TargetInfo" @bind-Value:after="UpdatePower" Label="Target" Variant="Variant.Text" Typo="Typo.body2" 
                     Placeholder="One creature, all creatures in area, etc" />
             </MudItem>

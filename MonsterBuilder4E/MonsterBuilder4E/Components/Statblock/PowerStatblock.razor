@@ -1,6 +1,21 @@
 ﻿
 <MonsterStatblockEntryHeader _powerType="Power.PowerType">
     <MudText Typo="Typo.body1">
+        @if(Power.IsAttack)
+        {
+            if(Power.IsBasicAttack)
+            {
+                <MudText Inline Style="border-color:black; border-block:solid; border-radius: 20px" Class="px-1 mr-2">
+                    <strong>@GetPowerIcon(Power)</strong>
+                </MudText>
+            }
+            else
+            {
+                <MudText Inline Class="mr-1">
+                    <strong>@GetPowerIcon(Power)</strong>
+                </MudText>
+            }
+        }        
         <strong>@Power.Name</strong>
         @if(!string.IsNullOrWhiteSpace(Power.Keywords))
         {
@@ -25,8 +40,19 @@
 @code {
     [Parameter]
     public Creature Creature { get; set; } = new();
-    
+
     [Parameter]
     public Power Power { get; set; } = new();
 
+    private string GetPowerIcon(Power power)
+    {
+        return power.AttackType switch
+        {
+            AttackType.Melee =>  "⚔",
+            AttackType.Ranged => "➶",
+            AttackType.Close =>  "●⚟",
+            AttackType.Area => "➛🜹",
+            _ => "○"
+        };
+    }
 }

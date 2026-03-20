@@ -61,7 +61,7 @@ public class Power
     /// <summary>
     /// Defines the type of attack, as defined in D&D 4E. This can be Melee (close combat), Ranged (attacks from a distance), Area (affects an area rather than a single target), or Close (affects targets within a certain radius).
     /// </summary>
-    public AttackType? AttackType { get; set; }
+    public AttackType AttackType { get; set; } = AttackType.Melee;
 
     /// <summary>
     /// Indicates if the power can be used as a basic attack. Only melee and ranged attacks can be basic attacks, and they must not have any special requirements or conditions to be used.

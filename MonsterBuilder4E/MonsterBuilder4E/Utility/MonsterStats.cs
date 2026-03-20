@@ -91,7 +91,7 @@ namespace MonsterBuilder4E.Utility
             if (creature.RoleModifier == RoleModifier.Elite)
                 hitPoints = hitPoints * 2;
 
-            if (creature.RoleModifier == RoleModifier.Elite)
+            if (creature.RoleModifier == RoleModifier.Solo)
                 hitPoints = hitPoints * 4;
 
             return hitPoints;
@@ -251,13 +251,13 @@ namespace MonsterBuilder4E.Utility
             if (!power.IsAttack)
                 return attackTextblock;
 
-            if (!string.IsNullOrWhiteSpace(power.Range))
-            {
-                attackTextblock = power.Range;
+            attackTextblock = power.AttackType.ToString();
 
-                if (!string.IsNullOrWhiteSpace(power.TargetInfo))
-                    attackTextblock += $" ({power.TargetInfo})";
-            }
+            if (!string.IsNullOrWhiteSpace(power.Range))
+                attackTextblock += $" {power.Range}";
+
+            if (!string.IsNullOrWhiteSpace(power.TargetInfo))
+                attackTextblock += $" ({power.TargetInfo})";
 
             if (attackTextblock.Length > 0)
                 attackTextblock += $"; ";
