@@ -83,22 +83,31 @@ namespace MonsterBuilder4E.Utility
         {
             int baseHP = GetBaseHitPointsByRole(creature);
             int constitutionScore = creature.Abilities.Constitution.Score;
-            return baseHP + constitutionScore;
+
+            var hitPoints = baseHP + constitutionScore;
+
+            if (creature.RoleModifier == RoleModifier.Minion) return (int)Math.Floor(hitPoints / 4.0);
+
+            if (creature.RoleModifier == RoleModifier.Elite)
+                hitPoints = hitPoints * 2;
+
+            if (creature.RoleModifier == RoleModifier.Elite)
+                hitPoints = hitPoints * 4;
+
+            return hitPoints;
         }
 
         private static int GetBaseHitPointsByRole(Creature creature)
         {
-            if (creature.RoleModifier == RoleModifier.Minion) return 1;
-
             return creature.Role switch
             {
-                Role.Artillery => 6 + creature.Level * 6,
-                Role.Brute => 10 + creature.Level * 10,
-                Role.Controller => 8 + creature.Level * 8,
-                Role.Lurker => 6 + creature.Level * 6,
-                Role.Skirmisher => 8 + creature.Level * 8,
-                Role.Soldier => 8 + creature.Level * 8,
-                _ => 8 + creature.Level * 8
+                Role.Artillery => 3 + creature.Level * 3,
+                Role.Brute => 6 + creature.Level * 6,
+                Role.Controller => 4 + creature.Level * 4,
+                Role.Lurker => 3 + creature.Level * 3,
+                Role.Skirmisher => 4 + creature.Level * 4,
+                Role.Soldier => 4 + creature.Level * 4,
+                _ => 4 + creature.Level * 4
             };
         }
 

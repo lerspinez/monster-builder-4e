@@ -87,3 +87,9 @@ code {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+@media print {
+    body > :not(#printArea) {
+        display: none !important;
+    }
+}

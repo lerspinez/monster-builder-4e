@@ -1,4 +1,6 @@
-﻿<MudCard Elevation="0">
+﻿@inject IJSRuntime JSRuntime
+
+<MudCard Elevation="0" id="printArea">
     <MudCardContent Style="width: 100%; padding: 0px; background-color: palegreen;">
 
         @* Header Section *@
@@ -39,35 +41,40 @@
                 <strong>Will</strong> @Creature.Will
                 </MudText>
             <MudText Typo="Typo.body1"><strong>Speed</strong> @MonsterStats.GetSpeedTextblock(Creature)</MudText>
-        </MonsterStatblockSectionContent>
+        </MonsterStatblockSectionContent>   
         
-
-        @* Traits *@
-        <MonsterStatblockSectionHeader>
-            <MudText Typo="Typo.body1" Style="font-weight: bold; color: white;">Traits</MudText>
-        </MonsterStatblockSectionHeader>
-
-        @foreach (var trait in Creature.Traits)
+        @if(Creature.Traits.Any())
         {
-            <MonsterStatblockEntryHeader>
-                <MudText Typo="Typo.body1">                    
-                    <strong>@if(trait.IsAura){ @("☼ ") } @trait.Name</strong>
-                    @if (!string.IsNullOrWhiteSpace(trait.Keywords))
-                    {
-                        @($"({trait.Keywords})")
-                    }
-                    @if (trait.IsAura)
-                    {
-                        @($" ✦ Aura {trait.AuraRange}")
-                    }
-                </MudText>
-            </MonsterStatblockEntryHeader>
-            <MonsterStatblockEntryContent>
-                <MudText Typo="Typo.body1">
-                    @trait.Effect
-                </MudText>
-            </MonsterStatblockEntryContent>
-        }
+            @* Traits *@
+            <MonsterStatblockSectionHeader>
+                <MudText Typo="Typo.body1" Style="font-weight: bold; color: white;">Traits</MudText>
+            </MonsterStatblockSectionHeader>
+
+            @foreach (var trait in Creature.Traits)
+            {
+                <MonsterStatblockEntryHeader>
+                    <MudText Typo="Typo.body1">
+                        <strong>@if(trait.IsAura){
+                            @("☼ ")
+                        }
+                        @trait.Name</strong>
+                        @if (!string.IsNullOrWhiteSpace(trait.Keywords))
+                        {
+                            @($"({trait.Keywords})")
+                        }
+                        @if (trait.IsAura)
+                        {
+                            @($" ✦ Aura {trait.AuraRange}")
+                        }
+                    </MudText>
+                </MonsterStatblockEntryHeader>
+                <MonsterStatblockEntryContent>
+                    <MudText Typo="Typo.body1">
+                        @trait.Effect
+                    </MudText>
+                </MonsterStatblockEntryContent>
+            }
+        }        
         
         @* Standard Actions *@
         @if (Creature.Powers .Any(p => p.ActionType == ActionType.Standard))
@@ -144,7 +151,7 @@
             <AbilityScoresStatblock Creature="Creature" />
         </MonsterStatblockSectionContent>
 
-        @* <MonsterStatblockSectionContent>
+        <MonsterStatblockSectionContent>
             <MudText Typo="Typo.body1"><strong>Alignment</strong> @Creature.Alignment</MudText>
             @if (Creature.Languages.Any())
             {
@@ -154,12 +161,18 @@
             {
                 <MudText Typo="Typo.body1"><strong>Equipment</strong> @string.Join(", ", Creature.Equipment)</MudText>
             }
-        </MonsterStatblockSectionContent> *@
+        </MonsterStatblockSectionContent>
     </MudCardContent>
 </MudCard>
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-2" OnClick="PrintStatblock">Print Statblock</MudButton>
 
 @code {
     [Parameter]
     public Creature Creature { get; set; } = new();
 
+    private void PrintStatblock()
+    {
+        JSRuntime.InvokeVoidAsync("printComponent", "#printArea");
+    }
 }
