@@ -165,7 +165,10 @@
     </MudCardContent>
 </MudCard>
 
-<MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-2" OnClick="PrintStatblock">Print Statblock</MudButton>
+<MudStack Row Spacing="2" Class="mt-2">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="PrintStatblock">Print Statblock</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="ExportStatblockAsPng">Export as PNG</MudButton>
+</MudStack>
 
 @code {
     [Parameter]
@@ -174,5 +177,16 @@
     private void PrintStatblock()
     {
         JSRuntime.InvokeVoidAsync("printComponent", "#printArea");
+    }
+
+    private async Task ExportStatblockAsPng()
+    {
+        // Format filename: lowercase, numbers, and hyphens only
+        var formattedName = Creature.Name
+            .ToLowerInvariant()
+            .Replace(" ", "-")
+            .Replace("_", "-");
+
+        await JSRuntime.InvokeVoidAsync("exportElementAsPng", "#printArea", $"{formattedName}-statblock.png");
     }
 }

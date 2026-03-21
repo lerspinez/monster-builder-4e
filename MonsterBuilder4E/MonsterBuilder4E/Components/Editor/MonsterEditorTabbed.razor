@@ -1,4 +1,6 @@
-﻿
+﻿@inject IDialogService DialogService
+@inject IJSRuntime JSRuntime
+
 <MudPaper Class="rounded-0 pa-0" Elevation="0" Style="height: 100%;">
 
     @* ---- Editor Header ---- *@
@@ -6,7 +8,17 @@
         @* Monster Name *@
         <MudTextField @bind-Value="Creature.Name" @bind-Value:after="UpdateCreature" Label="Monster Name"
                       Variant="Variant.Outlined" Typo="Typo.h5" Margin="Margin.Dense" />
-        @* Reset button *@
+        @* Action buttons *@
+        <MudTooltip Text="Import from JSON">
+            <MudFileUpload T="IBrowserFile" Accept=".json" FilesChanged="ImportFromJson" MaximumFileCount="1">
+                <ActivatorContent>
+                    <MudIcon Icon="@Icons.Material.Filled.Upload" Size="Size.Large" Class="cursor-pointer" />
+                </ActivatorContent>
+            </MudFileUpload>
+        </MudTooltip>
+        <MudTooltip Text="Export to JSON">
+            <MudIcon Icon="@Icons.Material.Filled.Download" Size="Size.Large" Class="cursor-pointer" @onclick="ExportToJson" />
+        </MudTooltip>
         <MudTooltip Text="Reset">
             <MudIcon Icon="@Icons.Material.Filled.ClearAll" Size="Size.Large" Class="cursor-pointer" @onclick="ResetEditor" />
         </MudTooltip>
@@ -60,9 +72,70 @@
         await CreatureChanged.InvokeAsync(Creature);
     }
 
-    private async void ResetEditor()
+    private async Task ResetEditor()
     {
-        Creature = new Creature();
-        await UpdateCreature();
+        var result = await DialogService.ShowMessageBoxAsync(
+            "Confirm Reset",
+            "Are you sure you want to reset the editor? All unsaved changes will be lost.",
+            yesText: "Reset", cancelText: "Cancel");
+
+        if (result == true)
+        {
+            Creature = new Creature();
+            await UpdateCreature();
+            StateHasChanged();
+        }
+    }
+
+    private async Task ExportToJson()
+    {
+        try
+        {
+            var json = System.Text.Json.JsonSerializer.Serialize(Creature, new System.Text.Json.JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
+            var fileName = string.IsNullOrWhiteSpace(Creature.Name)
+                ? "creature.json"
+                : $"{Creature.Name.ToLowerInvariant().Replace(" ", "-").Replace("_", "-")}.json";
+
+            await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/json", json);
+        }
+        catch (Exception ex)
+        {
+            await DialogService.ShowMessageBoxAsync("Export Error", $"Failed to export creature: {ex.Message}", cancelText: "OK");
+        }
+    }
+
+    private async Task ImportFromJson(IBrowserFile file)
+    {
+        if (file == null)
+            return;
+
+        try
+        {
+            var maxFileSize = 1024 * 1024; // 1 MB
+            using var stream = file.OpenReadStream(maxFileSize);
+            using var reader = new System.IO.StreamReader(stream);
+            var json = await reader.ReadToEndAsync();
+
+            var importedCreature = System.Text.Json.JsonSerializer.Deserialize<Creature>(json);
+
+            if (importedCreature != null)
+            {
+                Creature = importedCreature;
+                await UpdateCreature();
+                StateHasChanged();
+            }
+            else
+            {
+                await DialogService.ShowMessageBoxAsync("Import Error", "Failed to deserialize creature from JSON.", cancelText: "OK");
+            }
+        }
+        catch (Exception ex)
+        {
+            await DialogService.ShowMessageBoxAsync("Import Error", $"Failed to import creature: {ex.Message}", cancelText: "OK");
+        }
     }
 }
